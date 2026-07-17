@@ -137,6 +137,39 @@ def sync_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str]) -> Non
         print(f"[Spotify] Added tracks {i + 1}–{i + len(chunk)} / {len(uris)}.")
 
 
+# ── Smart Reorder (Audio Features) ───────────────────────────────────────────
+
+def fetch_audio_features(sp: spotipy.Spotify, uris: list[str]) -> dict[str, dict]:
+    """Fetch audio features for all URIs in chunks of 100."""
+    features_map: dict[str, dict] = {}
+    for i in range(0, len(uris), 100):
+        chunk = uris[i : i + 100]
+        try:
+            results = sp.audio_features(chunk)
+            for uri, feat in zip(chunk, results):
+                if feat:
+                    features_map[uri] = feat
+        except Exception as e:
+            print(f"[Warning] Failed to fetch audio features for chunk starting at {i}: {e}")
+    return features_map
+
+
+def sort_tracks_by_tempo(uris: list[str], features_map: dict[str, dict]) -> list[str]:
+    """Sort tracks by tempo (BPM) ascending, and by energy as a secondary key."""
+    def get_sort_key(uri: str) -> tuple[float, float]:
+        feat = features_map.get(uri)
+        if feat:
+            tempo = feat.get("tempo", 120.0)
+            energy = feat.get("energy", 0.5)
+            # Default fallbacks
+            tempo = 120.0 if tempo is None else float(tempo)
+            energy = 0.5 if energy is None else float(energy)
+            return (tempo, energy)
+        return (120.0, 0.5)
+
+    return sorted(uris, key=get_sort_key)
+
+
 # ── state management ─────────────────────────────────────────────────────────
 
 def load_previous_hash(state_file: str) -> str | None:
@@ -187,8 +220,13 @@ def main() -> None:
         print("[Sync] No changes since last run — skipping playlist update ✓")
         return
 
-    # 5. Sync to the target playlist (only when the list changed)
-    sync_playlist(sp, playlist_id, unplayed_uris)
+    # 5. Smart Reorder (only run when sync is needed)
+    print("[Sync] Fetching audio features for Smart Reorder...")
+    features_map = fetch_audio_features(sp, unplayed_uris)
+    sorted_uris = sort_tracks_by_tempo(unplayed_uris, features_map)
+
+    # 6. Sync to the target playlist
+    sync_playlist(sp, playlist_id, sorted_uris)
     save_hash(state_file, current_hash)
     print("[Sync] Playlist updated and state saved ✓")
 
