@@ -51,28 +51,18 @@ def fetch_lastfm_scrobbles(days: int = 30) -> set[str]:
     cutoff = datetime.now(timezone.utc) - timedelta(days=days)
     cutoff_ts = int(cutoff.timestamp())
 
+    # pylast handles pagination internally when limit=None
+    tracks = user.get_recent_tracks(
+        limit=None,
+        time_from=cutoff_ts,
+        now_playing=False,
+    )
+
     scrobbled: set[str] = set()
-    page = 1
-    limit = 200  # max per page
-
-    while True:
-        tracks = user.get_recent_tracks(
-            limit=limit,
-            page=page,
-            time_from=cutoff_ts,
-        )
-        if not tracks:
-            break
-
-        for item in tracks:
-            artist = str(item.track.artist)
-            title = str(item.track.title)
-            scrobbled.add(standardise_track_key(artist, title))
-
-        # If we got fewer than the limit, we've reached the last page.
-        if len(tracks) < limit:
-            break
-        page += 1
+    for item in tracks:
+        artist = str(item.track.artist)
+        title = str(item.track.title)
+        scrobbled.add(standardise_track_key(artist, title))
 
     print(f"[Last.fm] Fetched {len(scrobbled)} unique scrobbled tracks from the last {days} days.")
     return scrobbled
