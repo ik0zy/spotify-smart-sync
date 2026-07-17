@@ -38,7 +38,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .sync_state
-          key: sync-state
+          key: sync-state-${{ github.run_id }}
+          restore-keys: |
+            sync-state-
 
       - name: Run playlist sync
         run: python playlist_sync.py
