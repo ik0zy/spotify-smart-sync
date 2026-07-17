@@ -4,8 +4,8 @@ Syncs neglected Spotify tracks (Liked Songs not scrobbled in the last 30 days)
 to a target Spotify playlist.
 """
 
+import hashlib
 import os
-import time
 import unicodedata
 import re
 from datetime import datetime, timedelta, timezone
@@ -30,6 +30,12 @@ def _normalise(text: str) -> str:
 def standardise_track_key(artist: str, title: str) -> str:
     """Return a canonical 'artist - title' key for matching."""
     return f"{_normalise(artist)} - {_normalise(title)}"
+
+
+def compute_hash(uris: list[str]) -> str:
+    """Return a SHA-256 hex digest of the sorted URI list."""
+    payload = "\n".join(sorted(uris)).encode()
+    return hashlib.sha256(payload).hexdigest()
 
 
 # ── Last.fm ──────────────────────────────────────────────────────────────────
@@ -131,10 +137,28 @@ def sync_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str]) -> Non
         print(f"[Spotify] Added tracks {i + 1}–{i + len(chunk)} / {len(uris)}.")
 
 
+# ── state management ─────────────────────────────────────────────────────────
+
+def load_previous_hash(state_file: str) -> str | None:
+    """Read the saved hash from the state file, or None if missing."""
+    try:
+        with open(state_file) as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return None
+
+
+def save_hash(state_file: str, digest: str) -> None:
+    """Persist the current hash to the state file."""
+    with open(state_file, "w") as f:
+        f.write(digest)
+
+
 # ── main ─────────────────────────────────────────────────────────────────────
 
 def main() -> None:
     playlist_id = os.environ["SPOTIFY_PLAYLIST_ID"]
+    state_file = os.environ.get("STATE_FILE", ".sync_state")
 
     # 1. Scrobbles from Last.fm
     scrobbled = fetch_lastfm_scrobbles(days=30)
@@ -153,11 +177,20 @@ def main() -> None:
         if key not in scrobbled:
             unplayed_uris.append(track["uri"])
 
-    print(f"[Sync] {len(unplayed_uris)} neglected tracks to sync.")
+    print(f"[Sync] {len(unplayed_uris)} neglected tracks identified.")
 
-    # 4. Sync to the target playlist
+    # 4. Check if anything changed since last run
+    current_hash = compute_hash(unplayed_uris)
+    previous_hash = load_previous_hash(state_file)
+
+    if current_hash == previous_hash:
+        print("[Sync] No changes since last run — skipping playlist update ✓")
+        return
+
+    # 5. Sync to the target playlist (only when the list changed)
     sync_playlist(sp, playlist_id, unplayed_uris)
-    print("[Sync] Done ✓")
+    save_hash(state_file, current_hash)
+    print("[Sync] Playlist updated and state saved ✓")
 
 
 if __name__ == "__main__":
