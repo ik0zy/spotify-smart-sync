@@ -5,12 +5,13 @@ to a target Spotify playlist.
 """
 
 import hashlib
+import time
 import os
 import unicodedata
 import re
 from datetime import datetime, timedelta, timezone
 
-import pylast
+
 import requests
 import spotipy
 
@@ -42,53 +43,82 @@ def compute_hash(uris: list[str]) -> str:
 
 def fetch_lastfm_scrobbles(days: int = 30) -> set[str]:
     """Return a set of standardised 'artist - title' keys scrobbled in the
-    last *days* days."""
+    last *days* days.
+
+    Uses the Last.fm REST API directly (instead of pylast) so we have full
+    control over pagination, rate-limit handling, and retry timeouts.
+    pylast's internal retry logic silently waits hours on 429s, which was
+    the root cause of 6-hour GitHub Actions timeouts.
+    """
 
     api_key = os.environ["LASTFM_API_KEY"]
-    api_secret = os.environ["LASTFM_API_SECRET"]
     username = os.environ["LASTFM_USERNAME"]
 
-    network = pylast.LastFMNetwork(
-        api_key=api_key,
-        api_secret=api_secret,
-    )
-
-    user = network.get_user(username)
     cutoff = datetime.now(timezone.utc) - timedelta(days=days)
     cutoff_ts = int(cutoff.timestamp())
 
-    # Last.fm's API accepts limit in the range 1-1000.  pylast internally
-    # adds +1 to the limit (to handle now-playing tracks), so we use 999
-    # to stay within the API bound.  We paginate manually using time_to
-    # so we never rely on pylast's unbounded limit=None (which caused
-    # 6-hour GitHub Actions timeouts).
-    PAGE_LIMIT = 999
+    API_URL = "https://ws.audioscrobbler.com/2.0/"
+    PER_PAGE = 200  # Last.fm default; max is 1000 but smaller = gentler
+    MAX_RETRY_WAIT = 60  # seconds — fail fast rather than wait hours
+
     scrobbled: set[str] = set()
-    time_to = int(datetime.now(timezone.utc).timestamp())
+    page = 1
 
     while True:
-        tracks = user.get_recent_tracks(
-            limit=PAGE_LIMIT,
-            time_from=cutoff_ts,
-            time_to=time_to,
-            now_playing=False,
-        )
+        params = {
+            "method": "user.getrecenttracks",
+            "user": username,
+            "api_key": api_key,
+            "format": "json",
+            "limit": PER_PAGE,
+            "from": cutoff_ts,
+            "page": page,
+            "extended": 0,
+        }
+
+        resp = requests.get(API_URL, params=params, timeout=30)
+
+        # Handle rate limiting with a bounded retry
+        if resp.status_code == 429:
+            retry_after = int(resp.headers.get("Retry-After", MAX_RETRY_WAIT))
+            if retry_after > MAX_RETRY_WAIT:
+                raise RuntimeError(
+                    f"[Last.fm] Rate-limited for {retry_after}s — aborting "
+                    f"instead of blocking the CI job. Try again later."
+                )
+            print(f"[Last.fm] Rate-limited, waiting {retry_after}s …")
+            time.sleep(retry_after)
+            continue  # retry the same page
+
+        resp.raise_for_status()
+        data = resp.json()
+
+        recent = data.get("recenttracks", {})
+        tracks = recent.get("track", [])
 
         if not tracks:
             break
 
-        for item in tracks:
-            artist = str(item.track.artist)
-            title = str(item.track.title)
-            scrobbled.add(standardise_track_key(artist, title))
+        for track in tracks:
+            # Skip the "now playing" marker (it has no date)
+            if "@attr" in track and track["@attr"].get("nowplaying") == "true":
+                continue
+            artist = track.get("artist", {}).get("#text", "")
+            title = track.get("name", "")
+            if artist and title:
+                scrobbled.add(standardise_track_key(artist, title))
 
-        # If we got fewer than PAGE_LIMIT results, we've exhausted the window
-        if len(tracks) < PAGE_LIMIT:
+        # Check pagination
+        attrs = recent.get("@attr", {})
+        total_pages = int(attrs.get("totalPages", 1))
+        print(f"[Last.fm] Page {page}/{total_pages} — {len(scrobbled)} unique tracks so far.")
+
+        if page >= total_pages:
             break
+        page += 1
 
-        # Move the window: use the oldest track's timestamp minus 1 second
-        # to avoid re-fetching the same boundary track.
-        time_to = int(tracks[-1].timestamp) - 1
+        # Be gentle on the API — 0.25s between pages
+        time.sleep(0.25)
 
     print(f"[Last.fm] Fetched {len(scrobbled)} unique scrobbled tracks from the last {days} days.")
     return scrobbled
