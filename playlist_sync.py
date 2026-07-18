@@ -173,6 +173,7 @@ def fetch_liked_songs(sp: spotipy.Spotify) -> list[dict]:
         if results.get("next") is None:
             break
         offset += limit
+        time.sleep(0.2)  # Avoid rate limits from rapid sequential requests
 
     print(f"[Spotify] Fetched {len(liked)} Liked Songs.")
     return liked
@@ -190,6 +191,7 @@ def sync_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str]) -> Non
         chunk = uris[i : i + 100]
         sp.playlist_add_items(playlist_id, chunk)
         print(f"[Spotify] Added tracks {i + 1}–{i + len(chunk)} / {len(uris)}.")
+        time.sleep(0.5)  # Prevent rate limits during bulk additions
 
 
 # ── state management ─────────────────────────────────────────────────────────
