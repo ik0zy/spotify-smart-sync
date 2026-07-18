@@ -152,7 +152,11 @@ def get_spotify_client() -> spotipy.Spotify:
     resp.raise_for_status()
     access_token = resp.json()["access_token"]
 
-    return spotipy.Spotify(auth=access_token)
+    return spotipy.Spotify(
+        auth=access_token,
+        retries=0,
+        status_retries=0,
+    )
 
 
 # ── Spotify helpers ──────────────────────────────────────────────────────────
