@@ -10,6 +10,7 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     env:
       LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}

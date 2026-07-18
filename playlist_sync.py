@@ -57,9 +57,11 @@ def fetch_lastfm_scrobbles(days: int = 30) -> set[str]:
     cutoff = datetime.now(timezone.utc) - timedelta(days=days)
     cutoff_ts = int(cutoff.timestamp())
 
-    # pylast handles pagination internally when limit=None
+    # Cap at 5000 to avoid runaway pagination against Last.fm's API.
+    # Even heavy listeners rarely exceed this in 30 days, and limit=None
+    # caused GitHub Actions to time out at the 6-hour job limit.
     tracks = user.get_recent_tracks(
-        limit=None,
+        limit=5000,
         time_from=cutoff_ts,
         now_playing=False,
     )
