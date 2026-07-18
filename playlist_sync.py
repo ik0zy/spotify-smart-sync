@@ -64,6 +64,9 @@ def fetch_lastfm_scrobbles(days: int = 30) -> set[str]:
     scrobbled: set[str] = set()
     page = 1
 
+    MAX_RETRIES = 3  # don't loop forever on repeated 429s
+    retries = 0
+
     while True:
         params = {
             "method": "user.getrecenttracks",
@@ -78,19 +81,21 @@ def fetch_lastfm_scrobbles(days: int = 30) -> set[str]:
 
         resp = requests.get(API_URL, params=params, timeout=30)
 
-        # Handle rate limiting with a bounded retry
+        # Handle rate limiting with bounded retries
         if resp.status_code == 429:
             retry_after = int(resp.headers.get("Retry-After", MAX_RETRY_WAIT))
-            if retry_after > MAX_RETRY_WAIT:
+            retries += 1
+            if retry_after > MAX_RETRY_WAIT or retries > MAX_RETRIES:
                 raise RuntimeError(
-                    f"[Last.fm] Rate-limited for {retry_after}s — aborting "
-                    f"instead of blocking the CI job. Try again later."
+                    f"[Last.fm] Rate-limited (attempt {retries}, wait {retry_after}s) "
+                    f"— aborting instead of blocking the CI job. Try again later."
                 )
-            print(f"[Last.fm] Rate-limited, waiting {retry_after}s …")
+            print(f"[Last.fm] Rate-limited, waiting {retry_after}s (attempt {retries}/{MAX_RETRIES}) …")
             time.sleep(retry_after)
             continue  # retry the same page
 
         resp.raise_for_status()
+        retries = 0  # reset on success
         data = resp.json()
 
         recent = data.get("recenttracks", {})
