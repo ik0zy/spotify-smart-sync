@@ -57,20 +57,36 @@ def fetch_lastfm_scrobbles(days: int = 30) -> set[str]:
     cutoff = datetime.now(timezone.utc) - timedelta(days=days)
     cutoff_ts = int(cutoff.timestamp())
 
-    # Cap at 5000 to avoid runaway pagination against Last.fm's API.
-    # Even heavy listeners rarely exceed this in 30 days, and limit=None
-    # caused GitHub Actions to time out at the 6-hour job limit.
-    tracks = user.get_recent_tracks(
-        limit=5000,
-        time_from=cutoff_ts,
-        now_playing=False,
-    )
-
+    # Last.fm's API accepts limit in the range 1-1000.  We paginate
+    # manually using time_to so we never rely on pylast's unbounded
+    # limit=None (which caused 6-hour GitHub Actions timeouts).
+    PAGE_LIMIT = 1000
     scrobbled: set[str] = set()
-    for item in tracks:
-        artist = str(item.track.artist)
-        title = str(item.track.title)
-        scrobbled.add(standardise_track_key(artist, title))
+    time_to = int(datetime.now(timezone.utc).timestamp())
+
+    while True:
+        tracks = user.get_recent_tracks(
+            limit=PAGE_LIMIT,
+            time_from=cutoff_ts,
+            time_to=time_to,
+            now_playing=False,
+        )
+
+        if not tracks:
+            break
+
+        for item in tracks:
+            artist = str(item.track.artist)
+            title = str(item.track.title)
+            scrobbled.add(standardise_track_key(artist, title))
+
+        # If we got fewer than PAGE_LIMIT results, we've exhausted the window
+        if len(tracks) < PAGE_LIMIT:
+            break
+
+        # Move the window: use the oldest track's timestamp minus 1 second
+        # to avoid re-fetching the same boundary track.
+        time_to = int(tracks[-1].timestamp) - 1
 
     print(f"[Last.fm] Fetched {len(scrobbled)} unique scrobbled tracks from the last {days} days.")
     return scrobbled
