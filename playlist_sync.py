@@ -57,10 +57,12 @@ def fetch_lastfm_scrobbles(days: int = 30) -> set[str]:
     cutoff = datetime.now(timezone.utc) - timedelta(days=days)
     cutoff_ts = int(cutoff.timestamp())
 
-    # Last.fm's API accepts limit in the range 1-1000.  We paginate
-    # manually using time_to so we never rely on pylast's unbounded
-    # limit=None (which caused 6-hour GitHub Actions timeouts).
-    PAGE_LIMIT = 1000
+    # Last.fm's API accepts limit in the range 1-1000.  pylast internally
+    # adds +1 to the limit (to handle now-playing tracks), so we use 999
+    # to stay within the API bound.  We paginate manually using time_to
+    # so we never rely on pylast's unbounded limit=None (which caused
+    # 6-hour GitHub Actions timeouts).
+    PAGE_LIMIT = 999
     scrobbled: set[str] = set()
     time_to = int(datetime.now(timezone.utc).timestamp())
 
