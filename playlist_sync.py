@@ -161,6 +161,42 @@ def get_spotify_client() -> spotipy.Spotify:
 
 # ── Spotify helpers ──────────────────────────────────────────────────────────
 
+MAX_SPOTIFY_RETRIES = 3
+MAX_SPOTIFY_RETRY_WAIT = 60  # seconds — fail fast rather than wait hours
+
+
+def spotify_retry(func, *args, **kwargs):
+    """Call a spotipy method with bounded retry on 429 rate limits.
+
+    Retries up to MAX_SPOTIFY_RETRIES times, waiting at most
+    MAX_SPOTIFY_RETRY_WAIT seconds per attempt.  Raises on any other
+    error or when retries are exhausted.
+    """
+    for attempt in range(1, MAX_SPOTIFY_RETRIES + 1):
+        try:
+            return func(*args, **kwargs)
+        except spotipy.exceptions.SpotifyException as exc:
+            if exc.http_status != 429:
+                raise  # not a rate limit — propagate immediately
+
+            retry_after = int(exc.headers.get("Retry-After", MAX_SPOTIFY_RETRY_WAIT))
+            if retry_after > MAX_SPOTIFY_RETRY_WAIT:
+                raise RuntimeError(
+                    f"[Spotify] Rate-limited with Retry-After={retry_after}s "
+                    f"(exceeds {MAX_SPOTIFY_RETRY_WAIT}s cap) — aborting."
+                ) from exc
+
+            print(
+                f"[Spotify] Rate-limited, waiting {retry_after}s "
+                f"(attempt {attempt}/{MAX_SPOTIFY_RETRIES}) …"
+            )
+            time.sleep(retry_after)
+
+    raise RuntimeError(
+        f"[Spotify] Still rate-limited after {MAX_SPOTIFY_RETRIES} retries — aborting."
+    )
+
+
 def fetch_liked_songs(sp: spotipy.Spotify) -> list[dict]:
     """Return every track object from the user's Liked Songs."""
 
@@ -169,7 +205,7 @@ def fetch_liked_songs(sp: spotipy.Spotify) -> list[dict]:
     limit = 50  # Spotify max for this endpoint
 
     while True:
-        results = sp.current_user_saved_tracks(limit=limit, offset=offset)
+        results = spotify_retry(sp.current_user_saved_tracks, limit=limit, offset=offset)
         items = results.get("items", [])
         if not items:
             break
@@ -187,13 +223,13 @@ def sync_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str]) -> Non
     """Wipe the target playlist and bulk-add *uris* 100 at a time."""
 
     # Clear the playlist
-    sp.playlist_replace_items(playlist_id, [])
+    spotify_retry(sp.playlist_replace_items, playlist_id, [])
     print(f"[Spotify] Cleared playlist {playlist_id}.")
 
     # Add in chunks of 100
     for i in range(0, len(uris), 100):
         chunk = uris[i : i + 100]
-        sp.playlist_add_items(playlist_id, chunk)
+        spotify_retry(sp.playlist_add_items, playlist_id, chunk)
         print(f"[Spotify] Added tracks {i + 1}–{i + len(chunk)} / {len(uris)}.")
         time.sleep(0.5)  # Prevent rate limits during bulk additions
 
