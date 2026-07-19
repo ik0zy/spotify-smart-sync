@@ -236,26 +236,79 @@ def sync_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str]) -> Non
 
 # ── state management ─────────────────────────────────────────────────────────
 
-def load_previous_hash(state_file: str) -> str | None:
-    """Read the saved hash from the state file, or None if missing."""
+import json
+
+
+def load_state(state_file: str) -> dict:
+    """Load sync state (hash, URI list, last full-sync hash).
+
+    Returns an empty dict on first run, corrupt file, or old format
+    — which causes the caller to fall through to a full sync.
+    """
     try:
         with open(state_file) as f:
-            return f.read().strip()
-    except FileNotFoundError:
-        return None
+            data = json.load(f)
+            if isinstance(data, dict) and "hash" in data:
+                return data
+    except (FileNotFoundError, json.JSONDecodeError, ValueError):
+        pass
+    return {}
 
 
-def save_hash(state_file: str, digest: str) -> None:
-    """Persist the current hash to the state file."""
+def save_state(state_file: str, state: dict) -> None:
+    """Persist sync state as JSON."""
     with open(state_file, "w") as f:
-        f.write(digest)
+        json.dump(state, f)
 
 
 # ── main ─────────────────────────────────────────────────────────────────────
 
+def diff_sync_playlist(
+    sp: spotipy.Spotify,
+    playlist_id: str,
+    old_uris: list[str],
+    new_uris: list[str],
+) -> None:
+    """Apply only the add/remove delta between *old_uris* and *new_uris*.
+
+    Compared to a full wipe-and-rebuild (28+ API calls for ~2 700 tracks),
+    this typically needs just 1–2 calls for the handful of tracks that
+    changed since the last run.
+    """
+    old_set = set(old_uris)
+    new_set = set(new_uris)
+
+    to_remove = list(old_set - new_set)
+    to_add = list(new_set - old_set)
+
+    if not to_remove and not to_add:
+        print("[Sync] Diff sync — nothing to change.")
+        return
+
+    # Remove tracks in chunks of 100
+    for i in range(0, len(to_remove), 100):
+        chunk = to_remove[i : i + 100]
+        spotify_retry(sp.playlist_remove_all_occurrences_of_items, playlist_id, chunk)
+        print(f"[Spotify] Removed {len(chunk)} track(s).")
+        time.sleep(0.5)
+
+    # Add tracks in chunks of 100
+    for i in range(0, len(to_add), 100):
+        chunk = to_add[i : i + 100]
+        spotify_retry(sp.playlist_add_items, playlist_id, chunk)
+        print(f"[Spotify] Added {len(chunk)} track(s).")
+        time.sleep(0.5)
+
+    print(f"[Sync] Diff sync complete: −{len(to_remove)}, +{len(to_add)}.")
+
+
 def main() -> None:
     playlist_id = os.environ["SPOTIFY_PLAYLIST_ID"]
     state_file = os.environ.get("STATE_FILE", ".sync_state")
+
+    # UTC hour that triggers a full wipe-and-rebuild (restores Liked Songs
+    # order).  Default 18 = midnight in UTC+6 (Bangladesh).
+    full_sync_utc_hour = int(os.environ.get("FULL_SYNC_UTC_HOUR", "18"))
 
     # 1. Scrobbles from Last.fm
     scrobbled = fetch_lastfm_scrobbles(days=30)
@@ -276,19 +329,48 @@ def main() -> None:
 
     print(f"[Sync] {len(unplayed_uris)} neglected tracks identified.")
 
-    # 4. Check if anything changed since last run
+    # 4. Load state and determine sync mode
+    state = load_state(state_file)
     current_hash = compute_hash(unplayed_uris)
-    previous_hash = load_previous_hash(state_file)
+    previous_hash = state.get("hash")
+    previous_uris = state.get("uris", [])
+    last_full_sync_hash = state.get("last_full_sync_hash")
 
+    is_midnight = datetime.now(timezone.utc).hour == full_sync_utc_hour
+
+    # 5. Decide whether to skip
     if current_hash == previous_hash:
-        print("[Sync] No changes since last run — skipping playlist update ✓")
-        return
+        # Track list unchanged.  Skip unless it's midnight and the order
+        # hasn't been restored since the last full sync.
+        if not is_midnight or current_hash == last_full_sync_hash:
+            print("[Sync] No changes since last run — skipping playlist update ✓")
+            return
 
-    # 5. Sync to the target playlist
-    sync_playlist(sp, playlist_id, unplayed_uris)
-    save_hash(state_file, current_hash)
-    print("[Sync] Playlist updated and state saved ✓")
+    # 6. Sync — choose mode
+    if is_midnight or not previous_uris:
+        # Full sync: wipe and rebuild to maintain Liked Songs order.
+        # Also used on first run / state migration (no previous URIs).
+        mode = "first run" if not previous_uris else "midnight refresh"
+        print(f"[Sync] Full sync ({mode}) …")
+        sync_playlist(sp, playlist_id, unplayed_uris)
+        save_state(state_file, {
+            "hash": current_hash,
+            "uris": unplayed_uris,
+            "last_full_sync_hash": current_hash,
+        })
+        print("[Sync] Full sync complete — playlist order matches Liked Songs ✓")
+    else:
+        # Diff sync: only add/remove changed tracks (fast, low API usage).
+        print("[Sync] Diff sync (hourly update) …")
+        diff_sync_playlist(sp, playlist_id, previous_uris, unplayed_uris)
+        save_state(state_file, {
+            "hash": current_hash,
+            "uris": unplayed_uris,
+            "last_full_sync_hash": last_full_sync_hash or "",
+        })
+        print("[Sync] Diff sync complete ✓")
 
 
 if __name__ == "__main__":
     main()
+
