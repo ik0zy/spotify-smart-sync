@@ -213,7 +213,7 @@ def fetch_liked_songs(sp: spotipy.Spotify) -> list[dict]:
         if results.get("next") is None:
             break
         offset += limit
-        time.sleep(0.2)  # Avoid rate limits from rapid sequential requests
+        time.sleep(0.5)  # Avoid rate limits from rapid sequential requests
 
     print(f"[Spotify] Fetched {len(liked)} Liked Songs.")
     return liked
@@ -231,7 +231,7 @@ def sync_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str]) -> Non
         chunk = uris[i : i + 100]
         spotify_retry(sp.playlist_add_items, playlist_id, chunk)
         print(f"[Spotify] Added tracks {i + 1}–{i + len(chunk)} / {len(uris)}.")
-        time.sleep(0.5)  # Prevent rate limits during bulk additions
+        time.sleep(1.0)  # Prevent rate limits during bulk additions
 
 
 # ── state management ─────────────────────────────────────────────────────────
@@ -302,6 +302,29 @@ def diff_sync_playlist(
     print(f"[Sync] Diff sync complete: −{len(to_remove)}, +{len(to_add)}.")
 
 
+def _liked_songs_to_cache(liked: list[dict]) -> list[dict]:
+    """Extract the fields we need from the full Spotify response for caching."""
+    cache = []
+    for item in liked:
+        track = item["track"]
+        cache.append({
+            "uri": track["uri"],
+            "artist": track["artists"][0]["name"],
+            "title": track["name"],
+        })
+    return cache
+
+
+def _filter_unplayed(liked_cache: list[dict], scrobbled: set[str]) -> list[str]:
+    """Return URIs of cached liked songs NOT in the scrobbled set."""
+    unplayed: list[str] = []
+    for entry in liked_cache:
+        key = standardise_track_key(entry["artist"], entry["title"])
+        if key not in scrobbled:
+            unplayed.append(entry["uri"])
+    return unplayed
+
+
 def main() -> None:
     playlist_id = os.environ["SPOTIFY_PLAYLIST_ID"]
     state_file = os.environ.get("STATE_FILE", ".sync_state")
@@ -310,53 +333,63 @@ def main() -> None:
     # order).  Default 18 = midnight in UTC+6 (Bangladesh).
     full_sync_utc_hour = int(os.environ.get("FULL_SYNC_UTC_HOUR", "18"))
 
-    # 1. Scrobbles from Last.fm
-    scrobbled = fetch_lastfm_scrobbles(days=30)
-
-    # 2. Liked Songs from Spotify
-    sp = get_spotify_client()
-    liked = fetch_liked_songs(sp)
-
-    # 3. Filter: keep only tracks NOT scrobbled in the last 30 days
-    unplayed_uris: list[str] = []
-    for item in liked:
-        track = item["track"]
-        artist = track["artists"][0]["name"]
-        title = track["name"]
-        key = standardise_track_key(artist, title)
-        if key not in scrobbled:
-            unplayed_uris.append(track["uri"])
-
-    print(f"[Sync] {len(unplayed_uris)} neglected tracks identified.")
-
-    # 4. Load state and determine sync mode
+    # 1. Load state and determine sync mode
     state = load_state(state_file)
-    current_hash = compute_hash(unplayed_uris)
-    previous_hash = state.get("hash")
     previous_uris = state.get("uris", [])
+    previous_hash = state.get("hash")
     last_full_sync_hash = state.get("last_full_sync_hash")
+    liked_cache = state.get("liked_songs_cache", [])
 
     is_midnight = datetime.now(timezone.utc).hour == full_sync_utc_hour
+    is_first_run = not previous_uris or not liked_cache
+
+    # 2. Scrobbles from Last.fm (always needed — lightweight, ~1 API call)
+    scrobbled = fetch_lastfm_scrobbles(days=30)
+
+    # 3. Liked Songs — only fetch from Spotify at midnight or first run.
+    #    Hourly runs reuse the cached list (saves ~56 API calls).
+    sp = get_spotify_client()
+
+    if is_midnight or is_first_run:
+        liked = fetch_liked_songs(sp)
+        liked_cache = _liked_songs_to_cache(liked)
+        print(f"[Spotify] Cached {len(liked_cache)} Liked Songs for hourly reuse.")
+    else:
+        print(f"[Spotify] Using cached Liked Songs ({len(liked_cache)} tracks).")
+
+    # 4. Filter: keep only tracks NOT scrobbled in the last 30 days
+    unplayed_uris = _filter_unplayed(liked_cache, scrobbled)
+    print(f"[Sync] {len(unplayed_uris)} neglected tracks identified.")
 
     # 5. Decide whether to skip
+    current_hash = compute_hash(unplayed_uris)
+
     if current_hash == previous_hash:
         # Track list unchanged.  Skip unless it's midnight and the order
         # hasn't been restored since the last full sync.
         if not is_midnight or current_hash == last_full_sync_hash:
             print("[Sync] No changes since last run — skipping playlist update ✓")
+            # Still save state to persist the refreshed liked_cache at midnight
+            if is_midnight or is_first_run:
+                save_state(state_file, {
+                    "hash": current_hash,
+                    "uris": previous_uris,
+                    "last_full_sync_hash": last_full_sync_hash,
+                    "liked_songs_cache": liked_cache,
+                })
             return
 
     # 6. Sync — choose mode
-    if is_midnight or not previous_uris:
+    if is_midnight or is_first_run:
         # Full sync: wipe and rebuild to maintain Liked Songs order.
-        # Also used on first run / state migration (no previous URIs).
-        mode = "first run" if not previous_uris else "midnight refresh"
+        mode = "first run" if is_first_run else "midnight refresh"
         print(f"[Sync] Full sync ({mode}) …")
         sync_playlist(sp, playlist_id, unplayed_uris)
         save_state(state_file, {
             "hash": current_hash,
             "uris": unplayed_uris,
             "last_full_sync_hash": current_hash,
+            "liked_songs_cache": liked_cache,
         })
         print("[Sync] Full sync complete — playlist order matches Liked Songs ✓")
     else:
@@ -367,10 +400,10 @@ def main() -> None:
             "hash": current_hash,
             "uris": unplayed_uris,
             "last_full_sync_hash": last_full_sync_hash or "",
+            "liked_songs_cache": liked_cache,
         })
         print("[Sync] Diff sync complete ✓")
 
 
 if __name__ == "__main__":
     main()
-

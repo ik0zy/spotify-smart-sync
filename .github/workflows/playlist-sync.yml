@@ -1,8 +1,6 @@
 name: Sync Neglected Spotify Tracks
 
 on:
-  push:
-    branches: [master]
   schedule:
     - cron: "0 * * * *"
   workflow_dispatch:
