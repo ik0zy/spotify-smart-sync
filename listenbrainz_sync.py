@@ -205,7 +205,7 @@ def sync_spotify_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str]
 
 
 def main() -> None:
-    username = os.environ.get("LASTFM_USERNAME", "ikOzy")
+    username = os.environ.get("LISTENBRAINZ_USERNAME", "ikOzy")
     playlist_id = os.environ["SPOTIFY_LISTENBRAINZ_PLAYLIST_ID"]
     state_file = os.environ.get("LISTENBRAINZ_STATE_FILE", ".listenbrainz_state")
 

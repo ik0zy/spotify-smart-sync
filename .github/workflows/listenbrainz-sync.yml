@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 10
 
     env:
-      LASTFM_USERNAME: ${{ secrets.LASTFM_USERNAME }}
+      LISTENBRAINZ_USERNAME: "ikOzy"
       SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
       SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
       SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
