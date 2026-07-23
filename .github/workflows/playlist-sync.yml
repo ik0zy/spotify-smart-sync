@@ -19,7 +19,7 @@ jobs:
       SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
       SPOTIFY_PLAYLIST_ID: ${{ secrets.SPOTIFY_PLAYLIST_ID }}
       STATE_FILE: .sync_state
-      FULL_SYNC_UTC_HOUR: "18"  # 18 UTC = midnight UTC+6 (Bangladesh)
+      SYNC_TZ_OFFSET: "6"  # UTC+6 (Bangladesh) for midnight date reset
 
     steps:
       - name: Check out repository

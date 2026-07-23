@@ -329,28 +329,31 @@ def main() -> None:
     playlist_id = os.environ["SPOTIFY_PLAYLIST_ID"]
     state_file = os.environ.get("STATE_FILE", ".sync_state")
 
-    # UTC hour that triggers a full wipe-and-rebuild (restores Liked Songs
-    # order).  Default 18 = midnight in UTC+6 (Bangladesh).
-    full_sync_utc_hour = int(os.environ.get("FULL_SYNC_UTC_HOUR", "18"))
+    # Timezone offset in hours for daily full-sync reset (default 6 = UTC+6 Bangladesh).
+    tz_offset_hours = int(os.environ.get("SYNC_TZ_OFFSET", "6"))
+    target_tz = timezone(timedelta(hours=tz_offset_hours))
+    current_date = datetime.now(target_tz).strftime("%Y-%m-%d")
 
     # 1. Load state and determine sync mode
     state = load_state(state_file)
     previous_uris = state.get("uris", [])
     previous_hash = state.get("hash")
     last_full_sync_hash = state.get("last_full_sync_hash")
+    last_full_sync_date = state.get("last_full_sync_date", "")
     liked_cache = state.get("liked_songs_cache", [])
 
-    is_midnight = datetime.now(timezone.utc).hour == full_sync_utc_hour
     is_first_run = not previous_uris or not liked_cache
+    # Perform a full rebuild once per calendar day (on the first run of the new day)
+    should_full_sync = is_first_run or (current_date != last_full_sync_date)
 
     # 2. Scrobbles from Last.fm (always needed — lightweight, ~1 API call)
     scrobbled = fetch_lastfm_scrobbles(days=30)
 
-    # 3. Liked Songs — only fetch from Spotify at midnight or first run.
+    # 3. Liked Songs — only fetch from Spotify on full sync (first run of the day).
     #    Hourly runs reuse the cached list (saves ~56 API calls).
     sp = get_spotify_client()
 
-    if is_midnight or is_first_run:
+    if should_full_sync:
         liked = fetch_liked_songs(sp)
         liked_cache = _liked_songs_to_cache(liked)
         print(f"[Spotify] Cached {len(liked_cache)} Liked Songs for hourly reuse.")
@@ -365,30 +368,31 @@ def main() -> None:
     current_hash = compute_hash(unplayed_uris)
 
     if current_hash == previous_hash:
-        # Track list unchanged.  Skip unless it's midnight and the order
-        # hasn't been restored since the last full sync.
-        if not is_midnight or current_hash == last_full_sync_hash:
+        # Track list unchanged.  Skip unless we need a full rebuild for the new day
+        # and haven't restored order yet.
+        if not should_full_sync or current_hash == last_full_sync_hash:
             print("[Sync] No changes since last run — skipping playlist update ✓")
-            # Still save state to persist the refreshed liked_cache at midnight
-            if is_midnight or is_first_run:
+            if should_full_sync:
                 save_state(state_file, {
                     "hash": current_hash,
                     "uris": previous_uris,
                     "last_full_sync_hash": last_full_sync_hash,
+                    "last_full_sync_date": current_date,
                     "liked_songs_cache": liked_cache,
                 })
             return
 
     # 6. Sync — choose mode
-    if is_midnight or is_first_run:
+    if should_full_sync:
         # Full sync: wipe and rebuild to maintain Liked Songs order.
-        mode = "first run" if is_first_run else "midnight refresh"
+        mode = "first run" if is_first_run else f"daily refresh ({current_date})"
         print(f"[Sync] Full sync ({mode}) …")
         sync_playlist(sp, playlist_id, unplayed_uris)
         save_state(state_file, {
             "hash": current_hash,
             "uris": unplayed_uris,
             "last_full_sync_hash": current_hash,
+            "last_full_sync_date": current_date,
             "liked_songs_cache": liked_cache,
         })
         print("[Sync] Full sync complete — playlist order matches Liked Songs ✓")
@@ -400,6 +404,7 @@ def main() -> None:
             "hash": current_hash,
             "uris": unplayed_uris,
             "last_full_sync_hash": last_full_sync_hash or "",
+            "last_full_sync_date": last_full_sync_date,
             "liked_songs_cache": liked_cache,
         })
         print("[Sync] Diff sync complete ✓")
