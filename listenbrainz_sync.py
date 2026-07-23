@@ -125,7 +125,7 @@ def fetch_latest_weekly_exploration(username: str) -> tuple[str, str, list[dict]
 # ── Spotify Track Matcher ───────────────────────────────────────────────────
 
 def find_spotify_track_uri(sp: spotipy.Spotify, track_item: dict) -> str | None:
-    """Find matching Spotify track URI using multi-tier matching strategy."""
+    """Find matching Spotify track URI using efficient single/double-query strategy."""
     artist = track_item.get("creator", "").strip()
     title = track_item.get("title", "").strip()
 
@@ -141,35 +141,20 @@ def find_spotify_track_uri(sp: spotipy.Spotify, track_item: dict) -> str | None:
             track_id = ident.split("/track/")[-1].split("?")[0]
             return f"spotify:track:{track_id}"
 
-    # Tier 1: Exact field query artist:"..." track:"..."
-    query_exact = f'artist:"{artist}" track:"{title}"'
-    res = spotify_retry(sp.search, q=query_exact, type="track", limit=3)
+    clean_artist, clean_title = clean_track_metadata(artist, title)
+
+    # Single primary query: artist:"..." track:"..."
+    query = f'artist:"{clean_artist}" track:"{clean_title}"'
+    res = spotify_retry(sp.search, q=query, type="track", limit=3)
     items = res.get("tracks", {}).get("items", [])
     if items:
         return items[0]["uri"]
 
-    # Tier 2: Cleaned field query
-    clean_artist, clean_title = clean_track_metadata(artist, title)
-    if clean_artist != artist or clean_title != title:
-        query_clean_field = f'artist:"{clean_artist}" track:"{clean_title}"'
-        res = spotify_retry(sp.search, q=query_clean_field, type="track", limit=3)
-        items = res.get("tracks", {}).get("items", [])
-        if items:
-            return items[0]["uri"]
-
-    # Tier 3: Loose keyword search
+    # Fallback loose query if field query returned no items
     query_loose = f"{clean_artist} {clean_title}"
-    res = spotify_retry(sp.search, q=query_loose, type="track", limit=5)
+    res = spotify_retry(sp.search, q=query_loose, type="track", limit=3)
     items = res.get("tracks", {}).get("items", [])
     if items:
-        norm_clean_artist = _normalise(clean_artist)
-        norm_clean_title = _normalise(clean_title)
-        for cand in items:
-            cand_artist = _normalise(cand["artists"][0]["name"])
-            cand_title = _normalise(cand["name"])
-            if norm_clean_artist in cand_artist or cand_artist in norm_clean_artist:
-                if norm_clean_title in cand_title or cand_title in norm_clean_title:
-                    return cand["uri"]
         return items[0]["uri"]
 
     return None
@@ -237,7 +222,7 @@ def main() -> None:
         else:
             missing_tracks.append(f"{artist} - {track_title}")
             print(f"  ⚠️ [{idx}/{len(tracks)}] Could not find on Spotify: '{artist} - {track_title}'")
-        time.sleep(0.1)  # Gentle search delay
+        time.sleep(0.25)  # Gentle search delay
 
     print(f"[Sync] Matched {matched_count}/{len(tracks)} tracks ({len(missing_tracks)} missing).")
 
