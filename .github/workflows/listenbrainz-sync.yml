@@ -1,0 +1,43 @@
+name: Sync ListenBrainz Weekly Exploration
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      LASTFM_USERNAME: ${{ secrets.LASTFM_USERNAME }}
+      SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+      SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+      SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
+      SPOTIFY_LISTENBRAINZ_PLAYLIST_ID: ${{ secrets.SPOTIFY_LISTENBRAINZ_PLAYLIST_ID }}
+      LISTENBRAINZ_STATE_FILE: .listenbrainz_state
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore sync state
+        uses: actions/cache@v4
+        with:
+          path: .listenbrainz_state
+          key: listenbrainz-state-${{ github.run_id }}
+          restore-keys: |
+            listenbrainz-state-
+
+      - name: Run ListenBrainz sync
+        run: python listenbrainz_sync.py
