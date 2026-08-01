@@ -298,7 +298,9 @@ def main() -> None:
 
     sp = get_spotify_client()
 
-    if mbid != last_mbid:
+    is_new_playlist = (mbid != last_mbid) or ("track_cache" not in state)
+
+    if is_new_playlist:
         # ── NEW WEEK: resolve all tracks and full sync ──────────────────
         print(f"[Sync] New playlist detected — syncing all tracks …")
 
