@@ -1,10 +1,10 @@
-# 🎵 Spotify Smart Sync
+# Spotify Smart Sync
 
 Automated Spotify playlist management powered by **Last.fm** scrobble data and **ListenBrainz** recommendations. Runs entirely on **GitHub Actions** — no server required.
 
 ## What It Does
 
-### 1. 🔇 Neglected Tracks Playlist (`playlist_sync.py`)
+### 1. Neglected Tracks Playlist (`playlist_sync.py`)
 
 Automatically maintains a Spotify playlist of your **Liked Songs that you haven't listened to** in the last 30 days.
 
@@ -13,7 +13,7 @@ Automatically maintains a Spotify playlist of your **Liked Songs that you haven'
 - **Daily** (first run after midnight in your timezone): Re-fetches all Liked Songs from Spotify, performs a full playlist rebuild to restore your Liked Songs order
 - Tracks return to the playlist automatically when they haven't been scrobbled for 30 days
 
-### 2. 🔍 Weekly Exploration Playlist (`listenbrainz_sync.py`)
+### 2. Weekly Exploration Playlist (`listenbrainz_sync.py`)
 
 Syncs your **ListenBrainz Weekly Exploration** playlist to Spotify — and removes tracks as you listen to them.
 
