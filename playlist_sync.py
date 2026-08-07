@@ -39,6 +39,28 @@ def compute_hash(uris: list[str]) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def requests_retry(url: str, params: dict | None = None, data: dict | None = None, method: str = "GET", timeout: int = 30, max_retries: int = 3) -> requests.Response:
+    """Execute HTTP request with automatic retries on timeouts, connection errors, and 5xx server errors."""
+    for attempt in range(1, max_retries + 1):
+        try:
+            if method.upper() == "POST":
+                resp = requests.post(url, data=data, timeout=timeout)
+            else:
+                resp = requests.get(url, params=params, timeout=timeout)
+
+            if resp.status_code in (500, 502, 503, 504):
+                if attempt < max_retries:
+                    time.sleep(2 * attempt)
+                    continue
+            return resp
+        except (requests.exceptions.RequestException, requests.exceptions.Timeout) as exc:
+            if attempt >= max_retries:
+                raise
+            print(f"[Network] Request timeout/error ({exc.__class__.__name__}), retrying {attempt}/{max_retries} …")
+            time.sleep(2 * attempt)
+    raise RuntimeError(f"HTTP request failed after {max_retries} attempts.")
+
+
 # ── Last.fm ──────────────────────────────────────────────────────────────────
 
 def fetch_lastfm_scrobbles(days: int = 30) -> set[str]:
@@ -79,7 +101,7 @@ def fetch_lastfm_scrobbles(days: int = 30) -> set[str]:
             "extended": 0,
         }
 
-        resp = requests.get(API_URL, params=params, timeout=30)
+        resp = requests_retry(API_URL, params=params, timeout=30)
 
         # Handle rate limiting with bounded retries
         if resp.status_code == 429:
@@ -139,8 +161,9 @@ def get_spotify_client() -> spotipy.Spotify:
     client_secret = os.environ["SPOTIFY_CLIENT_SECRET"]
     refresh_token = os.environ["SPOTIFY_REFRESH_TOKEN"]
 
-    resp = requests.post(
+    resp = requests_retry(
         "https://accounts.spotify.com/api/token",
+        method="POST",
         data={
             "grant_type": "refresh_token",
             "refresh_token": refresh_token,

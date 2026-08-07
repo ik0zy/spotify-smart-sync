@@ -45,6 +45,28 @@ def clean_track_metadata(artist: str, title: str) -> tuple[str, str]:
     return artist_clean or artist, title_clean or title
 
 
+def requests_retry(url: str, params: dict | None = None, data: dict | None = None, method: str = "GET", timeout: int = 30, max_retries: int = 3) -> requests.Response:
+    """Execute HTTP request with automatic retries on timeouts, connection errors, and 5xx server errors."""
+    for attempt in range(1, max_retries + 1):
+        try:
+            if method.upper() == "POST":
+                resp = requests.post(url, data=data, timeout=timeout)
+            else:
+                resp = requests.get(url, params=params, timeout=timeout)
+
+            if resp.status_code in (500, 502, 503, 504):
+                if attempt < max_retries:
+                    time.sleep(2 * attempt)
+                    continue
+            return resp
+        except (requests.exceptions.RequestException, requests.exceptions.Timeout) as exc:
+            if attempt >= max_retries:
+                raise
+            print(f"[Network] Request timeout/error ({exc.__class__.__name__}), retrying {attempt}/{max_retries} …")
+            time.sleep(2 * attempt)
+    raise RuntimeError(f"HTTP request failed after {max_retries} attempts.")
+
+
 # ── Spotify auth & retry helpers ─────────────────────────────────────────────
 
 def get_spotify_client() -> spotipy.Spotify:
@@ -53,8 +75,9 @@ def get_spotify_client() -> spotipy.Spotify:
     client_secret = os.environ["SPOTIFY_CLIENT_SECRET"]
     refresh_token = os.environ["SPOTIFY_REFRESH_TOKEN"]
 
-    resp = requests.post(
+    resp = requests_retry(
         "https://accounts.spotify.com/api/token",
+        method="POST",
         data={
             "grant_type": "refresh_token",
             "refresh_token": refresh_token,
@@ -121,7 +144,7 @@ def fetch_scrobbles_since(since_iso: str) -> set[str]:
             "extended": 0,
         }
 
-        resp = requests.get(API_URL, params=params, timeout=30)
+        resp = requests_retry(API_URL, params=params, timeout=30)
 
         if resp.status_code == 429:
             retry_after = int(resp.headers.get("Retry-After", MAX_RETRY_WAIT))
@@ -173,7 +196,7 @@ def fetch_latest_weekly_exploration(username: str) -> tuple[str, str, list[dict]
     Returns (playlist_mbid, playlist_title, track_list).
     """
     url = f"https://api.listenbrainz.org/1/user/{username}/playlists/createdfor"
-    resp = requests.get(url, timeout=30)
+    resp = requests_retry(url, timeout=30)
     resp.raise_for_status()
     data = resp.json()
 
@@ -194,7 +217,7 @@ def fetch_latest_weekly_exploration(username: str) -> tuple[str, str, list[dict]
     print(f"[ListenBrainz] Found latest playlist: '{target_title}' (MBID: {target_mbid})")
 
     detail_url = f"https://api.listenbrainz.org/1/playlist/{target_mbid}"
-    detail_resp = requests.get(detail_url, timeout=30)
+    detail_resp = requests_retry(detail_url, timeout=30)
     detail_resp.raise_for_status()
     detail_data = detail_resp.json()
 
