@@ -196,7 +196,9 @@ def backup_playlists(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
 
         # Fetch tracks in playlist
         pl_tracks: list[dict] = []
-        results = spotify_retry(sp.playlist_items, pl_id, limit=100, offset=0)
+        results = pl.get("tracks")
+        if not results or not isinstance(results, dict) or "items" not in results:
+            results = spotify_retry(sp.playlist_items, pl_id, limit=100, offset=0)
 
         while results:
             items = results.get("items", [])
