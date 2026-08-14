@@ -205,7 +205,6 @@ def backup_playlists(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
                 playlist_id=pl_id,
                 limit=track_limit,
                 offset=track_offset,
-                additional_types=["track"],
             )
             items = items_resp.get("items", [])
             if not items:
