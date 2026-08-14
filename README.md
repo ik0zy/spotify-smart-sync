@@ -1,6 +1,6 @@
 # Spotify Smart Sync
 
-Automated Spotify playlist management powered by **Last.fm** scrobble data and **ListenBrainz** recommendations. Runs entirely on **GitHub Actions** — no server required.
+Automated Spotify playlist management powered by **Last.fm** scrobble data and **ListenBrainz** recommendations, plus automated weekly library backups. Runs entirely on **GitHub Actions** — no server required.
 
 ## What It Does
 
@@ -11,6 +11,7 @@ Automatically maintains a Spotify playlist of your **Liked Songs that you haven'
 **How it works:**
 - **Hourly**: Fetches your recent Last.fm scrobbles, compares against cached Liked Songs, and removes/adds tracks via lightweight diff sync (~3 API calls)
 - **Daily** (first run after midnight in your timezone): Re-fetches all Liked Songs from Spotify, performs a full playlist rebuild to restore your Liked Songs order
+- **Dynamic Description**: Auto-updates the playlist description with live stats and timestamp (e.g. `2,175 neglected tracks (78.8% of 2,759 Liked Songs) · 667 scrobbled in last 30d · Last synced: 14 Aug 2026, 09:45 AM (UTC+6)`)
 - Tracks return to the playlist automatically when they haven't been scrobbled for 30 days
 
 ### 2. Weekly Exploration Playlist (`listenbrainz_sync.py`)
@@ -18,10 +19,18 @@ Automatically maintains a Spotify playlist of your **Liked Songs that you haven'
 Syncs your **ListenBrainz Weekly Exploration** playlist to Spotify — and removes tracks as you listen to them.
 
 **How it works:**
-- **Monday** (new playlist detected): Resolves all 50 ListenBrainz tracks on Spotify and populates the playlist
+- **New Week** (new MBID detected): Resolves all 50 ListenBrainz tracks on Spotify and populates the playlist
 - **Hourly** (rest of the week): Checks Last.fm scrobbles since the playlist was created and removes any tracks you've already played
-- The playlist acts as a **to-listen queue** that shrinks throughout the week
-- Next Monday: new playlist drops → wipes and starts fresh
+- **Dynamic Description**: Shows remaining tracks and queue progress (e.g. `ListenBrainz: Weekly Exploration · 11/50 tracks remaining (39 played) · Last synced: 14 Aug 2026, 09:45 AM (UTC+6)`)
+- Next playlist drop: wipes and starts fresh with new recommendations
+
+### 3. Automated Weekly Library Backup (`backup_library.py`)
+
+Exports a full snapshot of your music library every Sunday into the `backups/` directory in this repository:
+- `backups/liked_songs.json`: Full metadata for all Liked Songs (titles, artists, albums, ISRC, Spotify URLs, added dates)
+- `backups/liked_songs.txt`: Plain text readable list (`Artist - Title`)
+- `backups/playlists/*.json`: Complete tracklists for every user playlist
+- `backups/latest_backup_info.json`: Summary stats (date, total songs, total playlists)
 
 ## Architecture
 
@@ -35,12 +44,12 @@ Syncs your **ListenBrainz Weekly Exploration** playlist to Spotify — and remov
                 │                                │
        ┌────────▼────────┐              ┌────────▼────────┐
        │ GitHub Actions  │──── sync ───▶│ Your Spotify    │
-       │ (hourly cron)   │              │ Playlists       │
+       │ (cron + backup) │              │ Playlists       │
        └────────┬────────┘              └─────────────────┘
                 │
        ┌────────▼────────┐
-       │ State Cache     │
-       │ (Actions Cache) │
+       │ State Cache /   │
+       │ backups/ repo   │
        └─────────────────┘
 ```
 
@@ -81,7 +90,7 @@ In `.github/workflows/playlist-sync.yml`:
 
 | Variable | Default | Description |
 |---|---|---|
-| `SYNC_TZ_OFFSET` | `6` | UTC offset for daily full-sync reset (6 = UTC+6 Bangladesh) |
+| `SYNC_TZ_OFFSET` | `6` | UTC offset for daily full-sync reset and timestamps (6 = UTC+6 Bangladesh) |
 
 In `.github/workflows/listenbrainz-sync.yml`:
 
@@ -112,52 +121,40 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
 
 ### 5. Enable Workflows
 
-Workflows run automatically after pushing to `master`. You can also trigger manually:
+Workflows run automatically on schedule. You can also trigger manually:
 
 ```bash
 gh workflow run playlist-sync.yml
 gh workflow run listenbrainz-sync.yml
+gh workflow run backup-library.yml
 ```
 
 ## Rate Limit Resilience
 
-Both scripts are heavily optimized to avoid Spotify's aggressive rate limits:
+All scripts are heavily optimized to avoid Spotify's rate limits:
 
 | Optimization | Detail |
 |---|---|
 | **Liked Songs caching** | Fetched once/day, cached in state for 23 hourly runs |
 | **Diff sync** | Hourly runs only add/remove deltas (~1-3 API calls) |
-| **Bounded retries** | Max 3 retries, max 60s wait per retry — fails fast instead of hanging |
+| **Bounded retries** | Max 3 retries, max 60s wait per retry with exponential backoff |
 | **Throttle delays** | 0.5s between Liked Songs pages, 1.0s between bulk playlist adds |
-| **State hashing** | Skips playlist update entirely when nothing has changed |
-
-**API usage breakdown:**
-
-| Workflow | Hourly Run | Daily Full Sync |
-|---|---|---|
-| Neglected Tracks | ~3 calls | ~84 calls (once/day) |
-| Weekly Exploration | ~1-3 calls | ~52 calls (once/week) |
+| **State hashing** | Skips playlist updates when nothing has changed |
 
 ## File Structure
 
 ```
-├── playlist_sync.py                      # Neglected tracks sync logic
-├── listenbrainz_sync.py                  # Weekly Exploration sync logic
+├── playlist_sync.py                      # Neglected tracks sync logic + live description
+├── listenbrainz_sync.py                  # Weekly Exploration sync logic + queue tracker
+├── backup_library.py                     # Spotify Liked Songs & playlist backup exporter
 ├── requirements.txt                      # Python dependencies
 ├── test_lastfm.py                        # Last.fm API test script
+├── backups/                              # Weekly automated backups (JSON/TXT)
 └── .github/workflows/
     ├── playlist-sync.yml                 # Hourly cron + daily full sync
-    └── listenbrainz-sync.yml             # Hourly cron + weekly full sync
+    ├── listenbrainz-sync.yml             # Hourly cron + weekly exploration
+    └── backup-library.yml                # Weekly automated library backup
 ```
-
-## State Files
-
-State is persisted between runs via GitHub Actions Cache:
-
-| File | Contents |
-|---|---|
-| `.sync_state` | Hash, URI list, liked songs cache, last full sync date |
-| `.listenbrainz_state` | Playlist MBID, track cache with artist/title metadata, current URIs |
 
 ## Local Development
 
@@ -175,6 +172,7 @@ export LASTFM_USERNAME="..."
 # Run manually
 python playlist_sync.py
 python listenbrainz_sync.py
+python backup_library.py
 ```
 
 ## License

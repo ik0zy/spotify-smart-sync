@@ -308,6 +308,34 @@ def remove_from_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str])
 
 # ── Main sync process ────────────────────────────────────────────────────────
 
+def update_playlist_description(
+    sp: spotipy.Spotify,
+    playlist_id: str,
+    remaining_count: int,
+    total_count: int,
+    title: str,
+    tz_offset_hours: int = 6,
+) -> None:
+    """Update ListenBrainz playlist description with queue progress and precise local timestamp."""
+    played_count = max(0, total_count - remaining_count)
+    tz = timezone(timedelta(hours=tz_offset_hours))
+    now = datetime.now(tz)
+    tz_sign = "+" if tz_offset_hours >= 0 else "-"
+    tz_str = f"UTC{tz_sign}{abs(tz_offset_hours)}"
+    time_str = now.strftime("%d %b %Y, %I:%M %p")
+
+    desc = (
+        f"ListenBrainz: {title} · "
+        f"{remaining_count}/{total_count} tracks remaining ({played_count} played) · "
+        f"Last synced: {time_str} ({tz_str})"
+    )
+    try:
+        spotify_retry(sp.playlist_change_details, playlist_id, description=desc)
+        print(f"[Spotify] Updated playlist description: '{desc}'")
+    except Exception as exc:
+        print(f"[Spotify] Note: Could not update playlist description ({exc})")
+
+
 def main() -> None:
     username = os.environ.get("LISTENBRAINZ_USERNAME", "ikOzy")
     playlist_id = os.environ["SPOTIFY_LISTENBRAINZ_PLAYLIST_ID"]
@@ -362,6 +390,7 @@ def main() -> None:
             "current_uris": spotify_uris,
             "updated_at": datetime.now(timezone.utc).isoformat(),
         })
+        update_playlist_description(sp, playlist_id, len(spotify_uris), len(tracks), title)
         print(f"[Sync] Full sync complete — {len(spotify_uris)} tracks in playlist ✓")
 
     else:
@@ -395,6 +424,7 @@ def main() -> None:
 
         if not to_remove:
             print(f"[Sync] No scrobbled tracks to remove — {len(current_uris)} tracks remain ✓")
+            update_playlist_description(sp, playlist_id, len(current_uris), len(track_cache), title)
             return
 
         # Remove scrobbled tracks from playlist
@@ -410,6 +440,7 @@ def main() -> None:
             "current_uris": new_uris,
             "updated_at": datetime.now(timezone.utc).isoformat(),
         })
+        update_playlist_description(sp, playlist_id, len(new_uris), len(track_cache), title)
         print(f"[Sync] Removed {len(to_remove)} scrobbled track(s) — {len(new_uris)} tracks remain ✓")
 
 

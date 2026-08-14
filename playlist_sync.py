@@ -348,6 +348,34 @@ def _filter_unplayed(liked_cache: list[dict], scrobbled: set[str]) -> list[str]:
     return unplayed
 
 
+def update_playlist_description(
+    sp: spotipy.Spotify,
+    playlist_id: str,
+    unplayed_count: int,
+    total_liked_count: int,
+    scrobbled_count: int,
+    tz_offset_hours: int,
+) -> None:
+    """Update playlist description with detailed stats and precise local timestamp."""
+    pct = (unplayed_count / total_liked_count * 100) if total_liked_count > 0 else 0
+    tz = timezone(timedelta(hours=tz_offset_hours))
+    now = datetime.now(tz)
+    tz_sign = "+" if tz_offset_hours >= 0 else "-"
+    tz_str = f"UTC{tz_sign}{abs(tz_offset_hours)}"
+    time_str = now.strftime("%d %b %Y, %I:%M %p")
+
+    desc = (
+        f"{unplayed_count:,} neglected tracks ({pct:.1f}% of {total_liked_count:,} Liked Songs) · "
+        f"{scrobbled_count:,} scrobbled in last 30d · "
+        f"Last synced: {time_str} ({tz_str})"
+    )
+    try:
+        spotify_retry(sp.playlist_change_details, playlist_id, description=desc)
+        print(f"[Spotify] Updated playlist description: '{desc}'")
+    except Exception as exc:
+        print(f"[Spotify] Note: Could not update playlist description ({exc})")
+
+
 def main() -> None:
     playlist_id = os.environ["SPOTIFY_PLAYLIST_ID"]
     state_file = os.environ.get("STATE_FILE", ".sync_state")
@@ -403,6 +431,9 @@ def main() -> None:
                     "last_full_sync_date": current_date,
                     "liked_songs_cache": liked_cache,
                 })
+            update_playlist_description(
+                sp, playlist_id, len(unplayed_uris), len(liked_cache), len(scrobbled), tz_offset_hours
+            )
             return
 
     # 6. Sync — choose mode
@@ -431,6 +462,10 @@ def main() -> None:
             "liked_songs_cache": liked_cache,
         })
         print("[Sync] Diff sync complete ✓")
+
+    update_playlist_description(
+        sp, playlist_id, len(unplayed_uris), len(liked_cache), len(scrobbled), tz_offset_hours
+    )
 
 
 if __name__ == "__main__":
