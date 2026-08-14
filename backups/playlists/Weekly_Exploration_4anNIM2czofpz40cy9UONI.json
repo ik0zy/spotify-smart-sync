@@ -6,6 +6,152 @@
   "public": true,
   "collaborative": false,
   "spotify_url": "https://open.spotify.com/playlist/4anNIM2czofpz40cy9UONI",
-  "track_count": 0,
-  "tracks": []
+  "track_count": 11,
+  "tracks": [
+    {
+      "added_at": "2026-08-01T02:01:22Z",
+      "title": "HUMBLE.",
+      "artists": [
+        "Kendrick Lamar"
+      ],
+      "artist": "Kendrick Lamar",
+      "album": "DAMN.",
+      "duration_ms": 177000,
+      "isrc": "USUM71703085",
+      "uri": "spotify:track:7KXjTSCq5nL1LoYtL7XAwS",
+      "spotify_url": "https://open.spotify.com/track/7KXjTSCq5nL1LoYtL7XAwS"
+    },
+    {
+      "added_at": "2026-08-01T02:01:22Z",
+      "title": "Notion",
+      "artists": [
+        "The Rare Occasions"
+      ],
+      "artist": "The Rare Occasions",
+      "album": "Notion",
+      "duration_ms": 195120,
+      "isrc": "USHM21617726",
+      "uri": "spotify:track:0sTlGEld0h8kIPZaKDYUf4",
+      "spotify_url": "https://open.spotify.com/track/0sTlGEld0h8kIPZaKDYUf4"
+    },
+    {
+      "added_at": "2026-08-01T02:01:22Z",
+      "title": "\"Heroes\" - 2017 Remaster",
+      "artists": [
+        "David Bowie"
+      ],
+      "artist": "David Bowie",
+      "album": "\"Heroes\" (2017 Remaster)",
+      "duration_ms": 371413,
+      "isrc": "USJT11700005",
+      "uri": "spotify:track:7Jh1bpe76CNTCgdgAdBw4Z",
+      "spotify_url": "https://open.spotify.com/track/7Jh1bpe76CNTCgdgAdBw4Z"
+    },
+    {
+      "added_at": "2026-08-01T02:01:22Z",
+      "title": "Born Slippy (Nuxx)",
+      "artists": [
+        "Underworld"
+      ],
+      "artist": "Underworld",
+      "album": "1992 - 2012",
+      "duration_ms": 456480,
+      "isrc": "UK7EF9500001",
+      "uri": "spotify:track:7xQYVjs4wZNdCwO0EeAWMC",
+      "spotify_url": "https://open.spotify.com/track/7xQYVjs4wZNdCwO0EeAWMC"
+    },
+    {
+      "added_at": "2026-08-01T02:01:22Z",
+      "title": "NUEVAYoL",
+      "artists": [
+        "Bad Bunny"
+      ],
+      "artist": "Bad Bunny",
+      "album": "DeBÍ TiRAR MáS FOToS",
+      "duration_ms": 183685,
+      "isrc": "QMFMF2447055",
+      "uri": "spotify:track:5TFD2bmFKGhoCRbX61nXY5",
+      "spotify_url": "https://open.spotify.com/track/5TFD2bmFKGhoCRbX61nXY5"
+    },
+    {
+      "added_at": "2026-08-01T02:01:22Z",
+      "title": "Somebody That I Used To Know - Tiësto Remix",
+      "artists": [
+        "Gotye",
+        "Kimbra",
+        "Tiësto"
+      ],
+      "artist": "Gotye, Kimbra, Tiësto",
+      "album": "Somebody That I Used To Know (Remixes)",
+      "duration_ms": 273095,
+      "isrc": "AUZS21200072",
+      "uri": "spotify:track:0pKTw4qlPTgZn0anwytcG6",
+      "spotify_url": "https://open.spotify.com/track/0pKTw4qlPTgZn0anwytcG6"
+    },
+    {
+      "added_at": "2026-08-01T02:01:22Z",
+      "title": "Cosmic Girl - Remastered 2006",
+      "artists": [
+        "Jamiroquai"
+      ],
+      "artist": "Jamiroquai",
+      "album": "Driving Songs",
+      "duration_ms": 227866,
+      "isrc": "GBARL0601476",
+      "uri": "spotify:track:0QCCwIK5wNdCFNYv96n2eV",
+      "spotify_url": "https://open.spotify.com/track/0QCCwIK5wNdCFNYv96n2eV"
+    },
+    {
+      "added_at": "2026-08-01T02:01:22Z",
+      "title": "Skinny Love",
+      "artists": [
+        "Bon Iver"
+      ],
+      "artist": "Bon Iver",
+      "album": "For Emma, Forever Ago",
+      "duration_ms": 238520,
+      "isrc": "US38Y0811503",
+      "uri": "spotify:track:3B3eOgLJSqPEA0RfboIQVM",
+      "spotify_url": "https://open.spotify.com/track/3B3eOgLJSqPEA0RfboIQVM"
+    },
+    {
+      "added_at": "2026-08-01T02:01:22Z",
+      "title": "The Fate of Ophelia",
+      "artists": [
+        "Taylor Swift"
+      ],
+      "artist": "Taylor Swift",
+      "album": "The Life of a Showgirl",
+      "duration_ms": 226073,
+      "isrc": "USUG12506436",
+      "uri": "spotify:track:53iuhJlwXhSER5J2IYYv1W",
+      "spotify_url": "https://open.spotify.com/track/53iuhJlwXhSER5J2IYYv1W"
+    },
+    {
+      "added_at": "2026-08-01T02:01:22Z",
+      "title": "Show Me How",
+      "artists": [
+        "Men I Trust"
+      ],
+      "artist": "Men I Trust",
+      "album": "Show Me How",
+      "duration_ms": 215110,
+      "isrc": "TCADM1873570",
+      "uri": "spotify:track:75IQVo8hqI1iwVZyvkN2VT",
+      "spotify_url": "https://open.spotify.com/track/75IQVo8hqI1iwVZyvkN2VT"
+    },
+    {
+      "added_at": "2026-08-01T02:01:22Z",
+      "title": "Skyfall",
+      "artists": [
+        "Adele"
+      ],
+      "artist": "Adele",
+      "album": "Skyfall",
+      "duration_ms": 286081,
+      "isrc": "GBBKS1200164",
+      "uri": "spotify:track:6VObnIkLVruX4UVyxWhlqm",
+      "spotify_url": "https://open.spotify.com/track/6VObnIkLVruX4UVyxWhlqm"
+    }
+  ]
 }
