@@ -196,26 +196,12 @@ def backup_playlists(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
 
         # Fetch tracks in playlist
         pl_tracks: list[dict] = []
-        print(f"[Backup] Processing tracks for playlist '{pl_name}' (ID: {pl_id}) …")
         results = pl.get("tracks")
         if not results or not isinstance(results, dict) or "items" not in results:
-            print("  Falling back to sp.playlist_items …")
             results = spotify_retry(sp.playlist_items, pl_id, limit=100, offset=0)
 
-        total_in_obj = results.get("total") if isinstance(results, dict) else None
-        items_count = len(results.get("items", [])) if isinstance(results, dict) else 0
-        print(f"  Tracks page 1: total={total_in_obj}, items_count={items_count}")
-
-        page_num = 1
         while results:
             items = results.get("items", []) if isinstance(results, dict) else []
-            if items and page_num == 1:
-                first_it = items[0]
-                print(f"  First item keys: {list(first_it.keys()) if isinstance(first_it, dict) else type(first_it)}")
-                if isinstance(first_it, dict) and "track" in first_it:
-                    tr_obj = first_it.get("track")
-                    print(f"  Track in first item: type={type(tr_obj)}, keys={list(tr_obj.keys()) if isinstance(tr_obj, dict) else tr_obj}")
-
             for item in items:
                 if not isinstance(item, dict):
                     continue
