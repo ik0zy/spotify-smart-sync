@@ -219,7 +219,7 @@ def backup_playlists(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
             for item in items:
                 if not isinstance(item, dict):
                     continue
-                track = item.get("track") if ("track" in item and isinstance(item.get("track"), dict)) else item
+                track = item.get("item") or item.get("track") or item
                 if not track or not isinstance(track, dict) or not track.get("name"):
                     continue
                 artists = [a.get("name", "") for a in track.get("artists", []) if isinstance(a, dict)]
