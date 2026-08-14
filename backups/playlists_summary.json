@@ -1,0 +1,18 @@
+[
+  {
+    "id": "0Gbyu4hHOeV9UoGjPCGqHM",
+    "name": "Least Played",
+    "owner": "kOzy",
+    "track_count": 0,
+    "spotify_url": "https://open.spotify.com/playlist/0Gbyu4hHOeV9UoGjPCGqHM",
+    "file": "playlists/Least_Played_0Gbyu4hHOeV9UoGjPCGqHM.json"
+  },
+  {
+    "id": "4anNIM2czofpz40cy9UONI",
+    "name": "Weekly Exploration",
+    "owner": "kOzy",
+    "track_count": 0,
+    "spotify_url": "https://open.spotify.com/playlist/4anNIM2czofpz40cy9UONI",
+    "file": "playlists/Weekly_Exploration_4anNIM2czofpz40cy9UONI.json"
+  }
+]
