@@ -209,20 +209,29 @@ def backup_playlists(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
         page_num = 1
         while results:
             items = results.get("items", []) if isinstance(results, dict) else []
+            if items and page_num == 1:
+                first_it = items[0]
+                print(f"  First item keys: {list(first_it.keys()) if isinstance(first_it, dict) else type(first_it)}")
+                if isinstance(first_it, dict) and "track" in first_it:
+                    tr_obj = first_it.get("track")
+                    print(f"  Track in first item: type={type(tr_obj)}, keys={list(tr_obj.keys()) if isinstance(tr_obj, dict) else tr_obj}")
+
             for item in items:
-                track = item.get("track") if isinstance(item, dict) else None
-                if not track:
+                if not isinstance(item, dict):
                     continue
-                artists = [a.get("name", "") for a in track.get("artists", [])]
-                external_ids = track.get("external_ids", {})
-                external_urls = track.get("external_urls", {})
+                track = item.get("track") if ("track" in item and isinstance(item.get("track"), dict)) else item
+                if not track or not isinstance(track, dict) or not track.get("name"):
+                    continue
+                artists = [a.get("name", "") for a in track.get("artists", []) if isinstance(a, dict)]
+                external_ids = track.get("external_ids", {}) if isinstance(track.get("external_ids"), dict) else {}
+                external_urls = track.get("external_urls", {}) if isinstance(track.get("external_urls"), dict) else {}
 
                 pl_tracks.append({
                     "added_at": item.get("added_at"),
                     "title": track.get("name"),
                     "artists": artists,
                     "artist": ", ".join(artists),
-                    "album": track.get("album", {}).get("name"),
+                    "album": track.get("album", {}).get("name") if isinstance(track.get("album"), dict) else "",
                     "duration_ms": track.get("duration_ms"),
                     "isrc": external_ids.get("isrc"),
                     "uri": track.get("uri"),
