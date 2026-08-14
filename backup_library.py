@@ -158,16 +158,33 @@ def backup_playlists(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
     limit = 50
 
     all_playlists: list[dict] = []
-    while True:
-        results = spotify_retry(sp.current_user_playlists, limit=limit, offset=offset)
-        items = results.get("items", [])
-        if not items:
-            break
-        all_playlists.extend(items)
-        if results.get("next") is None:
-            break
-        offset += limit
-        time.sleep(0.5)
+    try:
+        while True:
+            results = spotify_retry(sp.current_user_playlists, limit=limit, offset=offset)
+            items = results.get("items", [])
+            if not items:
+                break
+            all_playlists.extend(items)
+            if results.get("next") is None:
+                break
+            offset += limit
+            time.sleep(0.5)
+    except spotipy.exceptions.SpotifyException as exc:
+        if exc.http_status == 403:
+            print("[Backup] Note: Token lacks 'playlist-read-private' scope for /me/playlists. Backing up configured playlists …")
+            # Fall back to known target playlists configured in environment
+            known_ids = [
+                os.environ.get("SPOTIFY_PLAYLIST_ID"),
+                os.environ.get("SPOTIFY_LISTENBRAINZ_PLAYLIST_ID"),
+            ]
+            for pl_id in filter(None, known_ids):
+                try:
+                    pl_info = spotify_retry(sp.playlist, playlist_id=pl_id)
+                    all_playlists.append(pl_info)
+                except Exception as pl_exc:
+                    print(f"  ⚠️ Could not fetch playlist {pl_id}: {pl_exc}")
+        else:
+            raise
 
     print(f"[Backup] Found {len(all_playlists)} playlists. Fetching tracks …")
 
