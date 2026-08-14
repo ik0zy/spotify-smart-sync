@@ -196,20 +196,10 @@ def backup_playlists(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
 
         # Fetch tracks in playlist
         pl_tracks: list[dict] = []
-        track_offset = 0
-        track_limit = 100
+        results = spotify_retry(sp.playlist_items, pl_id, limit=100, offset=0)
 
-        while True:
-            items_resp = spotify_retry(
-                sp.playlist_tracks,
-                playlist_id=pl_id,
-                limit=track_limit,
-                offset=track_offset,
-            )
-            items = items_resp.get("items", [])
-            if not items:
-                break
-
+        while results:
+            items = results.get("items", [])
             for item in items:
                 track = item.get("track")
                 if not track:
@@ -230,10 +220,11 @@ def backup_playlists(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
                     "spotify_url": external_urls.get("spotify"),
                 })
 
-            if items_resp.get("next") is None:
+            if results.get("next"):
+                results = spotify_retry(sp.next, results)
+                time.sleep(0.4)
+            else:
                 break
-            track_offset += track_limit
-            time.sleep(0.4)
 
         safe_name = sanitize_filename(pl_name)
         filename = f"{safe_name}_{pl_id}.json"
