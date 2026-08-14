@@ -201,7 +201,7 @@ def backup_playlists(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
 
         while True:
             items_resp = spotify_retry(
-                sp.playlist_items,
+                sp.playlist_tracks,
                 playlist_id=pl_id,
                 limit=track_limit,
                 offset=track_offset,
