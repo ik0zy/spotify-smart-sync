@@ -225,7 +225,6 @@ def backup_playlists(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
                 })
 
             if isinstance(results, dict) and results.get("next"):
-                page_num += 1
                 results = spotify_retry(sp.next, results)
                 time.sleep(0.4)
             else:
