@@ -1,121 +1,150 @@
 {
   "id": "4anNIM2czofpz40cy9UONI",
   "name": "Weekly Exploration",
-  "description": "ListenBrainz: Weekly Exploration for ikOzy, week of 2026-07-28 Tue · 11&#x2F;50 tracks remaining (39 played) · Last synced: 23 Aug 2026, 06:37 AM (UTC+6)",
+  "description": "ListenBrainz: Weekly Exploration for ikOzy, week of 2026-08-24 Mon · 12&#x2F;50 tracks remaining (38 played) · Last synced: 30 Aug 2026, 06:52 AM (UTC+6)",
   "owner": "kOzy",
   "public": true,
   "collaborative": false,
   "spotify_url": "https://open.spotify.com/playlist/4anNIM2czofpz40cy9UONI",
-  "track_count": 11,
+  "track_count": 12,
   "tracks": [
     {
-      "added_at": "2026-08-01T02:01:22Z",
-      "title": "HUMBLE.",
+      "added_at": "2026-08-23T18:13:29Z",
+      "title": "Waters of Nazareth",
       "artists": [
-        "Kendrick Lamar"
+        "Justice"
       ],
-      "artist": "Kendrick Lamar",
-      "album": "DAMN.",
-      "duration_ms": 177000,
-      "isrc": "USUM71703085",
-      "uri": "spotify:track:7KXjTSCq5nL1LoYtL7XAwS",
-      "spotify_url": "https://open.spotify.com/track/7KXjTSCq5nL1LoYtL7XAwS"
+      "artist": "Justice",
+      "album": "Justice",
+      "duration_ms": 265173,
+      "isrc": "FR0NT0500091",
+      "uri": "spotify:track:0WGLjl3EIjf9MjJFJ90yX9",
+      "spotify_url": "https://open.spotify.com/track/0WGLjl3EIjf9MjJFJ90yX9"
     },
     {
-      "added_at": "2026-08-01T02:01:22Z",
-      "title": "Notion",
+      "added_at": "2026-08-23T18:13:29Z",
+      "title": "Pictures Of You - Remastered",
       "artists": [
-        "The Rare Occasions"
+        "The Cure"
       ],
-      "artist": "The Rare Occasions",
-      "album": "Notion",
-      "duration_ms": 195120,
-      "isrc": "USHM21617726",
-      "uri": "spotify:track:0sTlGEld0h8kIPZaKDYUf4",
-      "spotify_url": "https://open.spotify.com/track/0sTlGEld0h8kIPZaKDYUf4"
+      "artist": "The Cure",
+      "album": "Disintegration (Deluxe Edition)",
+      "duration_ms": 448306,
+      "isrc": "GBUM71000205",
+      "uri": "spotify:track:2o49Twc3qrNMOt8gq9W06L",
+      "spotify_url": "https://open.spotify.com/track/2o49Twc3qrNMOt8gq9W06L"
     },
     {
-      "added_at": "2026-08-01T02:01:22Z",
-      "title": "\"Heroes\" - 2017 Remaster",
+      "added_at": "2026-08-23T18:13:29Z",
+      "title": "Rise Again",
       "artists": [
-        "David Bowie"
+        "Sophie Whitaker"
       ],
-      "artist": "David Bowie",
-      "album": "\"Heroes\" (2017 Remaster)",
-      "duration_ms": 371413,
-      "isrc": "USJT11700005",
-      "uri": "spotify:track:7Jh1bpe76CNTCgdgAdBw4Z",
-      "spotify_url": "https://open.spotify.com/track/7Jh1bpe76CNTCgdgAdBw4Z"
+      "artist": "Sophie Whitaker",
+      "album": "Rise Again",
+      "duration_ms": 60926,
+      "isrc": "ESA122664356",
+      "uri": "spotify:track:2EGy5MVnLvAq73nqGMn6z5",
+      "spotify_url": "https://open.spotify.com/track/2EGy5MVnLvAq73nqGMn6z5"
     },
     {
-      "added_at": "2026-08-01T02:01:22Z",
-      "title": "Born Slippy (Nuxx)",
+      "added_at": "2026-08-23T18:13:29Z",
+      "title": "Born Slippy (Nuxx) - Radio Edit",
       "artists": [
         "Underworld"
       ],
       "artist": "Underworld",
-      "album": "1992 - 2012",
-      "duration_ms": 456480,
-      "isrc": "UK7EF9500001",
-      "uri": "spotify:track:7xQYVjs4wZNdCwO0EeAWMC",
-      "spotify_url": "https://open.spotify.com/track/7xQYVjs4wZNdCwO0EeAWMC"
+      "album": "Born Slippy (Nuxx) [Radio Edit]",
+      "duration_ms": 264187,
+      "isrc": "GBCGL9800026",
+      "uri": "spotify:track:3bUNyRrTFJDd4mqvUcb1Aa",
+      "spotify_url": "https://open.spotify.com/track/3bUNyRrTFJDd4mqvUcb1Aa"
     },
     {
-      "added_at": "2026-08-01T02:01:22Z",
-      "title": "NUEVAYoL",
+      "added_at": "2026-08-23T18:13:29Z",
+      "title": "Champagne Supernova - Remastered",
       "artists": [
-        "Bad Bunny"
+        "Oasis"
       ],
-      "artist": "Bad Bunny",
-      "album": "DeBÍ TiRAR MáS FOToS",
-      "duration_ms": 183685,
-      "isrc": "QMFMF2447055",
-      "uri": "spotify:track:5TFD2bmFKGhoCRbX61nXY5",
-      "spotify_url": "https://open.spotify.com/track/5TFD2bmFKGhoCRbX61nXY5"
+      "artist": "Oasis",
+      "album": "(What's The Story) Morning Glory? [Remastered]",
+      "duration_ms": 451320,
+      "isrc": "GBQCP1400118",
+      "uri": "spotify:track:1wo3UYTeizJHkwYIuLuBPF",
+      "spotify_url": "https://open.spotify.com/track/1wo3UYTeizJHkwYIuLuBPF"
     },
     {
-      "added_at": "2026-08-01T02:01:22Z",
-      "title": "Somebody That I Used To Know - Tiësto Remix",
+      "added_at": "2026-08-23T18:13:29Z",
+      "title": "Dancin - Krono Remix",
       "artists": [
-        "Gotye",
-        "Kimbra",
-        "Tiësto"
+        "Aaron Smith",
+        "Krono",
+        "Luvli"
       ],
-      "artist": "Gotye, Kimbra, Tiësto",
-      "album": "Somebody That I Used To Know (Remixes)",
-      "duration_ms": 273095,
-      "isrc": "AUZS21200072",
-      "uri": "spotify:track:0pKTw4qlPTgZn0anwytcG6",
-      "spotify_url": "https://open.spotify.com/track/0pKTw4qlPTgZn0anwytcG6"
+      "artist": "Aaron Smith, Krono, Luvli",
+      "album": "Dancin (Krono Remix)",
+      "duration_ms": 198053,
+      "isrc": "QMLA71400326",
+      "uri": "spotify:track:5Cpo7btae5aI6QtOcVzWwB",
+      "spotify_url": "https://open.spotify.com/track/5Cpo7btae5aI6QtOcVzWwB"
     },
     {
-      "added_at": "2026-08-01T02:01:22Z",
-      "title": "Cosmic Girl - Remastered 2006",
+      "added_at": "2026-08-23T18:13:29Z",
+      "title": "APT.",
       "artists": [
-        "Jamiroquai"
+        "ROSÉ",
+        "Bruno Mars"
       ],
-      "artist": "Jamiroquai",
-      "album": "Driving Songs",
-      "duration_ms": 227866,
-      "isrc": "GBARL0601476",
-      "uri": "spotify:track:0QCCwIK5wNdCFNYv96n2eV",
-      "spotify_url": "https://open.spotify.com/track/0QCCwIK5wNdCFNYv96n2eV"
+      "artist": "ROSÉ, Bruno Mars",
+      "album": "APT.",
+      "duration_ms": 169917,
+      "isrc": "USAT22409172",
+      "uri": "spotify:track:5vNRhkKd0yEAg8suGBpjeY",
+      "spotify_url": "https://open.spotify.com/track/5vNRhkKd0yEAg8suGBpjeY"
     },
     {
-      "added_at": "2026-08-01T02:01:22Z",
-      "title": "Skinny Love",
+      "added_at": "2026-08-23T18:13:29Z",
+      "title": "Abracadabra",
       "artists": [
-        "Bon Iver"
+        "Lady Gaga"
       ],
-      "artist": "Bon Iver",
-      "album": "For Emma, Forever Ago",
-      "duration_ms": 238520,
-      "isrc": "US38Y0811503",
-      "uri": "spotify:track:3B3eOgLJSqPEA0RfboIQVM",
-      "spotify_url": "https://open.spotify.com/track/3B3eOgLJSqPEA0RfboIQVM"
+      "artist": "Lady Gaga",
+      "album": "MAYHEM",
+      "duration_ms": 223398,
+      "isrc": "USUM72412581",
+      "uri": "spotify:track:2LHNTC9QZxsL3nWpt8iaSR",
+      "spotify_url": "https://open.spotify.com/track/2LHNTC9QZxsL3nWpt8iaSR"
     },
     {
-      "added_at": "2026-08-01T02:01:22Z",
+      "added_at": "2026-08-23T18:13:29Z",
+      "title": "Die Hard",
+      "artists": [
+        "Kendrick Lamar",
+        "Blxst",
+        "Amanda Reifer"
+      ],
+      "artist": "Kendrick Lamar, Blxst, Amanda Reifer",
+      "album": "Mr. Morale & The Big Steppers",
+      "duration_ms": 239026,
+      "isrc": "USUM72208965",
+      "uri": "spotify:track:2g6tReTlM2Akp41g0HaeXN",
+      "spotify_url": "https://open.spotify.com/track/2g6tReTlM2Akp41g0HaeXN"
+    },
+    {
+      "added_at": "2026-08-23T18:13:29Z",
+      "title": "Don't Dream It's Over",
+      "artists": [
+        "Crowded House"
+      ],
+      "artist": "Crowded House",
+      "album": "Crowded House",
+      "duration_ms": 236933,
+      "isrc": "USCA28600048",
+      "uri": "spotify:track:7G7tgVYORlDuVprcYHuFJh",
+      "spotify_url": "https://open.spotify.com/track/7G7tgVYORlDuVprcYHuFJh"
+    },
+    {
+      "added_at": "2026-08-23T18:13:29Z",
       "title": "The Fate of Ophelia",
       "artists": [
         "Taylor Swift"
@@ -128,30 +157,18 @@
       "spotify_url": "https://open.spotify.com/track/53iuhJlwXhSER5J2IYYv1W"
     },
     {
-      "added_at": "2026-08-01T02:01:22Z",
-      "title": "Show Me How",
+      "added_at": "2026-08-23T18:13:29Z",
+      "title": "Guess featuring billie eilish",
       "artists": [
-        "Men I Trust"
+        "Charli xcx",
+        "Billie Eilish"
       ],
-      "artist": "Men I Trust",
-      "album": "Show Me How",
-      "duration_ms": 215110,
-      "isrc": "TCADM1873570",
-      "uri": "spotify:track:75IQVo8hqI1iwVZyvkN2VT",
-      "spotify_url": "https://open.spotify.com/track/75IQVo8hqI1iwVZyvkN2VT"
-    },
-    {
-      "added_at": "2026-08-01T02:01:22Z",
-      "title": "Skyfall",
-      "artists": [
-        "Adele"
-      ],
-      "artist": "Adele",
-      "album": "Skyfall",
-      "duration_ms": 286081,
-      "isrc": "GBBKS1200164",
-      "uri": "spotify:track:6VObnIkLVruX4UVyxWhlqm",
-      "spotify_url": "https://open.spotify.com/track/6VObnIkLVruX4UVyxWhlqm"
+      "artist": "Charli xcx, Billie Eilish",
+      "album": "Brat and it’s completely different but also still brat",
+      "duration_ms": 143330,
+      "isrc": "USAT22406808",
+      "uri": "spotify:track:0IsIY8pfu1yaGkPUD7pkDx",
+      "spotify_url": "https://open.spotify.com/track/0IsIY8pfu1yaGkPUD7pkDx"
     }
   ]
 }

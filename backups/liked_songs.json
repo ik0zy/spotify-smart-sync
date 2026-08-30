@@ -1,5 +1,364 @@
 [
   {
+    "added_at": "2026-08-29T17:45:53Z",
+    "title": "Suffocation",
+    "artists": [
+      "Crystal Castles"
+    ],
+    "artist": "Crystal Castles",
+    "album": "Crystal Castles (II)",
+    "duration_ms": 242293,
+    "isrc": "GBUM71001709",
+    "uri": "spotify:track:12oxsGACfwMozi4nK9noGQ",
+    "spotify_url": "https://open.spotify.com/track/12oxsGACfwMozi4nK9noGQ"
+  },
+  {
+    "added_at": "2026-08-29T17:39:55Z",
+    "title": "Mr. Rager",
+    "artists": [
+      "Kid Cudi"
+    ],
+    "artist": "Kid Cudi",
+    "album": "Man On The Moon II: The Legend Of Mr. Rager",
+    "duration_ms": 294226,
+    "isrc": "USUM71025042",
+    "uri": "spotify:track:393MDhe62s8hbH8ETrlxe5",
+    "spotify_url": "https://open.spotify.com/track/393MDhe62s8hbH8ETrlxe5"
+  },
+  {
+    "added_at": "2026-08-29T17:33:43Z",
+    "title": "Canned Heat",
+    "artists": [
+      "Jamiroquai"
+    ],
+    "artist": "Jamiroquai",
+    "album": "Synkronized",
+    "duration_ms": 331760,
+    "isrc": "GBBBL9902068",
+    "uri": "spotify:track:47oS7xB31QQUyPCgHpM3VZ",
+    "spotify_url": "https://open.spotify.com/track/47oS7xB31QQUyPCgHpM3VZ"
+  },
+  {
+    "added_at": "2026-08-28T13:03:59Z",
+    "title": "Daydreaming",
+    "artists": [
+      "Radiohead"
+    ],
+    "artist": "Radiohead",
+    "album": "A Moon Shaped Pool",
+    "duration_ms": 384438,
+    "isrc": "GBBKS1600072",
+    "uri": "spotify:track:1Rd5OVjqDAr5xC96MHt448",
+    "spotify_url": "https://open.spotify.com/track/1Rd5OVjqDAr5xC96MHt448"
+  },
+  {
+    "added_at": "2026-08-28T13:00:47Z",
+    "title": "Die Hard",
+    "artists": [
+      "Kendrick Lamar",
+      "Blxst",
+      "Amanda Reifer"
+    ],
+    "artist": "Kendrick Lamar, Blxst, Amanda Reifer",
+    "album": "Mr. Morale & The Big Steppers",
+    "duration_ms": 239026,
+    "isrc": "USUM72208965",
+    "uri": "spotify:track:2g6tReTlM2Akp41g0HaeXN",
+    "spotify_url": "https://open.spotify.com/track/2g6tReTlM2Akp41g0HaeXN"
+  },
+  {
+    "added_at": "2026-08-28T12:47:41Z",
+    "title": "Morph",
+    "artists": [
+      "Twenty One Pilots"
+    ],
+    "artist": "Twenty One Pilots",
+    "album": "Trench",
+    "duration_ms": 258853,
+    "isrc": "USAT21810685",
+    "uri": "spotify:track:01vv2AjxgP4uUyb8waYO5Y",
+    "spotify_url": "https://open.spotify.com/track/01vv2AjxgP4uUyb8waYO5Y"
+  },
+  {
+    "added_at": "2026-08-28T12:28:19Z",
+    "title": "Delete",
+    "artists": [
+      "Ninajirachi"
+    ],
+    "artist": "Ninajirachi",
+    "album": "I Love My Computer",
+    "duration_ms": 231365,
+    "isrc": "QMBZ92546839",
+    "uri": "spotify:track:0CVbCtcdXAIw00YBXXbneu",
+    "spotify_url": "https://open.spotify.com/track/0CVbCtcdXAIw00YBXXbneu"
+  },
+  {
+    "added_at": "2026-08-28T12:14:58Z",
+    "title": "After Hours",
+    "artists": [
+      "The Weeknd"
+    ],
+    "artist": "The Weeknd",
+    "album": "After Hours",
+    "duration_ms": 361026,
+    "isrc": "USUG12000586",
+    "uri": "spotify:track:2p8IUWQDrpjuFltbdgLOag",
+    "spotify_url": "https://open.spotify.com/track/2p8IUWQDrpjuFltbdgLOag"
+  },
+  {
+    "added_at": "2026-08-28T12:10:51Z",
+    "title": "Human Nature",
+    "artists": [
+      "Michael Jackson"
+    ],
+    "artist": "Michael Jackson",
+    "album": "Thriller",
+    "duration_ms": 245837,
+    "isrc": "USSM19902992",
+    "uri": "spotify:track:4cgjA7B4fJBHyB9Ya2bu0t",
+    "spotify_url": "https://open.spotify.com/track/4cgjA7B4fJBHyB9Ya2bu0t"
+  },
+  {
+    "added_at": "2026-08-28T11:54:42Z",
+    "title": "Heartbeat",
+    "artists": [
+      "Childish Gambino"
+    ],
+    "artist": "Childish Gambino",
+    "album": "Camp",
+    "duration_ms": 269840,
+    "isrc": "USYAH1100351",
+    "uri": "spotify:track:5AGQSF0ytihJyt96K5vW9d",
+    "spotify_url": "https://open.spotify.com/track/5AGQSF0ytihJyt96K5vW9d"
+  },
+  {
+    "added_at": "2026-08-28T11:51:33Z",
+    "title": "did i tell u that i miss u",
+    "artists": [
+      "adore"
+    ],
+    "artist": "adore",
+    "album": "did i tell u that i miss u",
+    "duration_ms": 115921,
+    "isrc": "CA5KR2447784",
+    "uri": "spotify:track:3qeFjtPJ1lIRKDTB5DZWpt",
+    "spotify_url": "https://open.spotify.com/track/3qeFjtPJ1lIRKDTB5DZWpt"
+  },
+  {
+    "added_at": "2026-08-28T11:49:20Z",
+    "title": "Dancin - Krono Remix",
+    "artists": [
+      "Aaron Smith",
+      "Krono",
+      "Luvli"
+    ],
+    "artist": "Aaron Smith, Krono, Luvli",
+    "album": "Dancin (Krono Remix)",
+    "duration_ms": 198053,
+    "isrc": "QMLA71400326",
+    "uri": "spotify:track:5Cpo7btae5aI6QtOcVzWwB",
+    "spotify_url": "https://open.spotify.com/track/5Cpo7btae5aI6QtOcVzWwB"
+  },
+  {
+    "added_at": "2026-08-28T11:46:08Z",
+    "title": "Excuse",
+    "artists": [
+      "C418"
+    ],
+    "artist": "C418",
+    "album": "Minecraft - Volume Alpha",
+    "duration_ms": 124000,
+    "isrc": "TCAAW1157086",
+    "uri": "spotify:track:2ByqwRQCMBN8sTOpowzguG",
+    "spotify_url": "https://open.spotify.com/track/2ByqwRQCMBN8sTOpowzguG"
+  },
+  {
+    "added_at": "2026-08-28T11:43:53Z",
+    "title": "Lost",
+    "artists": [
+      "Frank Ocean"
+    ],
+    "artist": "Frank Ocean",
+    "album": "channel ORANGE",
+    "duration_ms": 234093,
+    "isrc": "USUM71207186",
+    "uri": "spotify:track:3GZD6HmiNUhxXYf8Gch723",
+    "spotify_url": "https://open.spotify.com/track/3GZD6HmiNUhxXYf8Gch723"
+  },
+  {
+    "added_at": "2026-08-28T11:21:40Z",
+    "title": "Judas",
+    "artists": [
+      "Lady Gaga"
+    ],
+    "artist": "Lady Gaga",
+    "album": "Born This Way (International Special Edition Version)",
+    "duration_ms": 249066,
+    "isrc": "USUM71104998",
+    "uri": "spotify:track:7F25roCtYi55JouckaayPC",
+    "spotify_url": "https://open.spotify.com/track/7F25roCtYi55JouckaayPC"
+  },
+  {
+    "added_at": "2026-08-28T11:15:34Z",
+    "title": "DtMF",
+    "artists": [
+      "Bad Bunny"
+    ],
+    "artist": "Bad Bunny",
+    "album": "DeBÍ TiRAR MáS FOToS",
+    "duration_ms": 237117,
+    "isrc": "QMFMF2447070",
+    "uri": "spotify:track:3sK8wGT43QFpWrvNQsrQya",
+    "spotify_url": "https://open.spotify.com/track/3sK8wGT43QFpWrvNQsrQya"
+  },
+  {
+    "added_at": "2026-08-28T11:06:55Z",
+    "title": "The Rockafeller Skank",
+    "artists": [
+      "Fatboy Slim"
+    ],
+    "artist": "Fatboy Slim",
+    "album": "You've Come a Long Way Baby",
+    "duration_ms": 413880,
+    "isrc": "GBBMQ9900048",
+    "uri": "spotify:track:5AgCO3dc2kuSicCsw09YCA",
+    "spotify_url": "https://open.spotify.com/track/5AgCO3dc2kuSicCsw09YCA"
+  },
+  {
+    "added_at": "2026-08-28T11:02:13Z",
+    "title": "Bad Kingdom",
+    "artists": [
+      "Moderat"
+    ],
+    "artist": "Moderat",
+    "album": "II",
+    "duration_ms": 262840,
+    "isrc": "DEOE81310018",
+    "uri": "spotify:track:7aZdQpV56UcKPbR4lDQJi4",
+    "spotify_url": "https://open.spotify.com/track/7aZdQpV56UcKPbR4lDQJi4"
+  },
+  {
+    "added_at": "2026-08-28T10:49:37Z",
+    "title": "CSIRAC",
+    "artists": [
+      "Ninajirachi"
+    ],
+    "artist": "Ninajirachi",
+    "album": "I Love My Computer",
+    "duration_ms": 201931,
+    "isrc": "QMBZ92546828",
+    "uri": "spotify:track:33nOHyNeOKwwjKMrF9VN4V",
+    "spotify_url": "https://open.spotify.com/track/33nOHyNeOKwwjKMrF9VN4V"
+  },
+  {
+    "added_at": "2026-08-28T10:33:54Z",
+    "title": "Actium",
+    "artists": [
+      "Aphex Twin"
+    ],
+    "artist": "Aphex Twin",
+    "album": "Selected Ambient Works 85-92",
+    "duration_ms": 455000,
+    "isrc": "BEZ350800034",
+    "uri": "spotify:track:78w0l5CJ3VwtXKBpRCktwa",
+    "spotify_url": "https://open.spotify.com/track/78w0l5CJ3VwtXKBpRCktwa"
+  },
+  {
+    "added_at": "2026-08-26T16:01:19Z",
+    "title": "Rollercoaster",
+    "artists": [
+      "Modjo"
+    ],
+    "artist": "Modjo",
+    "album": "Modjo (Remastered)",
+    "duration_ms": 251866,
+    "isrc": "FR9W10100541",
+    "uri": "spotify:track:1YucFGqqoZ8nKwsHR1AOmS",
+    "spotify_url": "https://open.spotify.com/track/1YucFGqqoZ8nKwsHR1AOmS"
+  },
+  {
+    "added_at": "2026-08-24T08:08:32Z",
+    "title": "The Winner Takes It All",
+    "artists": [
+      "ABBA"
+    ],
+    "artist": "ABBA",
+    "album": "Super Trouper",
+    "duration_ms": 294720,
+    "isrc": "SEAYD8001020",
+    "uri": "spotify:track:3oEkrIfXfSh9zGnE7eBzSV",
+    "spotify_url": "https://open.spotify.com/track/3oEkrIfXfSh9zGnE7eBzSV"
+  },
+  {
+    "added_at": "2026-08-24T08:01:45Z",
+    "title": "Kiss of Life",
+    "artists": [
+      "Sade"
+    ],
+    "artist": "Sade",
+    "album": "The Best of Sade",
+    "duration_ms": 251333,
+    "isrc": "GBBBM9200026",
+    "uri": "spotify:track:65krtHkaYLPr0mEbjL61UP",
+    "spotify_url": "https://open.spotify.com/track/65krtHkaYLPr0mEbjL61UP"
+  },
+  {
+    "added_at": "2026-08-24T07:45:54Z",
+    "title": "Heaven Knows I'm Miserable Now - 2011 Remaster",
+    "artists": [
+      "The Smiths"
+    ],
+    "artist": "The Smiths",
+    "album": "Hatful of Hollow",
+    "duration_ms": 215760,
+    "isrc": "GBCRL1100070",
+    "uri": "spotify:track:1xaTREM89RbIxkcjlpf4Uw",
+    "spotify_url": "https://open.spotify.com/track/1xaTREM89RbIxkcjlpf4Uw"
+  },
+  {
+    "added_at": "2026-08-23T06:48:18Z",
+    "title": "On Hold - Jamie xx Remix",
+    "artists": [
+      "The xx",
+      "Jamie xx"
+    ],
+    "artist": "The xx, Jamie xx",
+    "album": "I See You (Remixes)",
+    "duration_ms": 371533,
+    "isrc": "UK7MC1700151",
+    "uri": "spotify:track:513Ndbo32DnhMfZdiUKnQW",
+    "spotify_url": "https://open.spotify.com/track/513Ndbo32DnhMfZdiUKnQW"
+  },
+  {
+    "added_at": "2026-08-23T06:36:54Z",
+    "title": "Can We Still Be Friends?",
+    "artists": [
+      "Barry Can't Swim",
+      "Laurence Guy"
+    ],
+    "artist": "Barry Can't Swim, Laurence Guy",
+    "album": "Can We Still Be Friends?",
+    "duration_ms": 243498,
+    "isrc": "GBCFB2200131",
+    "uri": "spotify:track:57UOWrbEXa4wrcfuOs7Xuj",
+    "spotify_url": "https://open.spotify.com/track/57UOWrbEXa4wrcfuOs7Xuj"
+  },
+  {
+    "added_at": "2026-08-23T06:27:46Z",
+    "title": "Herald of Darkness - Radio Edit",
+    "artists": [
+      "Old Gods of Asgard",
+      "Alan Wake",
+      "Mr. Door"
+    ],
+    "artist": "Old Gods of Asgard, Alan Wake, Mr. Door",
+    "album": "Herald of Darkness",
+    "duration_ms": 219291,
+    "isrc": "FIP9F2300007",
+    "uri": "spotify:track:743RXOvvFy1M6Tg8Nntxmj",
+    "spotify_url": "https://open.spotify.com/track/743RXOvvFy1M6Tg8Nntxmj"
+  },
+  {
     "added_at": "2026-08-22T08:00:19Z",
     "title": "Everloving",
     "artists": [
@@ -10581,19 +10940,6 @@
     "spotify_url": "https://open.spotify.com/track/208TvaHtChWPChoQxSvrhJ"
   },
   {
-    "added_at": "2026-04-27T21:28:20Z",
-    "title": "Counter Attack-Mankind",
-    "artists": [
-      "Sawano Hiroyuki"
-    ],
-    "artist": "Sawano Hiroyuki",
-    "album": "TV Anime \"Attack on Titan\" Original Soundtrack",
-    "duration_ms": 366586,
-    "isrc": "JPPC01301135",
-    "uri": "spotify:track:34o9rDFXv6bFX5qtkySnRQ",
-    "spotify_url": "https://open.spotify.com/track/34o9rDFXv6bFX5qtkySnRQ"
-  },
-  {
     "added_at": "2026-04-27T21:26:40Z",
     "title": "Counterfeit Phantom",
     "artists": [
@@ -11970,7 +12316,7 @@
   },
   {
     "added_at": "2026-04-27T17:55:00Z",
-    "title": "Die For You (Dabin Remix)",
+    "title": "Die For You - Dabin Remix",
     "artists": [
       "VALORANT",
       "Grabbitz",
@@ -12029,7 +12375,7 @@
   },
   {
     "added_at": "2026-04-27T17:41:40Z",
-    "title": "Dirty Little Animals (from the series Arcane League of Legends)",
+    "title": "Dirty Little Animals - from the series Arcane League of Legends",
     "artists": [
       "BONES UK"
     ],
@@ -12146,19 +12492,6 @@
     "isrc": "JPX832005516",
     "uri": "spotify:track:6YwSHqpLR74EicDkZU3ocs",
     "spotify_url": "https://open.spotify.com/track/6YwSHqpLR74EicDkZU3ocs"
-  },
-  {
-    "added_at": "2026-04-27T17:20:00Z",
-    "title": "Divine Service",
-    "artists": [
-      "Lies of P"
-    ],
-    "artist": "Lies of P",
-    "album": "Lies of P (Original Soundtrack)",
-    "duration_ms": 189000,
-    "isrc": "KRNAR2353956",
-    "uri": "spotify:track:5mtn7y4mfApt5gM02PRWVz",
-    "spotify_url": "https://open.spotify.com/track/5mtn7y4mfApt5gM02PRWVz"
   },
   {
     "added_at": "2026-04-27T17:16:40Z",
@@ -12880,7 +13213,7 @@
   },
   {
     "added_at": "2026-04-27T15:28:20Z",
-    "title": "Dynasties & Dystopia (from the series Arcane League of Legends)",
+    "title": "Dynasties & Dystopia - from the series Arcane League of Legends",
     "artists": [
       "Denzel Curry",
       "Gizzle",
@@ -13325,7 +13658,7 @@
   },
   {
     "added_at": "2026-04-27T14:23:20Z",
-    "title": "Enemy (from the series Arcane League of Legends)",
+    "title": "Enemy - from the series Arcane League of Legends",
     "artists": [
       "Imagine Dragons",
       "JID"
@@ -15625,7 +15958,7 @@
   },
   {
     "added_at": "2026-04-27T08:18:20Z",
-    "title": "Ghost (2WEI Remix)",
+    "title": "Ghost - 2WEI Remix",
     "artists": [
       "Marvin Brooks",
       "2WEI"
@@ -16131,7 +16464,7 @@
   },
   {
     "added_at": "2026-04-27T07:01:40Z",
-    "title": "Goodbye (from the series Arcane League of Legends)",
+    "title": "Goodbye - from the series Arcane League of Legends",
     "artists": [
       "Ramsey"
     ],
@@ -16479,7 +16812,7 @@
   },
   {
     "added_at": "2026-04-27T06:05:00Z",
-    "title": "Guns for Hire (from the series Arcane League of Legends)",
+    "title": "Guns for Hire - from the series Arcane League of Legends",
     "artists": [
       "Woodkid"
     ],
@@ -23064,7 +23397,7 @@
   },
   {
     "added_at": "2026-04-26T13:05:00Z",
-    "title": "Misfit Toys (from the series Arcane League of Legends)",
+    "title": "Misfit Toys - from the series Arcane League of Legends",
     "artists": [
       "Pusha T"
     ],
@@ -25424,7 +25757,7 @@
   },
   {
     "added_at": "2026-04-26T06:56:40Z",
-    "title": "Our Love (from the series Arcane League of Legends)",
+    "title": "Our Love - from the series Arcane League of Legends",
     "artists": [
       "Curtis Harding",
       "Jazmine Sullivan"
@@ -26216,7 +26549,7 @@
   },
   {
     "added_at": "2026-04-26T04:48:20Z",
-    "title": "Playground (from the series Arcane League of Legends)",
+    "title": "Playground - from the series Arcane League of Legends",
     "artists": [
       "Bea Miller"
     ],
@@ -29628,7 +29961,7 @@
   },
   {
     "added_at": "2026-04-25T19:26:40Z",
-    "title": "Snakes (from the series Arcane League of Legends)",
+    "title": "Snakes - from the series Arcane League of Legends",
     "artists": [
       "PVRIS",
       "MIYAVI"
@@ -31749,19 +32082,6 @@
     "spotify_url": "https://open.spotify.com/track/7CwWhMGWICOl2ICwbk3QTE"
   },
   {
-    "added_at": "2026-04-25T13:56:40Z",
-    "title": "Tamaki",
-    "artists": [
-      "RADWIMPS"
-    ],
-    "artist": "RADWIMPS",
-    "album": "Suzume (Motion Picture Soundtrack)",
-    "duration_ms": 295293,
-    "isrc": "JPV972200102",
-    "uri": "spotify:track:1EywXLi9gbYeWA6JXjUh7W",
-    "spotify_url": "https://open.spotify.com/track/1EywXLi9gbYeWA6JXjUh7W"
-  },
-  {
     "added_at": "2026-04-25T13:53:20Z",
     "title": "Tank!",
     "artists": [
@@ -31912,19 +32232,6 @@
     "isrc": "GBAAA9800322",
     "uri": "spotify:track:67Hna13dNDkZvBpTXRIaOJ",
     "spotify_url": "https://open.spotify.com/track/67Hna13dNDkZvBpTXRIaOJ"
-  },
-  {
-    "added_at": "2026-04-25T13:31:40Z",
-    "title": "Tears of Suzume",
-    "artists": [
-      "RADWIMPS"
-    ],
-    "artist": "RADWIMPS",
-    "album": "Suzume (Motion Picture Soundtrack)",
-    "duration_ms": 275653,
-    "isrc": "JPV972200103",
-    "uri": "spotify:track:3KIo0vpEnqsjgO2Fqrf4l6",
-    "spotify_url": "https://open.spotify.com/track/3KIo0vpEnqsjgO2Fqrf4l6"
   },
   {
     "added_at": "2026-04-25T13:28:20Z",
@@ -34910,7 +35217,7 @@
   },
   {
     "added_at": "2026-04-25T05:21:40Z",
-    "title": "What Could Have Been (from the series Arcane League of Legends)",
+    "title": "What Could Have Been - from the series Arcane League of Legends",
     "artists": [
       "Sting",
       "Ray Chen"
@@ -35110,7 +35417,7 @@
   },
   {
     "added_at": "2026-04-25T04:53:20Z",
-    "title": "When Everything Went Wrong (from the series Arcane League of Legends)",
+    "title": "When Everything Went Wrong - from the series Arcane League of Legends",
     "artists": [
       "Fantastic Negrito"
     ],
@@ -36110,19 +36417,6 @@
     "spotify_url": "https://open.spotify.com/track/4l0RmWt52FxpVxMNni6i63"
   },
   {
-    "added_at": "2026-04-25T02:13:20Z",
-    "title": "You Can't Hurry Love - Live 1985",
-    "artists": [
-      "Phil Collins"
-    ],
-    "artist": "Phil Collins",
-    "album": "Hello, I Must Be Going! (Deluxe Edition)",
-    "duration_ms": 184306,
-    "isrc": "USRH11509304",
-    "uri": "spotify:track:5h5p5J9HpyHCP9MqTgSeHd",
-    "spotify_url": "https://open.spotify.com/track/5h5p5J9HpyHCP9MqTgSeHd"
-  },
-  {
     "added_at": "2026-04-25T02:11:40Z",
     "title": "You Face Louis Guiabern",
     "artists": [
@@ -36739,19 +37033,6 @@
     "isrc": "GBAHT1200400",
     "uri": "spotify:track:4nr4gSTFGmTTSbumSY3kfH",
     "spotify_url": "https://open.spotify.com/track/4nr4gSTFGmTTSbumSY3kfH"
-  },
-  {
-    "added_at": "2026-04-25T00:38:20Z",
-    "title": "2 Volt",
-    "artists": [
-      "Sawano Hiroyuki"
-    ],
-    "artist": "Sawano Hiroyuki",
-    "album": "TV Anime \"Attack on Titan Season 2\" (Original Soundtrack)",
-    "duration_ms": 401333,
-    "isrc": "JPPC01502439",
-    "uri": "spotify:track:59heMF0LTYzIu3gNkdCWic",
-    "spotify_url": "https://open.spotify.com/track/59heMF0LTYzIu3gNkdCWic"
   },
   {
     "added_at": "2026-04-25T00:35:00Z",
