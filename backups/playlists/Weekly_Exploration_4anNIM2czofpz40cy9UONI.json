@@ -1,39 +1,13 @@
 {
   "id": "4anNIM2czofpz40cy9UONI",
   "name": "Weekly Exploration",
-  "description": "ListenBrainz: Weekly Exploration for ikOzy, week of 2026-08-24 Mon · 12&#x2F;50 tracks remaining (38 played) · Last synced: 30 Aug 2026, 06:52 AM (UTC+6)",
+  "description": "ListenBrainz: Weekly Exploration for ikOzy, week of 2026-08-24 Mon · 8&#x2F;50 tracks remaining (42 played) · Last synced: 06 Sep 2026, 06:20 AM (UTC+6)",
   "owner": "kOzy",
   "public": true,
   "collaborative": false,
   "spotify_url": "https://open.spotify.com/playlist/4anNIM2czofpz40cy9UONI",
-  "track_count": 12,
+  "track_count": 8,
   "tracks": [
-    {
-      "added_at": "2026-08-23T18:13:29Z",
-      "title": "Waters of Nazareth",
-      "artists": [
-        "Justice"
-      ],
-      "artist": "Justice",
-      "album": "Justice",
-      "duration_ms": 265173,
-      "isrc": "FR0NT0500091",
-      "uri": "spotify:track:0WGLjl3EIjf9MjJFJ90yX9",
-      "spotify_url": "https://open.spotify.com/track/0WGLjl3EIjf9MjJFJ90yX9"
-    },
-    {
-      "added_at": "2026-08-23T18:13:29Z",
-      "title": "Pictures Of You - Remastered",
-      "artists": [
-        "The Cure"
-      ],
-      "artist": "The Cure",
-      "album": "Disintegration (Deluxe Edition)",
-      "duration_ms": 448306,
-      "isrc": "GBUM71000205",
-      "uri": "spotify:track:2o49Twc3qrNMOt8gq9W06L",
-      "spotify_url": "https://open.spotify.com/track/2o49Twc3qrNMOt8gq9W06L"
-    },
     {
       "added_at": "2026-08-23T18:13:29Z",
       "title": "Rise Again",
@@ -104,19 +78,6 @@
     },
     {
       "added_at": "2026-08-23T18:13:29Z",
-      "title": "Abracadabra",
-      "artists": [
-        "Lady Gaga"
-      ],
-      "artist": "Lady Gaga",
-      "album": "MAYHEM",
-      "duration_ms": 223398,
-      "isrc": "USUM72412581",
-      "uri": "spotify:track:2LHNTC9QZxsL3nWpt8iaSR",
-      "spotify_url": "https://open.spotify.com/track/2LHNTC9QZxsL3nWpt8iaSR"
-    },
-    {
-      "added_at": "2026-08-23T18:13:29Z",
       "title": "Die Hard",
       "artists": [
         "Kendrick Lamar",
@@ -129,19 +90,6 @@
       "isrc": "USUM72208965",
       "uri": "spotify:track:2g6tReTlM2Akp41g0HaeXN",
       "spotify_url": "https://open.spotify.com/track/2g6tReTlM2Akp41g0HaeXN"
-    },
-    {
-      "added_at": "2026-08-23T18:13:29Z",
-      "title": "Don't Dream It's Over",
-      "artists": [
-        "Crowded House"
-      ],
-      "artist": "Crowded House",
-      "album": "Crowded House",
-      "duration_ms": 236933,
-      "isrc": "USCA28600048",
-      "uri": "spotify:track:7G7tgVYORlDuVprcYHuFJh",
-      "spotify_url": "https://open.spotify.com/track/7G7tgVYORlDuVprcYHuFJh"
     },
     {
       "added_at": "2026-08-23T18:13:29Z",
