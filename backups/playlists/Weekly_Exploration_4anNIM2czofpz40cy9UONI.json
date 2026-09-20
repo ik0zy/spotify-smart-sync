@@ -1,202 +1,122 @@
 {
   "id": "4anNIM2czofpz40cy9UONI",
   "name": "Weekly Exploration",
-  "description": "ListenBrainz: Weekly Exploration for ikOzy, week of 2026-08-31 Mon · 34&#x2F;50 tracks remaining (16 played) · Last synced: 13 Sep 2026, 07:50 AM (UTC+6)",
+  "description": "ListenBrainz: Weekly Exploration for ikOzy, week of 2026-09-14 Mon · 21&#x2F;50 tracks remaining (29 played) · Last synced: 20 Sep 2026, 08:08 AM (UTC+6)",
   "owner": "kOzy",
   "public": true,
   "collaborative": false,
   "spotify_url": "https://open.spotify.com/playlist/4anNIM2czofpz40cy9UONI",
-  "track_count": 34,
+  "track_count": 21,
   "tracks": [
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "I'm God",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Frou-frou Foxes in Midsummer Fires",
       "artists": [
-        "Clams Casino",
-        "Imogen Heap"
+        "Cocteau Twins"
       ],
-      "artist": "Clams Casino, Imogen Heap",
-      "album": "Instrumental Relics",
-      "duration_ms": 277710,
-      "isrc": "QM24S2003584",
-      "uri": "spotify:track:0FVuyC9RP5MACjp4lgU3qZ",
-      "spotify_url": "https://open.spotify.com/track/0FVuyC9RP5MACjp4lgU3qZ"
+      "artist": "Cocteau Twins",
+      "album": "Heaven or Las Vegas",
+      "duration_ms": 338053,
+      "isrc": "GBAFL9000068",
+      "uri": "spotify:track:6i18oi8cbvlv9Y2QVBSzkB",
+      "spotify_url": "https://open.spotify.com/track/6i18oi8cbvlv9Y2QVBSzkB"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "ฅ^•ﻌ•^ฅ",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Inner Light",
       "artists": [
-        "Ninajirachi"
+        "Elderbrook",
+        "Bob Moses"
       ],
-      "artist": "Ninajirachi",
-      "album": "I Love My Computer",
-      "duration_ms": 66856,
-      "isrc": "QMBZ92597556",
-      "uri": "spotify:track:0qubDCNLgEKECDhRSq7Q38",
-      "spotify_url": "https://open.spotify.com/track/0qubDCNLgEKECDhRSq7Q38"
+      "artist": "Elderbrook, Bob Moses",
+      "album": "Innerlight EP",
+      "duration_ms": 257985,
+      "isrc": "GBAYE2100859",
+      "uri": "spotify:track:075uvCL2TSgyNnKE27BILY",
+      "spotify_url": "https://open.spotify.com/track/075uvCL2TSgyNnKE27BILY"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Pursuit Of Happiness (Nightmare)",
-      "artists": [
-        "Kid Cudi",
-        "MGMT",
-        "Ratatat"
-      ],
-      "artist": "Kid Cudi, MGMT, Ratatat",
-      "album": "Man On The Moon: The End Of Day (Int'l Version)",
-      "duration_ms": 295293,
-      "isrc": "USUM70981907",
-      "uri": "spotify:track:4kTLpAbhuEGHAAdDjOIWaa",
-      "spotify_url": "https://open.spotify.com/track/4kTLpAbhuEGHAAdDjOIWaa"
-    },
-    {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Cosmic Girl",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Cosmic Girl - Remastered 2006",
       "artists": [
         "Jamiroquai"
       ],
       "artist": "Jamiroquai",
-      "album": "Center Stage Music From The Motion Picture",
-      "duration_ms": 242973,
-      "isrc": "GBBBL9600106",
-      "uri": "spotify:track:2fiRJjWb9uk21Gva6oHpKs",
-      "spotify_url": "https://open.spotify.com/track/2fiRJjWb9uk21Gva6oHpKs"
+      "album": "Driving Songs",
+      "duration_ms": 227866,
+      "isrc": "GBARL0601476",
+      "uri": "spotify:track:0QCCwIK5wNdCFNYv96n2eV",
+      "spotify_url": "https://open.spotify.com/track/0QCCwIK5wNdCFNYv96n2eV"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "BAILE INoLVIDABLE",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Born Slippy (Nuxx) - Radio Edit",
       "artists": [
-        "Bad Bunny"
+        "Underworld"
       ],
-      "artist": "Bad Bunny",
-      "album": "DeBÍ TiRAR MáS FOToS",
-      "duration_ms": 367725,
-      "isrc": "QMFMF2447057",
-      "uri": "spotify:track:2lTm559tuIvatlT1u0JYG2",
-      "spotify_url": "https://open.spotify.com/track/2lTm559tuIvatlT1u0JYG2"
+      "artist": "Underworld",
+      "album": "Born Slippy (Nuxx) [Radio Edit]",
+      "duration_ms": 264187,
+      "isrc": "GBCGL9800026",
+      "uri": "spotify:track:3bUNyRrTFJDd4mqvUcb1Aa",
+      "spotify_url": "https://open.spotify.com/track/3bUNyRrTFJDd4mqvUcb1Aa"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Crazy",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Ni**as In Paris",
       "artists": [
-        "Gnarls Barkley",
-        "CeeLo Green",
-        "Danger Mouse"
+        "JAŸ-Z",
+        "Kanye West"
       ],
-      "artist": "Gnarls Barkley, CeeLo Green, Danger Mouse",
-      "album": "St. Elsewhere",
-      "duration_ms": 177933,
-      "isrc": "GBAHT0600202",
-      "uri": "spotify:track:1vxw6aYJls2oq3gW0DujAo",
-      "spotify_url": "https://open.spotify.com/track/1vxw6aYJls2oq3gW0DujAo"
+      "artist": "JAŸ-Z, Kanye West",
+      "album": "Watch The Throne",
+      "duration_ms": 219333,
+      "isrc": "USUM71111621",
+      "uri": "spotify:track:1auxYwYrFRqZP7t3s7w4um",
+      "spotify_url": "https://open.spotify.com/track/1auxYwYrFRqZP7t3s7w4um"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Bad Habit",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "November Has Come",
       "artists": [
-        "Steve Lacy"
+        "Gorillaz",
+        "MF DOOM"
       ],
-      "artist": "Steve Lacy",
-      "album": "Gemini Rights",
-      "duration_ms": 232114,
-      "isrc": "USRC12201440",
-      "uri": "spotify:track:4k6Uh1HXdhtusDW5y8Gbvy",
-      "spotify_url": "https://open.spotify.com/track/4k6Uh1HXdhtusDW5y8Gbvy"
+      "artist": "Gorillaz, MF DOOM",
+      "album": "Demon Days",
+      "duration_ms": 165093,
+      "isrc": "GBAYE0500175",
+      "uri": "spotify:track:6lrDckuosGpwEHtm1hHBcf",
+      "spotify_url": "https://open.spotify.com/track/6lrDckuosGpwEHtm1hHBcf"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Say It Ain't So",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Du hast",
       "artists": [
-        "Weezer"
+        "Rammstein"
       ],
-      "artist": "Weezer",
-      "album": "Weezer",
-      "duration_ms": 258853,
-      "isrc": "USIR10400084",
-      "uri": "spotify:track:56MEbUIvvfEEkLIl51wxGD",
-      "spotify_url": "https://open.spotify.com/track/56MEbUIvvfEEkLIl51wxGD"
+      "artist": "Rammstein",
+      "album": "Sehnsucht",
+      "duration_ms": 234226,
+      "isrc": "DED579704010",
+      "uri": "spotify:track:5awDvzxWfd53SSrsRZ8pXO",
+      "spotify_url": "https://open.spotify.com/track/5awDvzxWfd53SSrsRZ8pXO"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Cherish the Day",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Girl Like Me",
       "artists": [
-        "Sade"
+        "PinkPantheress"
       ],
-      "artist": "Sade",
-      "album": "Love Deluxe",
-      "duration_ms": 332133,
-      "isrc": "GBBBM9202023",
-      "uri": "spotify:track:22QiTJqDn1BIRSh4mkNJ5w",
-      "spotify_url": "https://open.spotify.com/track/22QiTJqDn1BIRSh4mkNJ5w"
+      "artist": "PinkPantheress",
+      "album": "Fancy That",
+      "duration_ms": 145520,
+      "isrc": "GBAYE2500031",
+      "uri": "spotify:track:7aYGCP34Xo6XujY7Ix1DxB",
+      "spotify_url": "https://open.spotify.com/track/7aYGCP34Xo6XujY7Ix1DxB"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Babydoll",
-      "artists": [
-        "Dominic Fike"
-      ],
-      "artist": "Dominic Fike",
-      "album": "Don't Forget About Me, Demos",
-      "duration_ms": 97960,
-      "isrc": "USQX91802457",
-      "uri": "spotify:track:7yNf9YjeO5JXUE3JEBgnYc",
-      "spotify_url": "https://open.spotify.com/track/7yNf9YjeO5JXUE3JEBgnYc"
-    },
-    {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Pink Moon",
-      "artists": [
-        "Nick Drake"
-      ],
-      "artist": "Nick Drake",
-      "album": "Pink Moon",
-      "duration_ms": 124000,
-      "isrc": "GBAAN7200021",
-      "uri": "spotify:track:4KROoGIaPaR1pBHPnR3bwC",
-      "spotify_url": "https://open.spotify.com/track/4KROoGIaPaR1pBHPnR3bwC"
-    },
-    {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "The Word Becomes Flesh",
-      "artists": [
-        "Boards of Canada"
-      ],
-      "artist": "Boards of Canada",
-      "album": "Inferno",
-      "duration_ms": 320100,
-      "isrc": "GBBPW2602550",
-      "uri": "spotify:track:2zKrt7YUpsKWEQagjS4rOQ",
-      "spotify_url": "https://open.spotify.com/track/2zKrt7YUpsKWEQagjS4rOQ"
-    },
-    {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Iris",
-      "artists": [
-        "The Goo Goo Dolls"
-      ],
-      "artist": "The Goo Goo Dolls",
-      "album": "City of Angels (Music from the Motion Picture)",
-      "duration_ms": 289533,
-      "isrc": "USWB19800160",
-      "uri": "spotify:track:2mtVxf50BYsKNtQoz8sfzm",
-      "spotify_url": "https://open.spotify.com/track/2mtVxf50BYsKNtQoz8sfzm"
-    },
-    {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "The Fate of Ophelia",
-      "artists": [
-        "Taylor Swift"
-      ],
-      "artist": "Taylor Swift",
-      "album": "The Life of a Showgirl",
-      "duration_ms": 226073,
-      "isrc": "USUG12506436",
-      "uri": "spotify:track:53iuhJlwXhSER5J2IYYv1W",
-      "spotify_url": "https://open.spotify.com/track/53iuhJlwXhSER5J2IYYv1W"
-    },
-    {
-      "added_at": "2026-09-11T06:47:00Z",
+      "added_at": "2026-09-13T19:04:09Z",
       "title": "Rather Be (feat. Jess Glynne)",
       "artists": [
         "Clean Bandit",
@@ -210,257 +130,164 @@
       "spotify_url": "https://open.spotify.com/track/7KOlSRYkRfwrndUMEYrikx"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Daft Punk Is Playing at My House",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Neverender",
       "artists": [
-        "LCD Soundsystem"
+        "Justice",
+        "Tame Impala"
       ],
-      "artist": "LCD Soundsystem",
-      "album": "LCD Soundsystem",
-      "duration_ms": 314556,
-      "isrc": "US4GE0400025",
-      "uri": "spotify:track:73mlvsfJM2qwlDUJxeaatI",
-      "spotify_url": "https://open.spotify.com/track/73mlvsfJM2qwlDUJxeaatI"
+      "artist": "Justice, Tame Impala",
+      "album": "Neverender",
+      "duration_ms": 266493,
+      "isrc": "FR8EU2300010",
+      "uri": "spotify:track:0ccoGCaOFCxI6pHixrQpKj",
+      "spotify_url": "https://open.spotify.com/track/0ccoGCaOFCxI6pHixrQpKj"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Given Up",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "aisatsana [102]",
       "artists": [
-        "Linkin Park"
+        "Aphex Twin"
       ],
-      "artist": "Linkin Park",
-      "album": "Minutes to Midnight",
-      "duration_ms": 189293,
-      "isrc": "USWB10701211",
-      "uri": "spotify:track:1fLlRApgzxWweF1JTf8yM5",
-      "spotify_url": "https://open.spotify.com/track/1fLlRApgzxWweF1JTf8yM5"
+      "artist": "Aphex Twin",
+      "album": "Syro",
+      "duration_ms": 321880,
+      "isrc": "GBBPW1400099",
+      "uri": "spotify:track:5ljMlD10En5rRGZU0cs2Np",
+      "spotify_url": "https://open.spotify.com/track/5ljMlD10En5rRGZU0cs2Np"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "I Can Talk",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Take Me Out",
       "artists": [
-        "Two Door Cinema Club"
+        "Franz Ferdinand"
       ],
-      "artist": "Two Door Cinema Club",
-      "album": "Tourist History",
-      "duration_ms": 175906,
-      "isrc": "FRU700900083",
-      "uri": "spotify:track:4N90LxX3kWhJucPQ484Qy9",
-      "spotify_url": "https://open.spotify.com/track/4N90LxX3kWhJucPQ484Qy9"
+      "artist": "Franz Ferdinand",
+      "album": "Franz Ferdinand",
+      "duration_ms": 237026,
+      "isrc": "GBCEL0300192",
+      "uri": "spotify:track:20I8RduZC2PWMWTDCZuuAN",
+      "spotify_url": "https://open.spotify.com/track/20I8RduZC2PWMWTDCZuuAN"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Death with Dignity",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "DNA.",
       "artists": [
-        "Sufjan Stevens"
+        "Kendrick Lamar"
       ],
-      "artist": "Sufjan Stevens",
-      "album": "Carrie & Lowell",
-      "duration_ms": 239508,
-      "isrc": "US64G1509901",
-      "uri": "spotify:track:73uJybGAhwGRD9MZYrOmTY",
-      "spotify_url": "https://open.spotify.com/track/73uJybGAhwGRD9MZYrOmTY"
+      "artist": "Kendrick Lamar",
+      "album": "DAMN.",
+      "duration_ms": 185946,
+      "isrc": "USUM71703079",
+      "uri": "spotify:track:6HZILIRieu8S0iqY8kIKhj",
+      "spotify_url": "https://open.spotify.com/track/6HZILIRieu8S0iqY8kIKhj"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Locked out of Heaven",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "BAILE INoLVIDABLE",
       "artists": [
-        "Bruno Mars"
+        "Bad Bunny"
       ],
-      "artist": "Bruno Mars",
-      "album": "Unorthodox Jukebox",
-      "duration_ms": 233478,
-      "isrc": "USAT21203287",
-      "uri": "spotify:track:3w3y8KPTfNeOKPiqUTakBh",
-      "spotify_url": "https://open.spotify.com/track/3w3y8KPTfNeOKPiqUTakBh"
+      "artist": "Bad Bunny",
+      "album": "DeBÍ TiRAR MáS FOToS",
+      "duration_ms": 367725,
+      "isrc": "QMFMF2447057",
+      "uri": "spotify:track:2lTm559tuIvatlT1u0JYG2",
+      "spotify_url": "https://open.spotify.com/track/2lTm559tuIvatlT1u0JYG2"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "American Boy",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Acid Rain",
       "artists": [
-        "Estelle",
-        "Kanye West"
+        "Lorn"
       ],
-      "artist": "Estelle, Kanye West",
-      "album": "Shine",
-      "duration_ms": 284733,
-      "isrc": "USAT20706210",
-      "uri": "spotify:track:6etwirSInfuJrSOlogS6Sh",
-      "spotify_url": "https://open.spotify.com/track/6etwirSInfuJrSOlogS6Sh"
+      "artist": "Lorn",
+      "album": "The Maze To Nowhere",
+      "duration_ms": 172473,
+      "isrc": "QM2PV1640378",
+      "uri": "spotify:track:7pM9cLbrgRGX1hHElTX92m",
+      "spotify_url": "https://open.spotify.com/track/7pM9cLbrgRGX1hHElTX92m"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Holiday",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "The Fate of Ophelia",
       "artists": [
-        "Green Day"
+        "Taylor Swift"
       ],
-      "artist": "Green Day",
-      "album": "Holiday",
-      "duration_ms": 233026,
-      "isrc": "USRE10500451",
-      "uri": "spotify:track:5vfjUAhefN7IjHbTvVCT4Z",
-      "spotify_url": "https://open.spotify.com/track/5vfjUAhefN7IjHbTvVCT4Z"
+      "artist": "Taylor Swift",
+      "album": "The Life of a Showgirl",
+      "duration_ms": 226073,
+      "isrc": "USUG12506436",
+      "uri": "spotify:track:53iuhJlwXhSER5J2IYYv1W",
+      "spotify_url": "https://open.spotify.com/track/53iuhJlwXhSER5J2IYYv1W"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Chris",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "The Hills",
       "artists": [
-        "C418"
+        "The Weeknd"
       ],
-      "artist": "C418",
-      "album": "Minecraft - Volume Alpha",
-      "duration_ms": 87750,
-      "isrc": "TCAAW1157084",
-      "uri": "spotify:track:6DWDh2228j0yXcDQBQtq2t",
-      "spotify_url": "https://open.spotify.com/track/6DWDh2228j0yXcDQBQtq2t"
+      "artist": "The Weeknd",
+      "album": "Beauty Behind The Madness",
+      "duration_ms": 242253,
+      "isrc": "USUG11500737",
+      "uri": "spotify:track:7fBv7CLKzipRk6EC6TWHOB",
+      "spotify_url": "https://open.spotify.com/track/7fBv7CLKzipRk6EC6TWHOB"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Kids with Guns - Hot Chip Remix",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Immigrant Song - Remaster",
       "artists": [
-        "Gorillaz",
-        "Hot Chip"
+        "Led Zeppelin"
       ],
-      "artist": "Gorillaz, Hot Chip",
-      "album": "D-Sides",
-      "duration_ms": 429666,
-      "isrc": "GBAYE0502305",
-      "uri": "spotify:track:5fCRwfy0oON0I34xxHWels",
-      "spotify_url": "https://open.spotify.com/track/5fCRwfy0oON0I34xxHWels"
+      "artist": "Led Zeppelin",
+      "album": "Led Zeppelin III (Remaster)",
+      "duration_ms": 146250,
+      "isrc": "USAT21300934",
+      "uri": "spotify:track:78lgmZwycJ3nzsdgmPPGNx",
+      "spotify_url": "https://open.spotify.com/track/78lgmZwycJ3nzsdgmPPGNx"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "WHERE IS MY HUSBAND!",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Touch The Sky",
       "artists": [
-        "RAYE"
+        "Kanye West",
+        "Lupe Fiasco"
       ],
-      "artist": "RAYE",
-      "album": "WHERE IS MY HUSBAND!",
-      "duration_ms": 197142,
-      "isrc": "QMFME2535037",
-      "uri": "spotify:track:55lijDD6OAjLFFUHU9tcDm",
-      "spotify_url": "https://open.spotify.com/track/55lijDD6OAjLFFUHU9tcDm"
+      "artist": "Kanye West, Lupe Fiasco",
+      "album": "Late Registration",
+      "duration_ms": 236600,
+      "isrc": "USUM70502527",
+      "uri": "spotify:track:2dxjKgT0li4qBI3QwuN9Ih",
+      "spotify_url": "https://open.spotify.com/track/2dxjKgT0li4qBI3QwuN9Ih"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Dream",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Life on Mars? - 2015 Remaster",
       "artists": [
-        "Walter Wilson"
+        "David Bowie"
       ],
-      "artist": "Walter Wilson",
-      "album": "Dream",
-      "duration_ms": 217533,
-      "isrc": "AEA2L2526856",
-      "uri": "spotify:track:7KKfa4JWR2ZV3ZNpDrYBSP",
-      "spotify_url": "https://open.spotify.com/track/7KKfa4JWR2ZV3ZNpDrYBSP"
+      "artist": "David Bowie",
+      "album": "Hunky Dory (2015 Remaster)",
+      "duration_ms": 235986,
+      "isrc": "USJT11500131",
+      "uri": "spotify:track:3ZE3wv8V3w2T2f7nOCjV0N",
+      "spotify_url": "https://open.spotify.com/track/3ZE3wv8V3w2T2f7nOCjV0N"
     },
     {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Vienna",
+      "added_at": "2026-09-13T19:04:09Z",
+      "title": "Pursuit Of Happiness (Nightmare)",
       "artists": [
-        "Billy Joel"
+        "Kid Cudi",
+        "MGMT",
+        "Ratatat"
       ],
-      "artist": "Billy Joel",
-      "album": "The Stranger (Legacy Edition)",
-      "duration_ms": 214240,
-      "isrc": "USSM17700373",
-      "uri": "spotify:track:4U45aEWtQhrm8A5mxPaFZ7",
-      "spotify_url": "https://open.spotify.com/track/4U45aEWtQhrm8A5mxPaFZ7"
-    },
-    {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Time Moves Slow",
-      "artists": [
-        "BADBADNOTGOOD",
-        "Samuel T. Herring"
-      ],
-      "artist": "BADBADNOTGOOD, Samuel T. Herring",
-      "album": "IV",
-      "duration_ms": 273864,
-      "isrc": "USD8D1634003",
-      "uri": "spotify:track:1IqF5PUDUnaykHLs0RWbDO",
-      "spotify_url": "https://open.spotify.com/track/1IqF5PUDUnaykHLs0RWbDO"
-    },
-    {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "It's You - underscores' \"It’s U\" Remix",
-      "artists": [
-        "Ninajirachi",
-        "daine",
-        "underscores"
-      ],
-      "artist": "Ninajirachi, daine, underscores",
-      "album": "It's You (underscores' \"It’s U\" Remix)",
-      "duration_ms": 211500,
-      "isrc": "QM4TX2610286",
-      "uri": "spotify:track:3YQoG8Ey0eYsLS9yAmeHK1",
-      "spotify_url": "https://open.spotify.com/track/3YQoG8Ey0eYsLS9yAmeHK1"
-    },
-    {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Lady Brown",
-      "artists": [
-        "Nujabes",
-        "Cise Starr"
-      ],
-      "artist": "Nujabes, Cise Starr",
-      "album": "Metaphorical Music",
-      "duration_ms": 199160,
-      "isrc": "JPH491605044",
-      "uri": "spotify:track:11nuN9xWUoKJNohMtyCoJg",
-      "spotify_url": "https://open.spotify.com/track/11nuN9xWUoKJNohMtyCoJg"
-    },
-    {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Decode - Twilight Soundtrack Version",
-      "artists": [
-        "Paramore"
-      ],
-      "artist": "Paramore",
-      "album": "Brand New Eyes (Deluxe Edition)",
-      "duration_ms": 261959,
-      "isrc": "USAT20804057",
-      "uri": "spotify:track:59GgbFYUQBDwJ6DB2ljPZe",
-      "spotify_url": "https://open.spotify.com/track/59GgbFYUQBDwJ6DB2ljPZe"
-    },
-    {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Smack My Bitch Up",
-      "artists": [
-        "The Prodigy"
-      ],
-      "artist": "The Prodigy",
-      "album": "The Fat of the Land",
-      "duration_ms": 343386,
-      "isrc": "GBBKS9700073",
-      "uri": "spotify:track:48vDCZIRmrFO33fH4QU4ij",
-      "spotify_url": "https://open.spotify.com/track/48vDCZIRmrFO33fH4QU4ij"
-    },
-    {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Ghosts 'n' Stuff",
-      "artists": [
-        "deadmau5"
-      ],
-      "artist": "deadmau5",
-      "album": "For Lack of a Better Name",
-      "duration_ms": 194986,
-      "isrc": "GBTDG0900132",
-      "uri": "spotify:track:5m4taQjTIjgEBU6mWpv5OC",
-      "spotify_url": "https://open.spotify.com/track/5m4taQjTIjgEBU6mWpv5OC"
-    },
-    {
-      "added_at": "2026-09-11T06:47:00Z",
-      "title": "Snow (Hey Oh)",
-      "artists": [
-        "Red Hot Chili Peppers"
-      ],
-      "artist": "Red Hot Chili Peppers",
-      "album": "Stadium Arcadium",
-      "duration_ms": 334666,
-      "isrc": "USWB10601591",
-      "uri": "spotify:track:2aibwv5hGXSgw7Yru8IYTO",
-      "spotify_url": "https://open.spotify.com/track/2aibwv5hGXSgw7Yru8IYTO"
+      "artist": "Kid Cudi, MGMT, Ratatat",
+      "album": "Man On The Moon: The End Of Day (Int'l Version)",
+      "duration_ms": 295293,
+      "isrc": "USUM70981907",
+      "uri": "spotify:track:4kTLpAbhuEGHAAdDjOIWaa",
+      "spotify_url": "https://open.spotify.com/track/4kTLpAbhuEGHAAdDjOIWaa"
     }
   ]
 }

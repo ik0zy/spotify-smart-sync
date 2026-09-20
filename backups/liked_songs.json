@@ -1,5 +1,204 @@
 [
   {
+    "added_at": "2026-09-19T08:23:51Z",
+    "title": "We Have A Map Of The Piano",
+    "artists": [
+      "múm"
+    ],
+    "artist": "múm",
+    "album": "Finally We Are No One",
+    "duration_ms": 319760,
+    "isrc": "GBDCA0100153",
+    "uri": "spotify:track:5NFZLpFoP4fVWjmc007A5k",
+    "spotify_url": "https://open.spotify.com/track/5NFZLpFoP4fVWjmc007A5k"
+  },
+  {
+    "added_at": "2026-09-19T06:22:12Z",
+    "title": "Silent Running (feat. Adeleye Omotayo)",
+    "artists": [
+      "Gorillaz",
+      "Adeleye Omotayo"
+    ],
+    "artist": "Gorillaz, Adeleye Omotayo",
+    "album": "Cracker Island",
+    "duration_ms": 266338,
+    "isrc": "GBAYE1901302",
+    "uri": "spotify:track:0ZGWe02EtMpw40QAzOVZD1",
+    "spotify_url": "https://open.spotify.com/track/0ZGWe02EtMpw40QAzOVZD1"
+  },
+  {
+    "added_at": "2026-09-19T06:12:55Z",
+    "title": "Indo Silver Club",
+    "artists": [
+      "Daft Punk"
+    ],
+    "artist": "Daft Punk",
+    "album": "Homework",
+    "duration_ms": 274733,
+    "isrc": "GBDUW0600016",
+    "uri": "spotify:track:4jF8GAMRCOenL17cNnBDI0",
+    "spotify_url": "https://open.spotify.com/track/4jF8GAMRCOenL17cNnBDI0"
+  },
+  {
+    "added_at": "2026-09-19T05:49:37Z",
+    "title": "Touch The Sky",
+    "artists": [
+      "Kanye West",
+      "Lupe Fiasco"
+    ],
+    "artist": "Kanye West, Lupe Fiasco",
+    "album": "Late Registration",
+    "duration_ms": 236600,
+    "isrc": "USUM70502527",
+    "uri": "spotify:track:2dxjKgT0li4qBI3QwuN9Ih",
+    "spotify_url": "https://open.spotify.com/track/2dxjKgT0li4qBI3QwuN9Ih"
+  },
+  {
+    "added_at": "2026-09-18T18:04:56Z",
+    "title": "aisatsana [102]",
+    "artists": [
+      "Aphex Twin"
+    ],
+    "artist": "Aphex Twin",
+    "album": "Syro",
+    "duration_ms": 321880,
+    "isrc": "GBBPW1400099",
+    "uri": "spotify:track:5ljMlD10En5rRGZU0cs2Np",
+    "spotify_url": "https://open.spotify.com/track/5ljMlD10En5rRGZU0cs2Np"
+  },
+  {
+    "added_at": "2026-09-18T17:55:17Z",
+    "title": "Paradise",
+    "artists": [
+      "Sade"
+    ],
+    "artist": "Sade",
+    "album": "Stronger Than Pride",
+    "duration_ms": 242240,
+    "isrc": "GBBBM8802021",
+    "uri": "spotify:track:2KpjKWyj0TI0FmGgENEKr6",
+    "spotify_url": "https://open.spotify.com/track/2KpjKWyj0TI0FmGgENEKr6"
+  },
+  {
+    "added_at": "2026-09-18T08:08:10Z",
+    "title": "WHERE IS MY HUSBAND!",
+    "artists": [
+      "RAYE"
+    ],
+    "artist": "RAYE",
+    "album": "WHERE IS MY HUSBAND!",
+    "duration_ms": 197142,
+    "isrc": "QMFME2535037",
+    "uri": "spotify:track:55lijDD6OAjLFFUHU9tcDm",
+    "spotify_url": "https://open.spotify.com/track/55lijDD6OAjLFFUHU9tcDm"
+  },
+  {
+    "added_at": "2026-09-15T08:31:24Z",
+    "title": "Right Here, Right Now",
+    "artists": [
+      "Fatboy Slim"
+    ],
+    "artist": "Fatboy Slim",
+    "album": "Why Try Harder - The Greatest Hits",
+    "duration_ms": 235586,
+    "isrc": "GBBMQ0600009",
+    "uri": "spotify:track:0jvcjeb87GNHTMAF00Or6a",
+    "spotify_url": "https://open.spotify.com/track/0jvcjeb87GNHTMAF00Or6a"
+  },
+  {
+    "added_at": "2026-09-15T08:28:06Z",
+    "title": "Touch It / Technologic",
+    "artists": [
+      "Daft Punk"
+    ],
+    "artist": "Daft Punk",
+    "album": "Alive 2007",
+    "duration_ms": 329653,
+    "isrc": "GBDUW0700002",
+    "uri": "spotify:track:4IdiGMOzEYXOh2897XOV8i",
+    "spotify_url": "https://open.spotify.com/track/4IdiGMOzEYXOh2897XOV8i"
+  },
+  {
+    "added_at": "2026-09-15T08:20:54Z",
+    "title": "Sonne",
+    "artists": [
+      "Rammstein"
+    ],
+    "artist": "Rammstein",
+    "album": "Mutter",
+    "duration_ms": 272440,
+    "isrc": "DEN120003766",
+    "uri": "spotify:track:3gVhsZtseYtY1fMuyYq06F",
+    "spotify_url": "https://open.spotify.com/track/3gVhsZtseYtY1fMuyYq06F"
+  },
+  {
+    "added_at": "2026-09-15T08:04:48Z",
+    "title": "Inner Light",
+    "artists": [
+      "Elderbrook",
+      "Bob Moses"
+    ],
+    "artist": "Elderbrook, Bob Moses",
+    "album": "Innerlight EP",
+    "duration_ms": 257985,
+    "isrc": "GBAYE2100859",
+    "uri": "spotify:track:075uvCL2TSgyNnKE27BILY",
+    "spotify_url": "https://open.spotify.com/track/075uvCL2TSgyNnKE27BILY"
+  },
+  {
+    "added_at": "2026-09-15T07:48:26Z",
+    "title": "I Took A Pill In Ibiza - Seeb Remix",
+    "artists": [
+      "Mike Posner",
+      "Seeb"
+    ],
+    "artist": "Mike Posner, Seeb",
+    "album": "At Night, Alone.",
+    "duration_ms": 197933,
+    "isrc": "USUM71509342",
+    "uri": "spotify:track:0vbtURX4qv1l7besfwmnD8",
+    "spotify_url": "https://open.spotify.com/track/0vbtURX4qv1l7besfwmnD8"
+  },
+  {
+    "added_at": "2026-09-14T06:49:53Z",
+    "title": "World In My Eyes",
+    "artists": [
+      "Depeche Mode"
+    ],
+    "artist": "Depeche Mode",
+    "album": "Violator (Deluxe)",
+    "duration_ms": 266653,
+    "isrc": "GBAJH0600287",
+    "uri": "spotify:track:0TBn49AjkNufCRJ2O5VJ6s",
+    "spotify_url": "https://open.spotify.com/track/0TBn49AjkNufCRJ2O5VJ6s"
+  },
+  {
+    "added_at": "2026-09-14T06:27:40Z",
+    "title": "Derezzed",
+    "artists": [
+      "Daft Punk"
+    ],
+    "artist": "Daft Punk",
+    "album": "TRON: Legacy - The Complete Edition (Original Motion Picture Soundtrack)",
+    "duration_ms": 104113,
+    "isrc": "USWD11054888",
+    "uri": "spotify:track:7hqlHZIXhwAzpWQxm9KzBd",
+    "spotify_url": "https://open.spotify.com/track/7hqlHZIXhwAzpWQxm9KzBd"
+  },
+  {
+    "added_at": "2026-09-14T06:25:38Z",
+    "title": "Radio",
+    "artists": [
+      "Bershy"
+    ],
+    "artist": "Bershy",
+    "album": "Radio",
+    "duration_ms": 201853,
+    "isrc": "GBWUL2270670",
+    "uri": "spotify:track:3l8ACerUtJfRd0rxJJ4Gkx",
+    "spotify_url": "https://open.spotify.com/track/3l8ACerUtJfRd0rxJJ4Gkx"
+  },
+  {
     "added_at": "2026-09-12T09:11:29Z",
     "title": "Kids with Guns - Hot Chip Remix",
     "artists": [
@@ -11541,9 +11740,9 @@
     "title": "DADDY ! DADDY ! DO !",
     "artists": [
       "Masayuki Suzuki",
-      "Airi Suzuki"
+      "鈴木愛理"
     ],
-    "artist": "Masayuki Suzuki, Airi Suzuki",
+    "artist": "Masayuki Suzuki, 鈴木愛理",
     "album": "ALL TIME ROCK 'N' ROLL",
     "duration_ms": 254640,
     "isrc": "JPU902000719",
@@ -29368,19 +29567,6 @@
     "isrc": "KRNAR2353968",
     "uri": "spotify:track:4WDLIOCRHtoyIbL8ky0Gx0",
     "spotify_url": "https://open.spotify.com/track/4WDLIOCRHtoyIbL8ky0Gx0"
-  },
-  {
-    "added_at": "2026-04-25T21:53:20Z",
-    "title": "Shape of You",
-    "artists": [
-      "Ed Sheeran"
-    ],
-    "artist": "Ed Sheeran",
-    "album": "÷ (Deluxe)",
-    "duration_ms": 233712,
-    "isrc": "GBAHS1600463",
-    "uri": "spotify:track:7qiZfU4dY1lWllzX7mPBI3",
-    "spotify_url": "https://open.spotify.com/track/7qiZfU4dY1lWllzX7mPBI3"
   },
   {
     "added_at": "2026-04-25T21:51:40Z",
