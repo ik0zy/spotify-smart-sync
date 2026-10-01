@@ -1,6 +1,6 @@
 """
 add_missing_liked.py
-Check specified tracks against live Spotify Liked Songs,
+Self-contained script to check specified tracks against live Spotify Liked Songs,
 search Spotify for missing tracks, and attempt to add them to Liked Songs.
 """
 
@@ -9,14 +9,112 @@ import os
 import re
 import sys
 import time
+import unicodedata
+import requests
 import spotipy
-from common import (
-    get_spotify_client,
-    requests_retry,
-    spotify_retry,
-    normalise,
-    track_key_variants,
+
+
+def normalise(text: str) -> str:
+    if not text:
+        return ""
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join(c for c in text if not unicodedata.combining(c))
+    text = text.lower()
+    text = re.sub(r"[^\w\s]", "", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+
+_NOISE_WORD = (
+    r"(?:remaster(?:ed)?|re-?master|deluxe|bonus|expanded|anniversary|"
+    r"edition|version|live|single|radio\s*edit|mono|stereo|acoustic|"
+    r"instrumental|demo|mix(?:ed)?|re-?mix|edit|feat\.?|featuring|ft\.?|with)"
 )
+_NOISE_GROUP_RE = re.compile(rf"(?i)\s*[\(\[][^)\]]*\b{_NOISE_WORD}\b[^)\]]*[\)\]]")
+_NOISE_SUFFIX_RE = re.compile(rf"(?i)\s+[-–—]\s+[^-–—]*{_NOISE_WORD}[^-–—]*$")
+_ANY_GROUP_RE = re.compile(r"(?i)\s+[\(\[][^)\]]*[\)\]]")
+_FEATURE_RE = re.compile(r"(?i)^(.*?)\s*[\(\[]?\s*(?:feat\.?|featuring|ft\.?)\s")
+
+
+def title_variants(title: str) -> list[str]:
+    out = [title]
+    stripped = _NOISE_GROUP_RE.sub("", title or "")
+    stripped = _NOISE_SUFFIX_RE.sub("", stripped).strip()
+    if stripped and stripped != title:
+        out.append(stripped)
+    bare = _ANY_GROUP_RE.sub("", title or "").strip()
+    if bare and bare not in out:
+        out.append(bare)
+    return out
+
+
+def artist_variants(artists: list[str] | str) -> list[str]:
+    if isinstance(artists, str):
+        parts = [artists]
+    else:
+        parts = [a for a in (artists or []) if a]
+    if not parts:
+        return []
+    out = [", ".join(parts)]
+    single = parts[0]
+    feature_match = _FEATURE_RE.match(single)
+    if feature_match:
+        main = feature_match.group(1).strip(" ,;-")
+        if main and main != single:
+            out.append(main)
+    if len(parts) > 1:
+        out.append(parts[0])
+    elif "," in single and "&" not in single:
+        out.append(single.split(",")[0].strip())
+    elif " & " in single:
+        for p in single.split(" & "):
+            out.append(p.strip())
+    return list(dict.fromkeys(out))
+
+
+def track_key_variants(artists: list[str] | str, title: str) -> set[str]:
+    return {
+        f"{normalise(artist)} - {normalise(title_variant)}"
+        for artist in artist_variants(artists)
+        for title_variant in title_variants(title or "")
+    }
+
+
+def requests_retry(url: str, data: dict = None, method: str = "GET", timeout: int = 30, max_retries: int = 3):
+    for attempt in range(1, max_retries + 1):
+        try:
+            if method.upper() == "POST":
+                resp = requests.post(url, data=data, timeout=timeout)
+            else:
+                resp = requests.get(url, timeout=timeout)
+            if resp.status_code in (500, 502, 503, 504) and attempt < max_retries:
+                time.sleep(2 * attempt)
+                continue
+            return resp
+        except Exception:
+            if attempt >= max_retries:
+                raise
+            time.sleep(2 * attempt)
+    raise RuntimeError("HTTP request failed.")
+
+
+MAX_SPOTIFY_RETRIES = 3
+MAX_SPOTIFY_RETRY_WAIT = 60
+
+
+def spotify_retry(func, *args, **kwargs):
+    for attempt in range(1, MAX_SPOTIFY_RETRIES + 1):
+        try:
+            return func(*args, **kwargs)
+        except spotipy.exceptions.SpotifyException as exc:
+            if exc.http_status != 429:
+                raise
+            retry_after = int(exc.headers.get("Retry-After", MAX_SPOTIFY_RETRY_WAIT))
+            if retry_after > MAX_SPOTIFY_RETRY_WAIT:
+                raise
+            time.sleep(retry_after)
+    raise RuntimeError("Still rate-limited.")
+
 
 TARGET_SONGS = [
     {"title": "Passionfruit AG Remix AI", "artist": "JD Style", "album": "", "timestamp": "2025-11-13T14:24:24.843Z"},
@@ -54,8 +152,7 @@ TARGET_SONGS = [
 ]
 
 
-def check_token_scope() -> tuple[spotipy.Spotify, str]:
-    """Get Spotify client and inspect scopes."""
+def check_token_scope():
     client_id = os.environ["SPOTIFY_CLIENT_ID"]
     client_secret = os.environ["SPOTIFY_CLIENT_SECRET"]
     refresh_token = os.environ["SPOTIFY_REFRESH_TOKEN"]
@@ -81,8 +178,7 @@ def check_token_scope() -> tuple[spotipy.Spotify, str]:
     return sp, granted_scopes
 
 
-def fetch_all_liked_songs(sp: spotipy.Spotify) -> list[dict]:
-    """Fetch complete current list of saved tracks."""
+def fetch_all_liked_songs(sp):
     print("[Spotify] Fetching live Liked Songs …")
     liked = []
     offset = 0
@@ -115,13 +211,11 @@ def fetch_all_liked_songs(sp: spotipy.Spotify) -> list[dict]:
     return liked
 
 
-def search_track(sp: spotipy.Spotify, title: str, artist: str) -> dict | None:
-    """Search Spotify for the best matching track."""
+def search_track(sp, title: str, artist: str):
     queries = [
         f"track:{title} artist:{artist}",
         f"{title} {artist}",
     ]
-    # Strip parenthetical annotations if needed
     clean_title = re.sub(r"[\(\[][^)\]]*[\)\]]", "", title).strip()
     if clean_title != title:
         queries.append(f"{clean_title} {artist}")
@@ -193,33 +287,15 @@ def main():
         print(f"✓ \"{t['title']}\" by {t['artist']} ==> \"{m['title']}\" by {m['artist']} (Added: {m.get('added_at')})")
 
     print(f"\n--- NOT IN LIKED SONGS ({len(missing)}) ---")
-    to_add_uris = []
     search_results = []
-
     for t in missing:
         match = search_track(sp, t["title"], t["artist"])
+        search_results.append((t, match))
         if match:
-            search_results.append((t, match))
-            to_add_uris.append(match["uri"])
             print(f"🔍 Found on Spotify: \"{t['title']}\" by {t['artist']} -> \"{match['title']}\" by {match['artist']} ({match['url']})")
         else:
-            search_results.append((t, None))
             print(f"⚠️ Could NOT find on Spotify: \"{t['title']}\" by {t['artist']}")
 
-    # Save detailed report to json
-    report = {
-        "found_count": len(found),
-        "missing_count": len(missing),
-        "found": [{"target": t, "matched": m} for t, m in found],
-        "missing": [
-            {"target": t, "spotify_match": m} for t, m in search_results
-        ],
-        "token_can_modify": can_modify,
-    }
-    with open("liked_songs_check_result.json", "w") as f:
-        json.dump(report, f, indent=2)
-
-    # Attempt to add if scope allows
     if can_modify:
         valid_uris = [m["uri"] for t, m in search_results if m]
         if valid_uris:
@@ -228,10 +304,12 @@ def main():
                 chunk = valid_uris[i : i + 50]
                 spotify_retry(sp.current_user_saved_tracks_add, tracks=chunk)
                 print(f"  Added {len(chunk)} tracks.")
-            print("[Spotify] Successfully added all missing tracks to Liked Songs! ✓")
+            print("[Spotify] Successfully added missing tracks to Liked Songs! ✓")
     else:
-        print("\n[Spotify] NOTE: The current Spotify refresh token does NOT have the 'user-library-modify' scope.")
-        print("[Spotify] Direct Spotify links have been generated for all missing tracks.")
+        print("\n[Spotify] NOTE: The current Spotify refresh token scopes are:")
+        print(f"  '{scopes}'")
+        print("  Notice: 'user-library-modify' is missing from the token scope.")
+        print("  To add songs automatically via API, the token must be re-generated with 'user-library-modify'.")
 
 
 if __name__ == "__main__":
