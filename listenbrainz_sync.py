@@ -9,113 +9,59 @@ Behaviour:
     tracks that have been played. The playlist shrinks as you listen.
 """
 
-import json
 import os
 import re
 import time
-import unicodedata
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
-import requests
-import spotipy
+from common import (
+    get_spotify_client,
+    load_state,
+    local_timestamp,
+    requests_retry,
+    save_state,
+    spotify_retry,
+    track_key_variants,
+    track_played,
+)
+
+__all__ = [
+    "clean_track_metadata",
+    "fetch_scrobbles_since",
+    "fetch_latest_weekly_exploration",
+    "find_spotify_track_uri",
+    "update_playlist_description",
+    "main",
+]
 
 
-# ── string normalization & matching helpers ──────────────────────────────────
-
-def _normalise(text: str) -> str:
-    """Lower-case, strip accents, collapse whitespace, remove punctuation."""
-    text = unicodedata.normalize("NFKD", text)
-    text = "".join(c for c in text if not unicodedata.combining(c))
-    text = text.lower()
-    text = re.sub(r"[^\w\s]", "", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
-
-
-def standardise_track_key(artist: str, title: str) -> str:
-    """Return a canonical 'artist - title' key for matching."""
-    return f"{_normalise(artist)} - {_normalise(title)}"
-
+# ── search-query cleanup ─────────────────────────────────────────────────────
 
 def clean_track_metadata(artist: str, title: str) -> tuple[str, str]:
-    """Remove common clutter like (Remastered 2011), feat. X, etc. for better search recall."""
+    """Strip clutter like (Remastered 2011), feat. X for Spotify search recall.
+
+    This is about the *query* we send, not about matching, so it is
+    deliberately more aggressive than common.title_variants.
+    """
     artist_clean = re.sub(r"(?i)\s*[\(\[]ft\.?|feat\.?.*[\)\]]", "", artist).strip()
     title_clean = re.sub(r"(?i)\s*[\(\[]ft\.?|feat\.?.*[\)\]]", "", title).strip()
-    title_clean = re.sub(r"(?i)\s*[\(\[](remastered|deluxe|bonus|expanded|edition|live|version|single|radio edit).*[\)\]]", "", title_clean).strip()
+    title_clean = re.sub(
+        r"(?i)\s*[\(\[](remastered|deluxe|bonus|expanded|edition|live|version|single|radio edit).*[\)\]]",
+        "",
+        title_clean,
+    ).strip()
     return artist_clean or artist, title_clean or title
-
-
-def requests_retry(url: str, params: dict | None = None, data: dict | None = None, method: str = "GET", timeout: int = 30, max_retries: int = 3) -> requests.Response:
-    """Execute HTTP request with automatic retries on timeouts, connection errors, and 5xx server errors."""
-    for attempt in range(1, max_retries + 1):
-        try:
-            if method.upper() == "POST":
-                resp = requests.post(url, data=data, timeout=timeout)
-            else:
-                resp = requests.get(url, params=params, timeout=timeout)
-
-            if resp.status_code in (500, 502, 503, 504):
-                if attempt < max_retries:
-                    time.sleep(2 * attempt)
-                    continue
-            return resp
-        except (requests.exceptions.RequestException, requests.exceptions.Timeout) as exc:
-            if attempt >= max_retries:
-                raise
-            print(f"[Network] Request timeout/error ({exc.__class__.__name__}), retrying {attempt}/{max_retries} …")
-            time.sleep(2 * attempt)
-    raise RuntimeError(f"HTTP request failed after {max_retries} attempts.")
-
-
-# ── Spotify auth & retry helpers ─────────────────────────────────────────────
-
-def get_spotify_client() -> spotipy.Spotify:
-    """Exchange refresh token for access token and return Spotify client."""
-    client_id = os.environ["SPOTIFY_CLIENT_ID"]
-    client_secret = os.environ["SPOTIFY_CLIENT_SECRET"]
-    refresh_token = os.environ["SPOTIFY_REFRESH_TOKEN"]
-
-    resp = requests_retry(
-        "https://accounts.spotify.com/api/token",
-        method="POST",
-        data={
-            "grant_type": "refresh_token",
-            "refresh_token": refresh_token,
-            "client_id": client_id,
-            "client_secret": client_secret,
-        },
-        timeout=30,
-    )
-    resp.raise_for_status()
-    access_token = resp.json()["access_token"]
-
-    return spotipy.Spotify(auth=access_token, retries=0, status_retries=0)
-
-
-MAX_SPOTIFY_RETRIES = 3
-MAX_SPOTIFY_RETRY_WAIT = 60
-
-
-def spotify_retry(func, *args, **kwargs):
-    """Call spotipy method with bounded retry on 429 rate limits."""
-    for attempt in range(1, MAX_SPOTIFY_RETRIES + 1):
-        try:
-            return func(*args, **kwargs)
-        except spotipy.exceptions.SpotifyException as exc:
-            if exc.http_status != 429:
-                raise
-            retry_after = int(exc.headers.get("Retry-After", MAX_SPOTIFY_RETRY_WAIT))
-            if retry_after > MAX_SPOTIFY_RETRY_WAIT:
-                raise RuntimeError(f"[Spotify] Rate-limited Retry-After={retry_after}s exceeds cap — aborting.") from exc
-            print(f"[Spotify] Rate-limited, waiting {retry_after}s (attempt {attempt}/{MAX_SPOTIFY_RETRIES}) …")
-            time.sleep(retry_after)
-    raise RuntimeError(f"[Spotify] Still rate-limited after {MAX_SPOTIFY_RETRIES} retries — aborting.")
 
 
 # ── Last.fm scrobble fetching ────────────────────────────────────────────────
 
 def fetch_scrobbles_since(since_iso: str) -> set[str]:
-    """Return standardised 'artist - title' keys scrobbled since *since_iso*."""
+    """Return 'artist - title' keys scrobbled since *since_iso*.
+
+    Every spelling variant of each scrobble is indexed so that a track
+    described as 'A feat. B' on Last.fm still matches the Spotify
+    artist list ['A', 'B'].
+    """
 
     api_key = os.environ["LASTFM_API_KEY"]
     username = os.environ["LASTFM_USERNAME"]
@@ -173,18 +119,18 @@ def fetch_scrobbles_since(since_iso: str) -> set[str]:
             artist = track.get("artist", {}).get("#text", "")
             title = track.get("name", "")
             if artist and title:
-                scrobbled.add(standardise_track_key(artist, title))
+                scrobbled.update(track_key_variants(artist, title))
 
         attrs = recent.get("@attr", {})
         total_pages = int(attrs.get("totalPages", 1))
-        print(f"[Last.fm] Page {page}/{total_pages} — {len(scrobbled)} unique tracks so far.")
+        print(f"[Last.fm] Page {page}/{total_pages} — {len(scrobbled)} track keys so far.")
 
         if page >= total_pages:
             break
         page += 1
         time.sleep(0.25)
 
-    print(f"[Last.fm] Fetched {len(scrobbled)} unique scrobbled tracks since playlist start.")
+    print(f"[Last.fm] Fetched {len(scrobbled)} track keys since playlist start.")
     return scrobbled
 
 
@@ -196,7 +142,7 @@ def fetch_latest_weekly_exploration(username: str) -> tuple[str, str, list[dict]
     Returns (playlist_mbid, playlist_title, track_list).
     """
     url = f"https://api.listenbrainz.org/1/user/{username}/playlists/createdfor"
-    resp = requests_retry(url, timeout=30)
+    resp = requests_retry(url, timeout=45, expect_json=True)
     resp.raise_for_status()
     data = resp.json()
 
@@ -217,7 +163,7 @@ def fetch_latest_weekly_exploration(username: str) -> tuple[str, str, list[dict]
     print(f"[ListenBrainz] Found latest playlist: '{target_title}' (MBID: {target_mbid})")
 
     detail_url = f"https://api.listenbrainz.org/1/playlist/{target_mbid}"
-    detail_resp = requests_retry(detail_url, timeout=30)
+    detail_resp = requests_retry(detail_url, timeout=45, expect_json=True)
     detail_resp.raise_for_status()
     detail_data = detail_resp.json()
 
@@ -230,7 +176,7 @@ def fetch_latest_weekly_exploration(username: str) -> tuple[str, str, list[dict]
 
 # ── Spotify Track Matcher ───────────────────────────────────────────────────
 
-def find_spotify_track_uri(sp: spotipy.Spotify, track_item: dict) -> tuple[str | None, str, str]:
+def find_spotify_track_uri(sp, track_item: dict) -> tuple[str | None, str, str]:
     """Find matching Spotify track URI.
 
     Returns (uri_or_None, artist, title).
@@ -269,27 +215,12 @@ def find_spotify_track_uri(sp: spotipy.Spotify, track_item: dict) -> tuple[str |
     return None, artist, title
 
 
-# ── State management ─────────────────────────────────────────────────────────
-
-def load_state(state_file: str) -> dict:
-    try:
-        with open(state_file) as f:
-            return json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return {}
-
-
-def save_state(state_file: str, state: dict) -> None:
-    with open(state_file, "w") as f:
-        json.dump(state, f)
-
-
 # ── Playlist sync helpers ───────────────────────────────────────────────────
 
-def sync_spotify_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str]) -> None:
+def sync_spotify_playlist(sp, playlist_id: str, uris: list[str]) -> None:
     """Wipe playlist and add tracks in chunks of 100."""
     spotify_retry(sp.playlist_replace_items, playlist_id, [])
-    print(f"[Spotify] Cleared playlist.")
+    print("[Spotify] Cleared playlist.")
 
     for i in range(0, len(uris), 100):
         chunk = uris[i : i + 100]
@@ -298,7 +229,7 @@ def sync_spotify_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str]
         time.sleep(1.0)
 
 
-def remove_from_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str]) -> None:
+def remove_from_playlist(sp, playlist_id: str, uris: list[str]) -> None:
     """Remove specific tracks from a playlist."""
     for i in range(0, len(uris), 100):
         chunk = uris[i : i + 100]
@@ -309,20 +240,16 @@ def remove_from_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str])
 # ── Main sync process ────────────────────────────────────────────────────────
 
 def update_playlist_description(
-    sp: spotipy.Spotify,
+    sp,
     playlist_id: str,
     remaining_count: int,
     total_count: int,
     title: str,
     tz_offset_hours: int = 6,
 ) -> None:
-    """Update ListenBrainz playlist description with queue progress and precise local timestamp."""
+    """Update ListenBrainz playlist description with queue progress."""
     played_count = max(0, total_count - remaining_count)
-    tz = timezone(timedelta(hours=tz_offset_hours))
-    now = datetime.now(tz)
-    tz_sign = "+" if tz_offset_hours >= 0 else "-"
-    tz_str = f"UTC{tz_sign}{abs(tz_offset_hours)}"
-    time_str = now.strftime("%d %b %Y, %I:%M %p")
+    time_str, tz_str = local_timestamp(tz_offset_hours)
 
     desc = (
         f"ListenBrainz: {title} · "
@@ -336,6 +263,15 @@ def update_playlist_description(
         print(f"[Spotify] Note: Could not update playlist description ({exc})")
 
 
+def _cached_artists(entry: dict) -> list[str]:
+    """Artist list for a cache entry, tolerating the older string format."""
+    artists = entry.get("artists")
+    if isinstance(artists, list) and artists:
+        return artists
+    single = entry.get("artist")
+    return [single] if single else []
+
+
 def main() -> None:
     username = os.environ.get("LISTENBRAINZ_USERNAME", "ikOzy")
     playlist_id = os.environ["SPOTIFY_LISTENBRAINZ_PLAYLIST_ID"]
@@ -344,7 +280,7 @@ def main() -> None:
     # 1. Fetch latest Weekly Exploration playlist from ListenBrainz
     mbid, title, tracks = fetch_latest_weekly_exploration(username)
 
-    state = load_state(state_file)
+    state = load_state(state_file, require_key="mbid")
     last_mbid = state.get("mbid")
 
     sp = get_spotify_client()
@@ -353,9 +289,9 @@ def main() -> None:
 
     if is_new_playlist:
         # ── NEW WEEK: resolve all tracks and full sync ──────────────────
-        print(f"[Sync] New playlist detected — syncing all tracks …")
+        print("[Sync] New playlist detected — syncing all tracks …")
 
-        track_cache: list[dict] = []   # {uri, artist, title}
+        track_cache: list[dict] = []   # {uri, artists, title}
         spotify_uris: list[str] = []
         missing_tracks: list[str] = []
 
@@ -367,7 +303,7 @@ def main() -> None:
                 spotify_uris.append(uri)
                 track_cache.append({
                     "uri": uri,
-                    "artist": artist,
+                    "artists": [artist],
                     "title": track_title,
                 })
             else:
@@ -410,16 +346,11 @@ def main() -> None:
         # Fetch scrobbles since the playlist was synced
         scrobbled = fetch_scrobbles_since(playlist_start)
 
-        # Find which current tracks have been scrobbled
-        uri_to_key: dict[str, str] = {}
-        for entry in track_cache:
-            key = standardise_track_key(entry["artist"], entry["title"])
-            uri_to_key[entry["uri"]] = key
-
+        # Find which current tracks have been scrobbled, in any spelling.
         to_remove: list[str] = []
         for uri in current_uris:
-            key = uri_to_key.get(uri)
-            if key and key in scrobbled:
+            entry = next((e for e in track_cache if e.get("uri") == uri), None)
+            if entry and track_played(_cached_artists(entry), entry.get("title", ""), scrobbled):
                 to_remove.append(uri)
 
         if not to_remove:
@@ -430,7 +361,8 @@ def main() -> None:
         # Remove scrobbled tracks from playlist
         remove_from_playlist(sp, playlist_id, to_remove)
 
-        new_uris = [u for u in current_uris if u not in set(to_remove)]
+        removed = set(to_remove)
+        new_uris = [u for u in current_uris if u not in removed]
 
         save_state(state_file, {
             "mbid": mbid,

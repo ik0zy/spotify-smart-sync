@@ -29,3 +29,4 @@ Thumbs.db
 # Spotify auth cache
 .cache
 .cache-*
+.atlas/

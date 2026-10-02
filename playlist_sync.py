@@ -4,68 +4,41 @@ Syncs neglected Spotify tracks (Liked Songs not scrobbled in the last 30 days)
 to a target Spotify playlist.
 """
 
-import hashlib
-import time
 import os
-import unicodedata
-import re
+import time
 from datetime import datetime, timedelta, timezone
 
+from common import (
+    compute_hash,
+    get_spotify_client,
+    load_state,
+    local_timestamp,
+    requests_retry,
+    save_state,
+    spotify_retry,
+    track_key_variants,
+    track_played,
+)
 
-import requests
-import spotipy
-
-
-# ── helpers ──────────────────────────────────────────────────────────────────
-
-def _normalise(text: str) -> str:
-    """Lower-case, strip accents, collapse whitespace, remove punctuation."""
-    text = unicodedata.normalize("NFKD", text)
-    text = "".join(c for c in text if not unicodedata.combining(c))
-    text = text.lower()
-    text = re.sub(r"[^\w\s]", "", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
-
-
-def standardise_track_key(artist: str, title: str) -> str:
-    """Return a canonical 'artist - title' key for matching."""
-    return f"{_normalise(artist)} - {_normalise(title)}"
-
-
-def compute_hash(uris: list[str]) -> str:
-    """Return a SHA-256 hex digest of the sorted URI list."""
-    payload = "\n".join(sorted(uris)).encode()
-    return hashlib.sha256(payload).hexdigest()
-
-
-def requests_retry(url: str, params: dict | None = None, data: dict | None = None, method: str = "GET", timeout: int = 30, max_retries: int = 3) -> requests.Response:
-    """Execute HTTP request with automatic retries on timeouts, connection errors, and 5xx server errors."""
-    for attempt in range(1, max_retries + 1):
-        try:
-            if method.upper() == "POST":
-                resp = requests.post(url, data=data, timeout=timeout)
-            else:
-                resp = requests.get(url, params=params, timeout=timeout)
-
-            if resp.status_code in (500, 502, 503, 504):
-                if attempt < max_retries:
-                    time.sleep(2 * attempt)
-                    continue
-            return resp
-        except (requests.exceptions.RequestException, requests.exceptions.Timeout) as exc:
-            if attempt >= max_retries:
-                raise
-            print(f"[Network] Request timeout/error ({exc.__class__.__name__}), retrying {attempt}/{max_retries} …")
-            time.sleep(2 * attempt)
-    raise RuntimeError(f"HTTP request failed after {max_retries} attempts.")
+__all__ = [
+    "compute_hash",
+    "fetch_lastfm_scrobbles",
+    "fetch_liked_songs",
+    "sync_playlist",
+    "diff_sync_playlist",
+    "update_playlist_description",
+    "main",
+]
 
 
 # ── Last.fm ──────────────────────────────────────────────────────────────────
 
 def fetch_lastfm_scrobbles(days: int = 30) -> set[str]:
-    """Return a set of standardised 'artist - title' keys scrobbled in the
-    last *days* days.
+    """Return a set of 'artist - title' keys scrobbled in the last *days* days.
+
+    Every spelling variant of each scrobble is indexed, not just the
+    canonical key, so a track described as 'A feat. B' on Last.fm and
+    ['A', 'B'] on Spotify still matches.  See common.track_key_variants.
 
     Uses the Last.fm REST API directly (instead of pylast) so we have full
     control over pagination, rate-limit handling, and retry timeouts.
@@ -133,12 +106,12 @@ def fetch_lastfm_scrobbles(days: int = 30) -> set[str]:
             artist = track.get("artist", {}).get("#text", "")
             title = track.get("name", "")
             if artist and title:
-                scrobbled.add(standardise_track_key(artist, title))
+                scrobbled.update(track_key_variants(artist, title))
 
         # Check pagination
         attrs = recent.get("@attr", {})
         total_pages = int(attrs.get("totalPages", 1))
-        print(f"[Last.fm] Page {page}/{total_pages} — {len(scrobbled)} unique tracks so far.")
+        print(f"[Last.fm] Page {page}/{total_pages} — {len(scrobbled)} track keys so far.")
 
         if page >= total_pages:
             break
@@ -147,80 +120,13 @@ def fetch_lastfm_scrobbles(days: int = 30) -> set[str]:
         # Be gentle on the API — 0.25s between pages
         time.sleep(0.25)
 
-    print(f"[Last.fm] Fetched {len(scrobbled)} unique scrobbled tracks from the last {days} days.")
+    print(f"[Last.fm] Fetched {len(scrobbled)} track keys from the last {days} days.")
     return scrobbled
-
-
-# ── Spotify auth (headless refresh-token flow) ──────────────────────────────
-
-def get_spotify_client() -> spotipy.Spotify:
-    """Exchange the refresh token for an access token and return a Spotify
-    client – no browser interaction required."""
-
-    client_id = os.environ["SPOTIFY_CLIENT_ID"]
-    client_secret = os.environ["SPOTIFY_CLIENT_SECRET"]
-    refresh_token = os.environ["SPOTIFY_REFRESH_TOKEN"]
-
-    resp = requests_retry(
-        "https://accounts.spotify.com/api/token",
-        method="POST",
-        data={
-            "grant_type": "refresh_token",
-            "refresh_token": refresh_token,
-            "client_id": client_id,
-            "client_secret": client_secret,
-        },
-        timeout=30,
-    )
-    resp.raise_for_status()
-    access_token = resp.json()["access_token"]
-
-    return spotipy.Spotify(
-        auth=access_token,
-        retries=0,
-        status_retries=0,
-    )
 
 
 # ── Spotify helpers ──────────────────────────────────────────────────────────
 
-MAX_SPOTIFY_RETRIES = 3
-MAX_SPOTIFY_RETRY_WAIT = 60  # seconds — fail fast rather than wait hours
-
-
-def spotify_retry(func, *args, **kwargs):
-    """Call a spotipy method with bounded retry on 429 rate limits.
-
-    Retries up to MAX_SPOTIFY_RETRIES times, waiting at most
-    MAX_SPOTIFY_RETRY_WAIT seconds per attempt.  Raises on any other
-    error or when retries are exhausted.
-    """
-    for attempt in range(1, MAX_SPOTIFY_RETRIES + 1):
-        try:
-            return func(*args, **kwargs)
-        except spotipy.exceptions.SpotifyException as exc:
-            if exc.http_status != 429:
-                raise  # not a rate limit — propagate immediately
-
-            retry_after = int(exc.headers.get("Retry-After", MAX_SPOTIFY_RETRY_WAIT))
-            if retry_after > MAX_SPOTIFY_RETRY_WAIT:
-                raise RuntimeError(
-                    f"[Spotify] Rate-limited with Retry-After={retry_after}s "
-                    f"(exceeds {MAX_SPOTIFY_RETRY_WAIT}s cap) — aborting."
-                ) from exc
-
-            print(
-                f"[Spotify] Rate-limited, waiting {retry_after}s "
-                f"(attempt {attempt}/{MAX_SPOTIFY_RETRIES}) …"
-            )
-            time.sleep(retry_after)
-
-    raise RuntimeError(
-        f"[Spotify] Still rate-limited after {MAX_SPOTIFY_RETRIES} retries — aborting."
-    )
-
-
-def fetch_liked_songs(sp: spotipy.Spotify) -> list[dict]:
+def fetch_liked_songs(sp) -> list[dict]:
     """Return every track object from the user's Liked Songs."""
 
     liked: list[dict] = []
@@ -242,7 +148,7 @@ def fetch_liked_songs(sp: spotipy.Spotify) -> list[dict]:
     return liked
 
 
-def sync_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str]) -> None:
+def sync_playlist(sp, playlist_id: str, uris: list[str]) -> None:
     """Wipe the target playlist and bulk-add *uris* 100 at a time."""
 
     # Clear the playlist
@@ -257,37 +163,8 @@ def sync_playlist(sp: spotipy.Spotify, playlist_id: str, uris: list[str]) -> Non
         time.sleep(1.0)  # Prevent rate limits during bulk additions
 
 
-# ── state management ─────────────────────────────────────────────────────────
-
-import json
-
-
-def load_state(state_file: str) -> dict:
-    """Load sync state (hash, URI list, last full-sync hash).
-
-    Returns an empty dict on first run, corrupt file, or old format
-    — which causes the caller to fall through to a full sync.
-    """
-    try:
-        with open(state_file) as f:
-            data = json.load(f)
-            if isinstance(data, dict) and "hash" in data:
-                return data
-    except (FileNotFoundError, json.JSONDecodeError, ValueError):
-        pass
-    return {}
-
-
-def save_state(state_file: str, state: dict) -> None:
-    """Persist sync state as JSON."""
-    with open(state_file, "w") as f:
-        json.dump(state, f)
-
-
-# ── main ─────────────────────────────────────────────────────────────────────
-
 def diff_sync_playlist(
-    sp: spotipy.Spotify,
+    sp,
     playlist_id: str,
     old_uris: list[str],
     new_uris: list[str],
@@ -325,31 +202,66 @@ def diff_sync_playlist(
     print(f"[Sync] Diff sync complete: −{len(to_remove)}, +{len(to_add)}.")
 
 
+# ── cache helpers ────────────────────────────────────────────────────────────
+
 def _liked_songs_to_cache(liked: list[dict]) -> list[dict]:
-    """Extract the fields we need from the full Spotify response for caching."""
+    """Extract the fields we need from the full Spotify response.
+
+    Removed, local-only and otherwise unavailable tracks are skipped
+    rather than raising — one bad track must not abort the whole daily
+    rebuild.  The full artist list is kept so collaborations can be
+    matched against Last.fm.
+    """
     cache = []
+    skipped = 0
+
     for item in liked:
-        track = item["track"]
+        track = item.get("track") if isinstance(item, dict) else None
+        if not isinstance(track, dict):
+            skipped += 1
+            continue
+
+        uri = track.get("uri")
+        artists = [
+            a.get("name")
+            for a in track.get("artists", [])
+            if isinstance(a, dict) and a.get("name")
+        ]
+        if not uri or track.get("is_local") or not artists:
+            skipped += 1
+            continue
+
         cache.append({
-            "uri": track["uri"],
-            "artist": track["artists"][0]["name"],
-            "title": track["name"],
+            "uri": uri,
+            "artists": artists,
+            "title": track.get("name") or "",
         })
+
+    if skipped:
+        print(f"[Spotify] Skipped {skipped} removed/unavailable track(s).")
     return cache
+
+
+def _entry_artists(entry: dict) -> list[str]:
+    """Artist list for a cache entry, tolerating the older string format."""
+    artists = entry.get("artists")
+    if isinstance(artists, list) and artists:
+        return artists
+    single = entry.get("artist")
+    return [single] if single else []
 
 
 def _filter_unplayed(liked_cache: list[dict], scrobbled: set[str]) -> list[str]:
     """Return URIs of cached liked songs NOT in the scrobbled set."""
     unplayed: list[str] = []
     for entry in liked_cache:
-        key = standardise_track_key(entry["artist"], entry["title"])
-        if key not in scrobbled:
+        if not track_played(_entry_artists(entry), entry.get("title", ""), scrobbled):
             unplayed.append(entry["uri"])
     return unplayed
 
 
 def update_playlist_description(
-    sp: spotipy.Spotify,
+    sp,
     playlist_id: str,
     unplayed_count: int,
     total_liked_count: int,
@@ -358,11 +270,7 @@ def update_playlist_description(
 ) -> None:
     """Update playlist description with detailed stats and precise local timestamp."""
     pct = (unplayed_count / total_liked_count * 100) if total_liked_count > 0 else 0
-    tz = timezone(timedelta(hours=tz_offset_hours))
-    now = datetime.now(tz)
-    tz_sign = "+" if tz_offset_hours >= 0 else "-"
-    tz_str = f"UTC{tz_sign}{abs(tz_offset_hours)}"
-    time_str = now.strftime("%d %b %Y, %I:%M %p")
+    time_str, tz_str = local_timestamp(tz_offset_hours)
 
     desc = (
         f"{unplayed_count:,} neglected tracks ({pct:.1f}% of {total_liked_count:,} Liked Songs) · "
@@ -375,6 +283,8 @@ def update_playlist_description(
     except Exception as exc:
         print(f"[Spotify] Note: Could not update playlist description ({exc})")
 
+
+# ── main ─────────────────────────────────────────────────────────────────────
 
 def main() -> None:
     playlist_id = os.environ["SPOTIFY_PLAYLIST_ID"]

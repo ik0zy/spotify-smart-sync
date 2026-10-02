@@ -10,80 +10,16 @@ import re
 import time
 from datetime import datetime, timezone
 
-import requests
 import spotipy
 
+from common import get_spotify_client, spotify_retry
 
-def requests_retry(
-    url: str,
-    params: dict | None = None,
-    data: dict | None = None,
-    method: str = "GET",
-    timeout: int = 30,
-    max_retries: int = 3,
-) -> requests.Response:
-    """Execute HTTP request with automatic retries on timeouts and 5xx server errors."""
-    for attempt in range(1, max_retries + 1):
-        try:
-            if method.upper() == "POST":
-                resp = requests.post(url, data=data, timeout=timeout)
-            else:
-                resp = requests.get(url, params=params, timeout=timeout)
-
-            if resp.status_code in (500, 502, 503, 504):
-                if attempt < max_retries:
-                    time.sleep(2 * attempt)
-                    continue
-            return resp
-        except (requests.exceptions.RequestException, requests.exceptions.Timeout) as exc:
-            if attempt >= max_retries:
-                raise
-            print(f"[Network] Request timeout/error ({exc.__class__.__name__}), retrying {attempt}/{max_retries} …")
-            time.sleep(2 * attempt)
-    raise RuntimeError(f"HTTP request failed after {max_retries} attempts.")
-
-
-def get_spotify_client() -> spotipy.Spotify:
-    """Exchange refresh token for access token and return Spotify client."""
-    client_id = os.environ["SPOTIFY_CLIENT_ID"]
-    client_secret = os.environ["SPOTIFY_CLIENT_SECRET"]
-    refresh_token = os.environ["SPOTIFY_REFRESH_TOKEN"]
-
-    resp = requests_retry(
-        "https://accounts.spotify.com/api/token",
-        method="POST",
-        data={
-            "grant_type": "refresh_token",
-            "refresh_token": refresh_token,
-            "client_id": client_id,
-            "client_secret": client_secret,
-        },
-        timeout=30,
-    )
-    resp.raise_for_status()
-    access_token = resp.json()["access_token"]
-
-    return spotipy.Spotify(auth=access_token, retries=0, status_retries=0)
-
-
-MAX_SPOTIFY_RETRIES = 3
-MAX_SPOTIFY_RETRY_WAIT = 60
-
-
-def spotify_retry(func, *args, **kwargs):
-    """Call spotipy method with bounded retry on 429 rate limits."""
-    for attempt in range(1, MAX_SPOTIFY_RETRIES + 1):
-        try:
-            return func(*args, **kwargs)
-        except spotipy.exceptions.SpotifyException as exc:
-            if exc.http_status != 429:
-                raise
-            retry_after = int(exc.headers.get("Retry-After", MAX_SPOTIFY_RETRY_WAIT))
-            if retry_after > MAX_SPOTIFY_RETRY_WAIT:
-                raise RuntimeError(f"[Spotify] Rate-limited Retry-After={retry_after}s exceeds cap — aborting.") from exc
-            print(f"[Spotify] Rate-limited, waiting {retry_after}s (attempt {attempt}/{MAX_SPOTIFY_RETRIES}) …")
-            time.sleep(retry_after)
-    raise RuntimeError(f"[Spotify] Still rate-limited after {MAX_SPOTIFY_RETRIES} retries — aborting.")
+__all__ = [
+    "sanitize_filename",
+    "backup_liked_songs",
+    "backup_playlists",
+    "main",
+]
 
 
 def sanitize_filename(name: str) -> str:
@@ -93,7 +29,26 @@ def sanitize_filename(name: str) -> str:
     return name[:60] or "unnamed_playlist"
 
 
-def backup_liked_songs(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
+def _track_fields(track: dict, added_at: str | None = None) -> dict:
+    """Flatten a Spotify track object into the backup record shape."""
+    artists = [a.get("name", "") for a in track.get("artists", []) if isinstance(a, dict)]
+    album = track.get("album")
+    external_ids = track.get("external_ids")
+    external_urls = track.get("external_urls")
+    return {
+        "added_at": added_at,
+        "title": track.get("name"),
+        "artists": artists,
+        "artist": ", ".join(artists),
+        "album": album.get("name") if isinstance(album, dict) else "",
+        "duration_ms": track.get("duration_ms"),
+        "isrc": external_ids.get("isrc") if isinstance(external_ids, dict) else None,
+        "uri": track.get("uri"),
+        "spotify_url": external_urls.get("spotify") if isinstance(external_urls, dict) else None,
+    }
+
+
+def backup_liked_songs(sp, backup_dir: str) -> list[dict]:
     """Fetch and export all Liked Songs."""
     print("[Backup] Fetching Liked Songs …")
     liked_tracks: list[dict] = []
@@ -107,24 +62,10 @@ def backup_liked_songs(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
             break
 
         for item in items:
-            track = item.get("track")
-            if not track:
-                continue
-            artists = [a.get("name", "") for a in track.get("artists", [])]
-            external_ids = track.get("external_ids", {})
-            external_urls = track.get("external_urls", {})
-
-            liked_tracks.append({
-                "added_at": item.get("added_at"),
-                "title": track.get("name"),
-                "artists": artists,
-                "artist": ", ".join(artists),
-                "album": track.get("album", {}).get("name"),
-                "duration_ms": track.get("duration_ms"),
-                "isrc": external_ids.get("isrc"),
-                "uri": track.get("uri"),
-                "spotify_url": external_urls.get("spotify"),
-            })
+            track = item.get("track") if isinstance(item, dict) else None
+            if not isinstance(track, dict):
+                continue  # removed or region-blocked track
+            liked_tracks.append(_track_fields(track, item.get("added_at")))
 
         if results.get("next") is None:
             break
@@ -147,17 +88,77 @@ def backup_liked_songs(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
     return liked_tracks
 
 
-def backup_playlists(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
-    """Fetch and export all user playlists and their contents."""
-    print("[Backup] Fetching user playlists …")
-    playlists_dir = os.path.join(backup_dir, "playlists")
-    os.makedirs(playlists_dir, exist_ok=True)
+def _fetch_playlist_tracks(sp, pl: dict) -> list[dict]:
+    """Return flattened track records for one playlist."""
+    tracks: list[dict] = []
 
-    playlists_summary: list[dict] = []
+    results = pl.get("tracks")
+    if not isinstance(results, dict) or "items" not in results:
+        results = spotify_retry(sp.playlist_items, pl["id"], limit=100, offset=0)
+
+    while isinstance(results, dict):
+        for item in results.get("items", []):
+            if not isinstance(item, dict):
+                continue
+            track = item.get("item") or item.get("track") or item
+            if not isinstance(track, dict) or not track.get("name"):
+                continue
+            tracks.append(_track_fields(track, item.get("added_at")))
+
+        if not results.get("next"):
+            break
+        results = spotify_retry(sp.next, results)
+        time.sleep(0.4)
+
+    return tracks
+
+
+def _export_playlist(sp, pl: dict, playlists_dir: str) -> dict:
+    """Write one playlist JSON file and return its summary entry."""
+    pl_id = pl.get("id")
+    pl_name = pl.get("name", "Untitled")
+    pl_owner = pl.get("owner", {}).get("display_name", "")
+    pl_url = pl.get("external_urls", {}).get("spotify", "")
+
+    pl_tracks = _fetch_playlist_tracks(sp, pl)
+
+    safe_name = sanitize_filename(pl_name)
+    filename = f"{safe_name}_{pl_id}.json"
+    pl_data = {
+        "id": pl_id,
+        "name": pl_name,
+        "description": pl.get("description", ""),
+        "owner": pl_owner,
+        "public": pl.get("public"),
+        "collaborative": pl.get("collaborative"),
+        "spotify_url": pl_url,
+        "track_count": len(pl_tracks),
+        "tracks": pl_tracks,
+    }
+
+    with open(os.path.join(playlists_dir, filename), "w", encoding="utf-8") as f:
+        json.dump(pl_data, f, indent=2, ensure_ascii=False)
+
+    print(f"  ✓ Saved playlist '{pl_name}' ({len(pl_tracks)} tracks)")
+    time.sleep(0.3)
+
+    return {
+        "id": pl_id,
+        "name": pl_name,
+        "owner": pl_owner,
+        "track_count": len(pl_tracks),
+        "spotify_url": pl_url,
+        "file": f"playlists/{filename}",
+    }
+
+
+def _list_user_playlists(sp) -> list[dict]:
+    """All user playlists, falling back to the configured targets when the
+    token lacks playlist-read-private."""
+    all_playlists: list[dict] = []
     offset = 0
     limit = 50
 
-    all_playlists: list[dict] = []
     try:
         while True:
             results = spotify_retry(sp.current_user_playlists, limit=limit, offset=offset)
@@ -170,101 +171,50 @@ def backup_playlists(sp: spotipy.Spotify, backup_dir: str) -> list[dict]:
             offset += limit
             time.sleep(0.5)
     except spotipy.exceptions.SpotifyException as exc:
-        if exc.http_status == 403:
-            print("[Backup] Note: Token lacks 'playlist-read-private' scope for /me/playlists. Backing up configured playlists …")
-            # Fall back to known target playlists configured in environment
-            known_ids = [
-                os.environ.get("SPOTIFY_PLAYLIST_ID"),
-                os.environ.get("SPOTIFY_LISTENBRAINZ_PLAYLIST_ID"),
-            ]
-            for pl_id in filter(None, known_ids):
-                try:
-                    pl_info = spotify_retry(sp.playlist, playlist_id=pl_id)
-                    all_playlists.append(pl_info)
-                except Exception as pl_exc:
-                    print(f"  ⚠️ Could not fetch playlist {pl_id}: {pl_exc}")
-        else:
+        if exc.http_status != 403:
             raise
+        print("[Backup] Note: Token lacks 'playlist-read-private' scope for /me/playlists. Backing up configured playlists …")
+        known_ids = [
+            os.environ.get("SPOTIFY_PLAYLIST_ID"),
+            os.environ.get("SPOTIFY_LISTENBRAINZ_PLAYLIST_ID"),
+        ]
+        for pl_id in filter(None, known_ids):
+            try:
+                all_playlists.append(spotify_retry(sp.playlist, playlist_id=pl_id))
+            except Exception as pl_exc:
+                print(f"  ⚠️ Could not fetch playlist {pl_id}: {pl_exc}")
 
+    return all_playlists
+
+
+def backup_playlists(sp, backup_dir: str) -> list[dict]:
+    """Fetch and export all user playlists and their contents."""
+    print("[Backup] Fetching user playlists …")
+    playlists_dir = os.path.join(backup_dir, "playlists")
+    os.makedirs(playlists_dir, exist_ok=True)
+
+    all_playlists = _list_user_playlists(sp)
     print(f"[Backup] Found {len(all_playlists)} playlists. Fetching tracks …")
 
+    summaries: list[dict] = []
+    failures = 0
     for pl in all_playlists:
-        pl_id = pl.get("id")
-        pl_name = pl.get("name", "Untitled")
-        pl_owner = pl.get("owner", {}).get("display_name", "")
-        pl_url = pl.get("external_urls", {}).get("spotify", "")
+        try:
+            summaries.append(_export_playlist(sp, pl, playlists_dir))
+        except Exception as exc:
+            # One unreadable playlist must not abort the whole weekly backup.
+            failures += 1
+            name = pl.get("name") or pl.get("id")
+            print(f"  ⚠️ Skipped playlist '{name}': {exc.__class__.__name__}: {exc}")
 
-        # Fetch tracks in playlist
-        pl_tracks: list[dict] = []
-        results = pl.get("tracks")
-        if not results or not isinstance(results, dict) or "items" not in results:
-            results = spotify_retry(sp.playlist_items, pl_id, limit=100, offset=0)
-
-        while results:
-            items = results.get("items", []) if isinstance(results, dict) else []
-            for item in items:
-                if not isinstance(item, dict):
-                    continue
-                track = item.get("item") or item.get("track") or item
-                if not track or not isinstance(track, dict) or not track.get("name"):
-                    continue
-                artists = [a.get("name", "") for a in track.get("artists", []) if isinstance(a, dict)]
-                external_ids = track.get("external_ids", {}) if isinstance(track.get("external_ids"), dict) else {}
-                external_urls = track.get("external_urls", {}) if isinstance(track.get("external_urls"), dict) else {}
-
-                pl_tracks.append({
-                    "added_at": item.get("added_at"),
-                    "title": track.get("name"),
-                    "artists": artists,
-                    "artist": ", ".join(artists),
-                    "album": track.get("album", {}).get("name") if isinstance(track.get("album"), dict) else "",
-                    "duration_ms": track.get("duration_ms"),
-                    "isrc": external_ids.get("isrc"),
-                    "uri": track.get("uri"),
-                    "spotify_url": external_urls.get("spotify"),
-                })
-
-            if isinstance(results, dict) and results.get("next"):
-                results = spotify_retry(sp.next, results)
-                time.sleep(0.4)
-            else:
-                break
-
-        safe_name = sanitize_filename(pl_name)
-        filename = f"{safe_name}_{pl_id}.json"
-        pl_path = os.path.join(playlists_dir, filename)
-
-        pl_data = {
-            "id": pl_id,
-            "name": pl_name,
-            "description": pl.get("description", ""),
-            "owner": pl_owner,
-            "public": pl.get("public"),
-            "collaborative": pl.get("collaborative"),
-            "spotify_url": pl_url,
-            "track_count": len(pl_tracks),
-            "tracks": pl_tracks,
-        }
-
-        with open(pl_path, "w", encoding="utf-8") as f:
-            json.dump(pl_data, f, indent=2, ensure_ascii=False)
-
-        playlists_summary.append({
-            "id": pl_id,
-            "name": pl_name,
-            "owner": pl_owner,
-            "track_count": len(pl_tracks),
-            "spotify_url": pl_url,
-            "file": f"playlists/{filename}",
-        })
-        print(f"  ✓ Saved playlist '{pl_name}' ({len(pl_tracks)} tracks)")
-        time.sleep(0.3)
+    if failures:
+        print(f"[Backup] {failures} playlist(s) could not be exported.")
 
     summary_path = os.path.join(backup_dir, "playlists_summary.json")
     with open(summary_path, "w", encoding="utf-8") as f:
-        json.dump(playlists_summary, f, indent=2, ensure_ascii=False)
+        json.dump(summaries, f, indent=2, ensure_ascii=False)
 
-    return playlists_summary
+    return summaries
 
 
 def main() -> None:
