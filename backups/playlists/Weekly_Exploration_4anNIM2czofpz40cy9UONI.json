@@ -1,163 +1,230 @@
 {
   "id": "4anNIM2czofpz40cy9UONI",
   "name": "Weekly Exploration",
-  "description": "ListenBrainz: Weekly Exploration for ikOzy, week of 2026-09-14 Mon · 21&#x2F;50 tracks remaining (29 played) · Last synced: 27 Sep 2026, 06:00 AM (UTC+6)",
+  "description": "ListenBrainz: Weekly Exploration for ikOzy, week of 2026-09-28 Mon · 36&#x2F;50 tracks remaining (14 played) · Last synced: 04 Oct 2026, 08:12 AM (UTC+6)",
   "owner": "kOzy",
   "public": true,
   "collaborative": false,
   "spotify_url": "https://open.spotify.com/playlist/4anNIM2czofpz40cy9UONI",
-  "track_count": 21,
+  "track_count": 36,
   "tracks": [
     {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "Frou-frou Foxes in Midsummer Fires",
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Wuthering Heights",
       "artists": [
-        "Cocteau Twins"
+        "Kate Bush"
       ],
-      "artist": "Cocteau Twins",
-      "album": "Heaven or Las Vegas",
-      "duration_ms": 338053,
-      "isrc": "GBAFL9000068",
-      "uri": "spotify:track:6i18oi8cbvlv9Y2QVBSzkB",
-      "spotify_url": "https://open.spotify.com/track/6i18oi8cbvlv9Y2QVBSzkB"
+      "artist": "Kate Bush",
+      "album": "The Kick Inside",
+      "duration_ms": 269066,
+      "isrc": "GBAYE7700223",
+      "uri": "spotify:track:5YSI1311X8t31PBjkBG4CZ",
+      "spotify_url": "https://open.spotify.com/track/5YSI1311X8t31PBjkBG4CZ"
     },
     {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "Inner Light",
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Music",
       "artists": [
-        "Elderbrook",
-        "Bob Moses"
+        "underscores"
       ],
-      "artist": "Elderbrook, Bob Moses",
-      "album": "Innerlight EP",
-      "duration_ms": 257985,
-      "isrc": "GBAYE2100859",
-      "uri": "spotify:track:075uvCL2TSgyNnKE27BILY",
-      "spotify_url": "https://open.spotify.com/track/075uvCL2TSgyNnKE27BILY"
+      "artist": "underscores",
+      "album": "U",
+      "duration_ms": 207296,
+      "isrc": "USQE92500121",
+      "uri": "spotify:track:6gPbjxlebqkFyCaLY4SRVm",
+      "spotify_url": "https://open.spotify.com/track/6gPbjxlebqkFyCaLY4SRVm"
     },
     {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "Cosmic Girl - Remastered 2006",
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "GONE, GONE / THANK YOU",
       "artists": [
-        "Jamiroquai"
+        "Tyler, The Creator"
       ],
-      "artist": "Jamiroquai",
-      "album": "Driving Songs",
-      "duration_ms": 227866,
-      "isrc": "GBARL0601476",
-      "uri": "spotify:track:0QCCwIK5wNdCFNYv96n2eV",
-      "spotify_url": "https://open.spotify.com/track/0QCCwIK5wNdCFNYv96n2eV"
+      "artist": "Tyler, The Creator",
+      "album": "IGOR",
+      "duration_ms": 375386,
+      "isrc": "USQX91901118",
+      "uri": "spotify:track:1hz7SRTGUNAtIQ46qiNv2p",
+      "spotify_url": "https://open.spotify.com/track/1hz7SRTGUNAtIQ46qiNv2p"
     },
     {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "Born Slippy (Nuxx) - Radio Edit",
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Decks Dark",
       "artists": [
-        "Underworld"
+        "Radiohead"
       ],
-      "artist": "Underworld",
-      "album": "Born Slippy (Nuxx) [Radio Edit]",
-      "duration_ms": 264187,
-      "isrc": "GBCGL9800026",
-      "uri": "spotify:track:3bUNyRrTFJDd4mqvUcb1Aa",
-      "spotify_url": "https://open.spotify.com/track/3bUNyRrTFJDd4mqvUcb1Aa"
+      "artist": "Radiohead",
+      "album": "A Moon Shaped Pool",
+      "duration_ms": 281011,
+      "isrc": "GBBKS1600073",
+      "uri": "spotify:track:4mRSbPLnOm54ttkTYvxxSY",
+      "spotify_url": "https://open.spotify.com/track/4mRSbPLnOm54ttkTYvxxSY"
     },
     {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "Ni**as In Paris",
-      "artists": [
-        "JAŸ-Z",
-        "Kanye West"
-      ],
-      "artist": "JAŸ-Z, Kanye West",
-      "album": "Watch The Throne",
-      "duration_ms": 219333,
-      "isrc": "USUM71111621",
-      "uri": "spotify:track:1auxYwYrFRqZP7t3s7w4um",
-      "spotify_url": "https://open.spotify.com/track/1auxYwYrFRqZP7t3s7w4um"
-    },
-    {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "November Has Come",
-      "artists": [
-        "Gorillaz",
-        "MF DOOM"
-      ],
-      "artist": "Gorillaz, MF DOOM",
-      "album": "Demon Days",
-      "duration_ms": 165093,
-      "isrc": "GBAYE0500175",
-      "uri": "spotify:track:6lrDckuosGpwEHtm1hHBcf",
-      "spotify_url": "https://open.spotify.com/track/6lrDckuosGpwEHtm1hHBcf"
-    },
-    {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "Du hast",
-      "artists": [
-        "Rammstein"
-      ],
-      "artist": "Rammstein",
-      "album": "Sehnsucht",
-      "duration_ms": 234226,
-      "isrc": "DED579704010",
-      "uri": "spotify:track:5awDvzxWfd53SSrsRZ8pXO",
-      "spotify_url": "https://open.spotify.com/track/5awDvzxWfd53SSrsRZ8pXO"
-    },
-    {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "Girl Like Me",
-      "artists": [
-        "PinkPantheress"
-      ],
-      "artist": "PinkPantheress",
-      "album": "Fancy That",
-      "duration_ms": 145520,
-      "isrc": "GBAYE2500031",
-      "uri": "spotify:track:7aYGCP34Xo6XujY7Ix1DxB",
-      "spotify_url": "https://open.spotify.com/track/7aYGCP34Xo6XujY7Ix1DxB"
-    },
-    {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "Rather Be (feat. Jess Glynne)",
-      "artists": [
-        "Clean Bandit",
-        "Jess Glynne"
-      ],
-      "artist": "Clean Bandit, Jess Glynne",
-      "album": "I Cry When I Laugh",
-      "duration_ms": 227833,
-      "isrc": "GBAHS1300498",
-      "uri": "spotify:track:7KOlSRYkRfwrndUMEYrikx",
-      "spotify_url": "https://open.spotify.com/track/7KOlSRYkRfwrndUMEYrikx"
-    },
-    {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "Neverender",
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "DVNO",
       "artists": [
         "Justice",
-        "Tame Impala"
+        "DVNO"
       ],
-      "artist": "Justice, Tame Impala",
-      "album": "Neverender",
-      "duration_ms": 266493,
-      "isrc": "FR8EU2300010",
-      "uri": "spotify:track:0ccoGCaOFCxI6pHixrQpKj",
-      "spotify_url": "https://open.spotify.com/track/0ccoGCaOFCxI6pHixrQpKj"
+      "artist": "Justice, DVNO",
+      "album": "Justice",
+      "duration_ms": 236133,
+      "isrc": "FR0NT0700350",
+      "uri": "spotify:track:7pdDBqpilpdW7c40DpFMW9",
+      "spotify_url": "https://open.spotify.com/track/7pdDBqpilpdW7c40DpFMW9"
     },
     {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "aisatsana [102]",
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Such Great Heights",
       "artists": [
-        "Aphex Twin"
+        "The Postal Service"
       ],
-      "artist": "Aphex Twin",
-      "album": "Syro",
-      "duration_ms": 321880,
-      "isrc": "GBBPW1400099",
-      "uri": "spotify:track:5ljMlD10En5rRGZU0cs2Np",
-      "spotify_url": "https://open.spotify.com/track/5ljMlD10En5rRGZU0cs2Np"
+      "artist": "The Postal Service",
+      "album": "Give Up",
+      "duration_ms": 266346,
+      "isrc": "USSUB0300120",
+      "uri": "spotify:track:75z2YLg5Lkqf6qL9XOY8tV",
+      "spotify_url": "https://open.spotify.com/track/75z2YLg5Lkqf6qL9XOY8tV"
     },
     {
-      "added_at": "2026-09-13T19:04:09Z",
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "90210 (feat. Kacy Hill)",
+      "artists": [
+        "Travis Scott",
+        "Kacy Hill"
+      ],
+      "artist": "Travis Scott, Kacy Hill",
+      "album": "Rodeo",
+      "duration_ms": 339066,
+      "isrc": "USSM11506731",
+      "uri": "spotify:track:51EC3I1nQXpec4gDk0mQyP",
+      "spotify_url": "https://open.spotify.com/track/51EC3I1nQXpec4gDk0mQyP"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Ghost Town",
+      "artists": [
+        "Kanye West",
+        "PARTYNEXTDOOR"
+      ],
+      "artist": "Kanye West, PARTYNEXTDOOR",
+      "album": "ye",
+      "duration_ms": 271386,
+      "isrc": "USUM71807761",
+      "uri": "spotify:track:7vgTNTaEz3CsBZ1N4YQalM",
+      "spotify_url": "https://open.spotify.com/track/7vgTNTaEz3CsBZ1N4YQalM"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Somebody That I Used To Know (feat. Kimbra) [Tiësto Remix]",
+      "artists": [
+        "Tiësto",
+        "Gotye",
+        "Kimbra"
+      ],
+      "artist": "Tiësto, Gotye, Kimbra",
+      "album": "Somebody That I Used To Know (Remixes)",
+      "duration_ms": 273095,
+      "isrc": "AUZS21200072",
+      "uri": "spotify:track:4lvvwXG8GHhTPror8gUwIC",
+      "spotify_url": "https://open.spotify.com/track/4lvvwXG8GHhTPror8gUwIC"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Lying from You",
+      "artists": [
+        "Linkin Park"
+      ],
+      "artist": "Linkin Park",
+      "album": "Meteora (Bonus Edition)",
+      "duration_ms": 175053,
+      "isrc": "USWB10300465",
+      "uri": "spotify:track:4qVR3CF8FuFvHN4L6vXlB1",
+      "spotify_url": "https://open.spotify.com/track/4qVR3CF8FuFvHN4L6vXlB1"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "I Really Want to Stay at Your House",
+      "artists": [
+        "Rosa Walton",
+        "Hallie Coggins"
+      ],
+      "artist": "Rosa Walton, Hallie Coggins",
+      "album": "Cyberpunk 2077: Radio, Vol. 2 (Original Soundtrack)",
+      "duration_ms": 246652,
+      "isrc": "USLS52081705",
+      "uri": "spotify:track:7mykoq6R3BArsSpNDjFQTm",
+      "spotify_url": "https://open.spotify.com/track/7mykoq6R3BArsSpNDjFQTm"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Roundabout - 2024 Remaster",
+      "artists": [
+        "Yes"
+      ],
+      "artist": "Yes",
+      "album": "Fragile (Super Deluxe)",
+      "duration_ms": 516245,
+      "isrc": "USRH12302535",
+      "uri": "spotify:track:466C6kwoJHLUJ8VHG98hCY",
+      "spotify_url": "https://open.spotify.com/track/466C6kwoJHLUJ8VHG98hCY"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Black Milk",
+      "artists": [
+        "Massive Attack",
+        "Elizabeth Fraser"
+      ],
+      "artist": "Massive Attack, Elizabeth Fraser",
+      "album": "Mezzanine",
+      "duration_ms": 381666,
+      "isrc": "GBAAA9800347",
+      "uri": "spotify:track:1Rezzt36ybaT2ZbDZpv83D",
+      "spotify_url": "https://open.spotify.com/track/1Rezzt36ybaT2ZbDZpv83D"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Jóga",
+      "artists": [
+        "Björk"
+      ],
+      "artist": "Björk",
+      "album": "Homogenic",
+      "duration_ms": 305360,
+      "isrc": "GBBTF9700093",
+      "uri": "spotify:track:3nschTSboTkjPwgdbrRLyf",
+      "spotify_url": "https://open.spotify.com/track/3nschTSboTkjPwgdbrRLyf"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "HUMBLE.",
+      "artists": [
+        "Kendrick Lamar"
+      ],
+      "artist": "Kendrick Lamar",
+      "album": "DAMN.",
+      "duration_ms": 177000,
+      "isrc": "USUM71703085",
+      "uri": "spotify:track:7KXjTSCq5nL1LoYtL7XAwS",
+      "spotify_url": "https://open.spotify.com/track/7KXjTSCq5nL1LoYtL7XAwS"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Arabella",
+      "artists": [
+        "Arctic Monkeys"
+      ],
+      "artist": "Arctic Monkeys",
+      "album": "AM",
+      "duration_ms": 207356,
+      "isrc": "GBCEL1300365",
+      "uri": "spotify:track:7nzsY8vlnKdvGOEE0rjAXZ",
+      "spotify_url": "https://open.spotify.com/track/7nzsY8vlnKdvGOEE0rjAXZ"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
       "title": "Take Me Out",
       "artists": [
         "Franz Ferdinand"
@@ -170,72 +237,243 @@
       "spotify_url": "https://open.spotify.com/track/20I8RduZC2PWMWTDCZuuAN"
     },
     {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "DNA.",
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Cosmic Girl - Remastered 2006",
       "artists": [
-        "Kendrick Lamar"
+        "Jamiroquai"
       ],
-      "artist": "Kendrick Lamar",
-      "album": "DAMN.",
-      "duration_ms": 185946,
-      "isrc": "USUM71703079",
-      "uri": "spotify:track:6HZILIRieu8S0iqY8kIKhj",
-      "spotify_url": "https://open.spotify.com/track/6HZILIRieu8S0iqY8kIKhj"
+      "artist": "Jamiroquai",
+      "album": "Driving Songs",
+      "duration_ms": 227866,
+      "isrc": "GBARL0601476",
+      "uri": "spotify:track:0QCCwIK5wNdCFNYv96n2eV",
+      "spotify_url": "https://open.spotify.com/track/0QCCwIK5wNdCFNYv96n2eV"
     },
     {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "BAILE INoLVIDABLE",
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "NUEVAYoL",
       "artists": [
         "Bad Bunny"
       ],
       "artist": "Bad Bunny",
       "album": "DeBÍ TiRAR MáS FOToS",
-      "duration_ms": 367725,
-      "isrc": "QMFMF2447057",
-      "uri": "spotify:track:2lTm559tuIvatlT1u0JYG2",
-      "spotify_url": "https://open.spotify.com/track/2lTm559tuIvatlT1u0JYG2"
+      "duration_ms": 183685,
+      "isrc": "QMFMF2447055",
+      "uri": "spotify:track:5TFD2bmFKGhoCRbX61nXY5",
+      "spotify_url": "https://open.spotify.com/track/5TFD2bmFKGhoCRbX61nXY5"
     },
     {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "Acid Rain",
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Born Slippy (Nuxx) - Radio Edit",
       "artists": [
-        "Lorn"
+        "Underworld"
       ],
-      "artist": "Lorn",
-      "album": "The Maze To Nowhere",
-      "duration_ms": 172473,
-      "isrc": "QM2PV1640378",
-      "uri": "spotify:track:7pM9cLbrgRGX1hHElTX92m",
-      "spotify_url": "https://open.spotify.com/track/7pM9cLbrgRGX1hHElTX92m"
+      "artist": "Underworld",
+      "album": "Born Slippy (Nuxx) [Radio Edit]",
+      "duration_ms": 264187,
+      "isrc": "GBCGL9800026",
+      "uri": "spotify:track:3bUNyRrTFJDd4mqvUcb1Aa",
+      "spotify_url": "https://open.spotify.com/track/3bUNyRrTFJDd4mqvUcb1Aa"
     },
     {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "The Fate of Ophelia",
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Kids with Guns",
       "artists": [
-        "Taylor Swift"
+        "Gorillaz",
+        "Neneh Cherry"
       ],
-      "artist": "Taylor Swift",
-      "album": "The Life of a Showgirl",
-      "duration_ms": 226073,
-      "isrc": "USUG12506436",
-      "uri": "spotify:track:53iuhJlwXhSER5J2IYYv1W",
-      "spotify_url": "https://open.spotify.com/track/53iuhJlwXhSER5J2IYYv1W"
+      "artist": "Gorillaz, Neneh Cherry",
+      "album": "Demon Days",
+      "duration_ms": 225773,
+      "isrc": "GBAYE0500170",
+      "uri": "spotify:track:0eEgMbSzOHmkOeVuNC3E0k",
+      "spotify_url": "https://open.spotify.com/track/0eEgMbSzOHmkOeVuNC3E0k"
     },
     {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "The Hills",
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Life is a Highway",
       "artists": [
-        "The Weeknd"
+        "Rascal Flatts"
       ],
-      "artist": "The Weeknd",
-      "album": "Beauty Behind The Madness",
-      "duration_ms": 242253,
-      "isrc": "USUG11500737",
-      "uri": "spotify:track:7fBv7CLKzipRk6EC6TWHOB",
-      "spotify_url": "https://open.spotify.com/track/7fBv7CLKzipRk6EC6TWHOB"
+      "artist": "Rascal Flatts",
+      "album": "Cars (Original Motion Picture Soundtrack)",
+      "duration_ms": 275640,
+      "isrc": "USWD10628832",
+      "uri": "spotify:track:5gB2IrxOCX2j9bMnHKP38i",
+      "spotify_url": "https://open.spotify.com/track/5gB2IrxOCX2j9bMnHKP38i"
     },
     {
-      "added_at": "2026-09-13T19:04:09Z",
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Flashing Lights",
+      "artists": [
+        "Kanye West",
+        "Dwele"
+      ],
+      "artist": "Kanye West, Dwele",
+      "album": "Graduation",
+      "duration_ms": 237506,
+      "isrc": "USUM70749095",
+      "uri": "spotify:track:5TRPicyLGbAF2LGBFbHGvO",
+      "spotify_url": "https://open.spotify.com/track/5TRPicyLGbAF2LGBFbHGvO"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Chicago",
+      "artists": [
+        "Sufjan Stevens"
+      ],
+      "artist": "Sufjan Stevens",
+      "album": "Illinois",
+      "duration_ms": 364613,
+      "isrc": "US64G0501409",
+      "uri": "spotify:track:1yupbrI7ROhigIHpQBevPh",
+      "spotify_url": "https://open.spotify.com/track/1yupbrI7ROhigIHpQBevPh"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Smack My Bitch Up",
+      "artists": [
+        "The Prodigy"
+      ],
+      "artist": "The Prodigy",
+      "album": "The Fat of the Land",
+      "duration_ms": 343386,
+      "isrc": "GBBKS9700073",
+      "uri": "spotify:track:48vDCZIRmrFO33fH4QU4ij",
+      "spotify_url": "https://open.spotify.com/track/48vDCZIRmrFO33fH4QU4ij"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "This Must Be the Place (Naive Melody) - 2005 Remaster",
+      "artists": [
+        "Talking Heads"
+      ],
+      "artist": "Talking Heads",
+      "album": "Speaking in Tongues (Deluxe Version)",
+      "duration_ms": 296146,
+      "isrc": "USWB10502911",
+      "uri": "spotify:track:6aBUnkXuCEQQHAlTokv9or",
+      "spotify_url": "https://open.spotify.com/track/6aBUnkXuCEQQHAlTokv9or"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Hide and Seek",
+      "artists": [
+        "Imogen Heap"
+      ],
+      "artist": "Imogen Heap",
+      "album": "Speak for Yourself (Deluxe Version)",
+      "duration_ms": 268488,
+      "isrc": "GBJPX0500005",
+      "uri": "spotify:track:2tej1KSqNuxwywIpY1rDRc",
+      "spotify_url": "https://open.spotify.com/track/2tej1KSqNuxwywIpY1rDRc"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "I Talk To The Wind",
+      "artists": [
+        "King Crimson"
+      ],
+      "artist": "King Crimson",
+      "album": "In The Court Of The Crimson King (Expanded & Remastered Original Album Mix)",
+      "duration_ms": 365659,
+      "isrc": "GBCTX1400801",
+      "uri": "spotify:track:1T0CdfKPKb1gJi4vCKpZ9C",
+      "spotify_url": "https://open.spotify.com/track/1T0CdfKPKb1gJi4vCKpZ9C"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Acts Of Magic",
+      "artists": [
+        "Boards of Canada"
+      ],
+      "artist": "Boards of Canada",
+      "album": "Inferno",
+      "duration_ms": 78187,
+      "isrc": "GBBPW2602548",
+      "uri": "spotify:track:6kJpSq9nH4AdBJjQ4iNViA",
+      "spotify_url": "https://open.spotify.com/track/6kJpSq9nH4AdBJjQ4iNViA"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Dirty Diana",
+      "artists": [
+        "Michael Jackson"
+      ],
+      "artist": "Michael Jackson",
+      "album": "Number Ones",
+      "duration_ms": 282062,
+      "isrc": "USSM19909072",
+      "uri": "spotify:track:6JZYMxvcoeLD4IifJPvDux",
+      "spotify_url": "https://open.spotify.com/track/6JZYMxvcoeLD4IifJPvDux"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Snow (Hey Oh)",
+      "artists": [
+        "Red Hot Chili Peppers"
+      ],
+      "artist": "Red Hot Chili Peppers",
+      "album": "Stadium Arcadium",
+      "duration_ms": 334666,
+      "isrc": "USWB10601591",
+      "uri": "spotify:track:2aibwv5hGXSgw7Yru8IYTO",
+      "spotify_url": "https://open.spotify.com/track/2aibwv5hGXSgw7Yru8IYTO"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Do It",
+      "artists": [
+        "underscores"
+      ],
+      "artist": "underscores",
+      "album": "U",
+      "duration_ms": 213145,
+      "isrc": "USQE92500248",
+      "uri": "spotify:track:4BBL8YQ1SUhSbcsEguX8kL",
+      "spotify_url": "https://open.spotify.com/track/4BBL8YQ1SUhSbcsEguX8kL"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Run Boy Run",
+      "artists": [
+        "Woodkid"
+      ],
+      "artist": "Woodkid",
+      "album": "The Golden Age",
+      "duration_ms": 213266,
+      "isrc": "FR4DI1200110",
+      "uri": "spotify:track:0boS4e6uXwp3zAvz1mLxZS",
+      "spotify_url": "https://open.spotify.com/track/0boS4e6uXwp3zAvz1mLxZS"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "PRIDE.",
+      "artists": [
+        "Kendrick Lamar"
+      ],
+      "artist": "Kendrick Lamar",
+      "album": "DAMN.",
+      "duration_ms": 275253,
+      "isrc": "USUM71703084",
+      "uri": "spotify:track:6IZvVAP7VPPnsGX6bvgkqg",
+      "spotify_url": "https://open.spotify.com/track/6IZvVAP7VPPnsGX6bvgkqg"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
+      "title": "Skyfall",
+      "artists": [
+        "Adele"
+      ],
+      "artist": "Adele",
+      "album": "Skyfall",
+      "duration_ms": 286081,
+      "isrc": "GBBKS1200164",
+      "uri": "spotify:track:6VObnIkLVruX4UVyxWhlqm",
+      "spotify_url": "https://open.spotify.com/track/6VObnIkLVruX4UVyxWhlqm"
+    },
+    {
+      "added_at": "2026-09-28T22:19:26Z",
       "title": "Immigrant Song - Remaster",
       "artists": [
         "Led Zeppelin"
@@ -246,48 +484,6 @@
       "isrc": "USAT21300934",
       "uri": "spotify:track:78lgmZwycJ3nzsdgmPPGNx",
       "spotify_url": "https://open.spotify.com/track/78lgmZwycJ3nzsdgmPPGNx"
-    },
-    {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "Touch The Sky",
-      "artists": [
-        "Kanye West",
-        "Lupe Fiasco"
-      ],
-      "artist": "Kanye West, Lupe Fiasco",
-      "album": "Late Registration",
-      "duration_ms": 236600,
-      "isrc": "USUM70502527",
-      "uri": "spotify:track:2dxjKgT0li4qBI3QwuN9Ih",
-      "spotify_url": "https://open.spotify.com/track/2dxjKgT0li4qBI3QwuN9Ih"
-    },
-    {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "Life on Mars? - 2015 Remaster",
-      "artists": [
-        "David Bowie"
-      ],
-      "artist": "David Bowie",
-      "album": "Hunky Dory (2015 Remaster)",
-      "duration_ms": 235986,
-      "isrc": "USJT11500131",
-      "uri": "spotify:track:3ZE3wv8V3w2T2f7nOCjV0N",
-      "spotify_url": "https://open.spotify.com/track/3ZE3wv8V3w2T2f7nOCjV0N"
-    },
-    {
-      "added_at": "2026-09-13T19:04:09Z",
-      "title": "Pursuit Of Happiness (Nightmare)",
-      "artists": [
-        "Kid Cudi",
-        "MGMT",
-        "Ratatat"
-      ],
-      "artist": "Kid Cudi, MGMT, Ratatat",
-      "album": "Man On The Moon: The End Of Day (Int'l Version)",
-      "duration_ms": 295293,
-      "isrc": "USUM70981907",
-      "uri": "spotify:track:4kTLpAbhuEGHAAdDjOIWaa",
-      "spotify_url": "https://open.spotify.com/track/4kTLpAbhuEGHAAdDjOIWaa"
     }
   ]
 }
