@@ -34,7 +34,20 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run Spotify Library Backup
-        run: python backup_library.py
+        run: |
+          for attempt in 1 2 3; do
+            echo "Attempt $attempt/3 …"
+            if python backup_library.py; then
+              echo "Succeeded on attempt $attempt"
+              exit 0
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              echo "Attempt $attempt failed, waiting 30s before retry …"
+              sleep 30
+            fi
+          done
+          echo "All 3 attempts failed"
+          exit 1
 
       - name: Commit and Push Backup
         run: |

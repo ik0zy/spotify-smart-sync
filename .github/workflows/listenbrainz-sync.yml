@@ -42,4 +42,17 @@ jobs:
             listenbrainz-state-
 
       - name: Run ListenBrainz sync
-        run: python listenbrainz_sync.py
+        run: |
+          for attempt in 1 2 3; do
+            echo "Attempt $attempt/3 …"
+            if python listenbrainz_sync.py; then
+              echo "Succeeded on attempt $attempt"
+              exit 0
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              echo "Attempt $attempt failed, waiting 30s before retry …"
+              sleep 30
+            fi
+          done
+          echo "All 3 attempts failed"
+          exit 1

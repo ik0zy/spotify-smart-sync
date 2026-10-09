@@ -10,6 +10,7 @@ retry policy, Spotify auth, state persistence, and track matching.
 import hashlib
 import json
 import os
+import random
 import re
 import time
 import unicodedata
@@ -146,17 +147,54 @@ def track_played(artists: list[str] | str, title: str, scrobbled: set[str]) -> b
 
 # ── HTTP retry policy ────────────────────────────────────────────────────────
 
+# Statuses worth retrying: rate limits, timeouts, and transient server errors.
+# 408 Request Timeout, 429 Too Many Requests, 500/502/503/504 server errors.
+RETRYABLE_STATUS_CODES = frozenset({408, 429, 500, 502, 503, 504})
+
+MAX_HTTP_RETRIES = 5
+MAX_HTTP_RETRY_WAIT = 30  # seconds per backoff step — keeps CI jobs bounded
+
+
+def _backoff_wait(attempt: int, headers=None, default: int | None = None) -> int:
+    """Exponential backoff with jitter, honouring Retry-After when present.
+
+    Base is 2**attempt (2, 4, 8, 16 …) plus up to 1s of jitter, capped at
+    MAX_HTTP_RETRY_WAIT.  When the server sends Retry-After, the wait is
+    raised to that value (also capped) so 429/503 backpressure is obeyed.
+    """
+    base = min(2**attempt + random.uniform(0, 1), MAX_HTTP_RETRY_WAIT)
+    if headers:
+        try:
+            raw = headers.get("Retry-After") if hasattr(headers, "get") else None
+        except Exception:
+            raw = None
+        if raw is not None:
+            retry_after = _retry_after_seconds(headers, MAX_HTTP_RETRY_WAIT)
+            base = max(base, min(retry_after, MAX_HTTP_RETRY_WAIT))
+            return int(base)
+    if default is not None:
+        return int(max(base, min(default, MAX_HTTP_RETRY_WAIT)))
+    return int(base)
+
+
 def requests_retry(
     url: str,
     params: dict | None = None,
     data: dict | None = None,
     method: str = "GET",
     timeout: int = 30,
-    max_retries: int = 3,
+    max_retries: int = MAX_HTTP_RETRIES,
     expect_json: bool = False,
 ) -> requests.Response:
     """Execute an HTTP request with automatic retries on timeouts,
-    connection errors, 5xx server errors, and empty/invalid JSON responses."""
+    connection errors, rate limits (429), and 5xx server errors.
+
+    Retries up to *max_retries* times with exponential backoff + jitter,
+    honouring the server's Retry-After header.  When *expect_json* is true,
+    empty/invalid JSON bodies are also treated as transient failures and
+    retried instead of crashing the caller on ``resp.json()``.
+    """
+    resp = None
     for attempt in range(1, max_retries + 1):
         try:
             if method.upper() == "POST":
@@ -164,21 +202,39 @@ def requests_retry(
             else:
                 resp = requests.get(url, params=params, timeout=timeout)
 
-            if resp.status_code in (500, 502, 503, 504):
-                if attempt < max_retries:
-                    time.sleep(2 * attempt)
-                    continue
+            if resp.status_code in RETRYABLE_STATUS_CODES:
+                if attempt >= max_retries:
+                    resp.raise_for_status()
+                wait = _backoff_wait(attempt, resp.headers)
+                print(
+                    f"[Network] HTTP {resp.status_code} from {url}, "
+                    f"retrying in {wait}s ({attempt}/{max_retries}) …"
+                )
+                time.sleep(wait)
+                continue
 
             resp.raise_for_status()
 
             if expect_json:
-                _ = resp.json()
+                try:
+                    _ = resp.json()
+                except (ValueError, json.JSONDecodeError) as exc:
+                    if attempt >= max_retries:
+                        raise
+                    wait = _backoff_wait(attempt)
+                    print(
+                        f"[Network] Invalid JSON ({exc.__class__.__name__}), "
+                        f"retrying in {wait}s ({attempt}/{max_retries}) …"
+                    )
+                    time.sleep(wait)
+                    continue
 
             return resp
-        except (requests.exceptions.RequestException, requests.exceptions.Timeout, json.JSONDecodeError, ValueError) as exc:
+        except (requests.exceptions.RequestException, json.JSONDecodeError, ValueError) as exc:
             if attempt >= max_retries:
                 raise
-            wait = 2 * attempt
+            headers = getattr(getattr(exc, "response", None), "headers", None)
+            wait = _backoff_wait(attempt, headers)
             print(
                 f"[Network] Request timeout/error ({exc.__class__.__name__}), "
                 f"retrying in {wait}s ({attempt}/{max_retries}) …"
@@ -216,8 +272,12 @@ def get_spotify_client() -> spotipy.Spotify:
     return spotipy.Spotify(auth=access_token, requests_timeout=30, retries=0, status_retries=0)
 
 
-MAX_SPOTIFY_RETRIES = 3
+MAX_SPOTIFY_RETRIES = 5
 MAX_SPOTIFY_RETRY_WAIT = 60  # seconds — fail fast rather than wait hours
+
+# Spotify 5xx errors are transient (like the ListenBrainz 502s seen in CI);
+# 429 is a rate limit. Both are worth retrying with bounded backoff.
+RETRYABLE_SPOTIFY_STATUS = frozenset({429, 500, 502, 503, 504})
 
 
 def _retry_after_seconds(headers: dict | None, default: int) -> int:
@@ -244,11 +304,11 @@ def _retry_after_seconds(headers: dict | None, default: int) -> int:
 
 
 def spotify_retry(func, *args, **kwargs):
-    """Call a spotipy method with bounded retry on 429 rate limits and transient network timeouts.
+    """Call a spotipy method with bounded retry on rate limits (429),
+    transient 5xx server errors, and network timeouts.
 
-    Retries up to MAX_SPOTIFY_RETRIES times, waiting at most
-    MAX_SPOTIFY_RETRY_WAIT seconds per attempt.  Any other error, or
-    exhausted retries, raises.
+    Retries up to MAX_SPOTIFY_RETRIES times with exponential backoff +
+    jitter.  Any other error, or exhausted retries, raises.
     """
     for attempt in range(1, MAX_SPOTIFY_RETRIES + 1):
         try:
@@ -256,31 +316,42 @@ def spotify_retry(func, *args, **kwargs):
         except requests.exceptions.RequestException as exc:
             if attempt >= MAX_SPOTIFY_RETRIES:
                 raise
-            wait = 2 * attempt
+            headers = getattr(getattr(exc, "response", None), "headers", None)
+            wait = _backoff_wait(attempt, headers)
             print(
                 f"[Spotify] Network timeout/error ({exc.__class__.__name__}), "
                 f"retrying in {wait}s ({attempt}/{MAX_SPOTIFY_RETRIES}) …"
             )
             time.sleep(wait)
         except spotipy.exceptions.SpotifyException as exc:
-            if exc.http_status != 429:
-                raise  # not a rate limit — propagate immediately
+            if exc.http_status not in RETRYABLE_SPOTIFY_STATUS:
+                raise  # not transient — propagate immediately
 
-            retry_after = _retry_after_seconds(exc.headers, MAX_SPOTIFY_RETRY_WAIT)
-            if retry_after > MAX_SPOTIFY_RETRY_WAIT:
-                raise RuntimeError(
-                    f"[Spotify] Rate-limited with Retry-After={retry_after}s "
-                    f"(exceeds {MAX_SPOTIFY_RETRY_WAIT}s cap) — aborting."
-                ) from exc
+            if attempt >= MAX_SPOTIFY_RETRIES:
+                raise
 
-            print(
-                f"[Spotify] Rate-limited, waiting {retry_after}s "
-                f"(attempt {attempt}/{MAX_SPOTIFY_RETRIES}) …"
-            )
-            time.sleep(retry_after)
+            if exc.http_status == 429:
+                retry_after = _retry_after_seconds(exc.headers, MAX_SPOTIFY_RETRY_WAIT)
+                if retry_after > MAX_SPOTIFY_RETRY_WAIT:
+                    raise RuntimeError(
+                        f"[Spotify] Rate-limited with Retry-After={retry_after}s "
+                        f"(exceeds {MAX_SPOTIFY_RETRY_WAIT}s cap) — aborting."
+                    ) from exc
+                print(
+                    f"[Spotify] Rate-limited, waiting {retry_after}s "
+                    f"(attempt {attempt}/{MAX_SPOTIFY_RETRIES}) …"
+                )
+                time.sleep(retry_after)
+            else:
+                wait = _backoff_wait(attempt, exc.headers)
+                print(
+                    f"[Spotify] Transient HTTP {exc.http_status}, "
+                    f"retrying in {wait}s (attempt {attempt}/{MAX_SPOTIFY_RETRIES}) …"
+                )
+                time.sleep(wait)
 
     raise RuntimeError(
-        f"[Spotify] Still rate-limited after {MAX_SPOTIFY_RETRIES} retries — aborting."
+        f"[Spotify] Still failing after {MAX_SPOTIFY_RETRIES} retries — aborting."
     )
 
 
