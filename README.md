@@ -14,15 +14,16 @@ Automatically maintains a Spotify playlist of your **Liked Songs that you haven'
 - **Dynamic Description**: Auto-updates the playlist description with live stats and timestamp (e.g. `2,175 neglected tracks (78.8% of 2,759 Liked Songs) · 667 scrobbled in last 30d · Last synced: 14 Aug 2026, 09:45 AM (UTC+6)`)
 - Tracks return to the playlist automatically when they haven't been scrobbled for 30 days
 
-### 2. Weekly Exploration Playlist (`listenbrainz_sync.py`)
+### 2. Weekly Exploration + Weekly Jams Playlists (`listenbrainz_sync.py`)
 
-Syncs your **ListenBrainz Weekly Exploration** playlist to Spotify — and removes tracks as you listen to them.
+Syncs your **ListenBrainz Weekly Exploration** and **Weekly Jams** playlists to Spotify — and removes tracks as you listen to them.
 
-**How it works:**
-- **New Week** (new MBID detected): Resolves all 50 ListenBrainz tracks on Spotify and populates the playlist
+**How it works (same logic per feed):**
+- **New Week** (new MBID detected): Resolves all tracks on Spotify and populates the playlist
 - **Hourly** (rest of the week): Checks Last.fm scrobbles since the playlist was created and removes any tracks you've already played
 - **Dynamic Description**: Shows remaining tracks and queue progress (e.g. `ListenBrainz: Weekly Exploration · 11/50 tracks remaining (39 played) · Last synced: 14 Aug 2026, 09:45 AM (UTC+6)`)
 - Next playlist drop: wipes and starts fresh with new recommendations
+- Each feed has its own Spotify target + state file (`.listenbrainz_state`, `.weekjam_state`); one feed failing never blocks the other
 
 ### 3. Automated Weekly Library Backup (`backup_library.py`)
 
@@ -80,6 +81,7 @@ Go to **Settings → Secrets and variables → Actions** and add:
 | `SPOTIFY_REFRESH_TOKEN` | OAuth refresh token ([guide](https://developer.spotify.com/documentation/web-api/tutorials/code-flow)) |
 | `SPOTIFY_PLAYLIST_ID` | Target playlist ID for neglected tracks |
 | `SPOTIFY_LISTENBRAINZ_PLAYLIST_ID` | Target playlist ID for Weekly Exploration |
+| `SPOTIFY_WEEKJAM_PLAYLIST_ID` | Target playlist ID for Weekly Jams (optional — feed is skipped if unset) |
 | `LASTFM_API_KEY` | From your Last.fm API account |
 | `LASTFM_API_SECRET` | From your Last.fm API account |
 | `LASTFM_USERNAME` | Your Last.fm username |

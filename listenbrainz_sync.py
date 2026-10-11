@@ -1,9 +1,9 @@
 """
 listenbrainz_sync.py
-Syncs ListenBrainz "Weekly Exploration" playlist for a given user
-to a target Spotify playlist.
+Syncs ListenBrainz "Weekly Exploration" and "Weekly Jams" playlists for a
+given user to target Spotify playlists.
 
-Behaviour:
+Behaviour (per feed):
   - New week (new MBID): resolve all tracks on Spotify, full sync.
   - Same week (hourly): fetch scrobbles since playlist start, remove any
     tracks that have been played. The playlist shrinks as you listen.
@@ -28,9 +28,12 @@ from common import (
 __all__ = [
     "clean_track_metadata",
     "fetch_scrobbles_since",
+    "fetch_latest_playlist",
     "fetch_latest_weekly_exploration",
+    "fetch_latest_weekly_jams",
     "find_spotify_track_uri",
     "update_playlist_description",
+    "sync_feed",
     "main",
 ]
 
@@ -136,8 +139,14 @@ def fetch_scrobbles_since(since_iso: str) -> set[str]:
 
 # ── ListenBrainz API ─────────────────────────────────────────────────────────
 
-def fetch_latest_weekly_exploration(username: str) -> tuple[str, str, list[dict]]:
-    """Fetch the latest 'Weekly Exploration' playlist for *username*.
+# Canonical match keywords. "weekly jam" is a prefix substring of the real
+# ListenBrainz title "Weekly Jams", so one keyword covers both spellings.
+WEEKLY_EXPLORATION_KEYWORD = "weekly exploration"
+WEEKLY_JAMS_KEYWORD = "weekly jam"
+
+
+def fetch_latest_playlist(username: str, keyword: str) -> tuple[str, str, list[dict]]:
+    """Fetch the latest ListenBrainz playlist whose title contains *keyword*.
 
     Returns (playlist_mbid, playlist_title, track_list).
     """
@@ -147,19 +156,19 @@ def fetch_latest_weekly_exploration(username: str) -> tuple[str, str, list[dict]
     data = resp.json()
 
     playlists = data.get("playlists", [])
-    exploration_playlists = []
+    matched = []
     for item in playlists:
         pl = item.get("playlist", {})
         title = pl.get("title", "")
-        if "weekly exploration" in title.lower():
+        if keyword.lower() in title.lower():
             identifier = pl.get("identifier", "")
             mbid = identifier.rstrip("/").split("/")[-1]
-            exploration_playlists.append((mbid, title))
+            matched.append((mbid, title))
 
-    if not exploration_playlists:
-        raise RuntimeError(f"[ListenBrainz] No 'Weekly Exploration' playlists found for user '{username}'.")
+    if not matched:
+        raise RuntimeError(f"[ListenBrainz] No playlists matching '{keyword}' found for user '{username}'.")
 
-    target_mbid, target_title = exploration_playlists[0]
+    target_mbid, target_title = matched[0]
     print(f"[ListenBrainz] Found latest playlist: '{target_title}' (MBID: {target_mbid})")
 
     detail_url = f"https://api.listenbrainz.org/1/playlist/{target_mbid}"
@@ -172,6 +181,22 @@ def fetch_latest_weekly_exploration(username: str) -> tuple[str, str, list[dict]
 
     print(f"[ListenBrainz] Fetched {len(tracks)} tracks from ListenBrainz.")
     return target_mbid, target_title, tracks
+
+
+def fetch_latest_weekly_exploration(username: str) -> tuple[str, str, list[dict]]:
+    """Fetch the latest 'Weekly Exploration' playlist for *username*.
+
+    Returns (playlist_mbid, playlist_title, track_list).
+    """
+    return fetch_latest_playlist(username, WEEKLY_EXPLORATION_KEYWORD)
+
+
+def fetch_latest_weekly_jams(username: str) -> tuple[str, str, list[dict]]:
+    """Fetch the latest 'Weekly Jams' playlist for *username*.
+
+    Returns (playlist_mbid, playlist_title, track_list).
+    """
+    return fetch_latest_playlist(username, WEEKLY_JAMS_KEYWORD)
 
 
 # ── Spotify Track Matcher ───────────────────────────────────────────────────
@@ -272,30 +297,30 @@ def _cached_artists(entry: dict) -> list[str]:
     return [single] if single else []
 
 
-def main() -> None:
-    username = os.environ.get("LISTENBRAINZ_USERNAME", "ikOzy")
-    playlist_id = os.environ["SPOTIFY_LISTENBRAINZ_PLAYLIST_ID"]
-    state_file = os.environ.get("LISTENBRAINZ_STATE_FILE", ".listenbrainz_state")
+def sync_feed(sp, username: str, keyword: str, playlist_id: str, state_file: str, label: str) -> None:
+    """Sync one ListenBrainz feed (exploration or jams) to its Spotify target.
 
-    # 1. Fetch latest Weekly Exploration playlist from ListenBrainz
-    mbid, title, tracks = fetch_latest_weekly_exploration(username)
+    New MBID → resolve all tracks and full-sync. Same MBID → remove tracks
+    scrobbled on Last.fm since *playlist_start*, using the same
+    variant-tolerant matching as Weekly Exploration.
+    """
+    # 1. Fetch latest playlist for this feed from ListenBrainz
+    mbid, title, tracks = fetch_latest_playlist(username, keyword)
 
     state = load_state(state_file, require_key="mbid")
     last_mbid = state.get("mbid")
-
-    sp = get_spotify_client()
 
     is_new_playlist = (mbid != last_mbid) or ("track_cache" not in state)
 
     if is_new_playlist:
         # ── NEW WEEK: resolve all tracks and full sync ──────────────────
-        print("[Sync] New playlist detected — syncing all tracks …")
+        print(f"[{label}] New playlist detected — syncing all tracks …")
 
         track_cache: list[dict] = []   # {uri, artists, title}
         spotify_uris: list[str] = []
         missing_tracks: list[str] = []
 
-        print(f"[Spotify] Resolving {len(tracks)} tracks on Spotify …")
+        print(f"[{label}] Resolving {len(tracks)} tracks on Spotify …")
         for idx, track_item in enumerate(tracks, 1):
             uri, artist, track_title = find_spotify_track_uri(sp, track_item)
 
@@ -308,13 +333,13 @@ def main() -> None:
                 })
             else:
                 missing_tracks.append(f"{artist} - {track_title}")
-                print(f"  ⚠️ [{idx}/{len(tracks)}] Could not find on Spotify: '{artist} - {track_title}'")
+                print(f"[{label}]   ⚠️ [{idx}/{len(tracks)}] Could not find on Spotify: '{artist} - {track_title}'")
             time.sleep(0.25)
 
-        print(f"[Sync] Matched {len(spotify_uris)}/{len(tracks)} tracks ({len(missing_tracks)} missing).")
+        print(f"[{label}] Matched {len(spotify_uris)}/{len(tracks)} tracks ({len(missing_tracks)} missing).")
 
         if not spotify_uris:
-            raise RuntimeError("[Sync] No tracks were matched on Spotify — aborting.")
+            raise RuntimeError(f"[{label}] No tracks were matched on Spotify — aborting.")
 
         sync_spotify_playlist(sp, playlist_id, spotify_uris)
 
@@ -327,7 +352,7 @@ def main() -> None:
             "updated_at": datetime.now(timezone.utc).isoformat(),
         })
         update_playlist_description(sp, playlist_id, len(spotify_uris), len(tracks), title)
-        print(f"[Sync] Full sync complete — {len(spotify_uris)} tracks in playlist ✓")
+        print(f"[{label}] Full sync complete — {len(spotify_uris)} tracks in playlist ✓")
 
     else:
         # ── SAME WEEK: remove scrobbled tracks ──────────────────────────
@@ -336,11 +361,11 @@ def main() -> None:
         playlist_start = state.get("playlist_start", "")
 
         if not track_cache or not current_uris:
-            print("[Sync] No track cache found — skipping hourly check.")
+            print(f"[{label}] No track cache found — skipping hourly check.")
             return
 
         if not playlist_start:
-            print("[Sync] No playlist_start timestamp — skipping hourly check.")
+            print(f"[{label}] No playlist_start timestamp — skipping hourly check.")
             return
 
         # Fetch scrobbles since the playlist was synced
@@ -354,7 +379,7 @@ def main() -> None:
                 to_remove.append(uri)
 
         if not to_remove:
-            print(f"[Sync] No scrobbled tracks to remove — {len(current_uris)} tracks remain ✓")
+            print(f"[{label}] No scrobbled tracks to remove — {len(current_uris)} tracks remain ✓")
             update_playlist_description(sp, playlist_id, len(current_uris), len(track_cache), title)
             return
 
@@ -373,7 +398,40 @@ def main() -> None:
             "updated_at": datetime.now(timezone.utc).isoformat(),
         })
         update_playlist_description(sp, playlist_id, len(new_uris), len(track_cache), title)
-        print(f"[Sync] Removed {len(to_remove)} scrobbled track(s) — {len(new_uris)} tracks remain ✓")
+        print(f"[{label}] Removed {len(to_remove)} scrobbled track(s) — {len(new_uris)} tracks remain ✓")
+
+
+def main() -> None:
+    username = os.environ.get("LISTENBRAINZ_USERNAME", "ikOzy")
+    exploration_id = os.environ["SPOTIFY_LISTENBRAINZ_PLAYLIST_ID"]
+    exploration_state = os.environ.get("LISTENBRAINZ_STATE_FILE", ".listenbrainz_state")
+
+    weekjam_id = os.environ.get("SPOTIFY_WEEKJAM_PLAYLIST_ID") or os.environ.get(
+        "SPOTIFY_LISTENBRAINZ_JAMS_PLAYLIST_ID"
+    )
+    weekjam_state = os.environ.get("WEEKJAM_STATE_FILE") or os.environ.get(
+        "LISTENBRAINZ_JAMS_STATE_FILE", ".weekjam_state"
+    )
+
+    sp = get_spotify_client()
+
+    feeds = [("exploration", WEEKLY_EXPLORATION_KEYWORD, exploration_id, exploration_state)]
+    if weekjam_id:
+        feeds.append(("weekjam", WEEKLY_JAMS_KEYWORD, weekjam_id, weekjam_state))
+    else:
+        print("[Sync] SPOTIFY_WEEKJAM_PLAYLIST_ID not set — skipping Weekly Jams feed.")
+
+    failures = 0
+    for label, keyword, playlist_id, state_file in feeds:
+        try:
+            print(f"[Sync] ── feed: {label} ('{keyword}') → playlist {playlist_id} ──")
+            sync_feed(sp, username, keyword, playlist_id, state_file, label)
+        except Exception as exc:
+            failures += 1
+            print(f"[{label}] FAILED: {exc.__class__.__name__}: {exc}")
+
+    if failures:
+        raise RuntimeError(f"[Sync] {failures}/{len(feeds)} feed(s) failed.")
 
 
 if __name__ == "__main__":

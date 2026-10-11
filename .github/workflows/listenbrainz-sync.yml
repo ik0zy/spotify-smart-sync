@@ -1,4 +1,4 @@
-name: Sync ListenBrainz Weekly Exploration
+name: Sync ListenBrainz Weekly Exploration + Weekly Jams
 
 on:
   schedule:
@@ -18,7 +18,9 @@ jobs:
       SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
       SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
       SPOTIFY_LISTENBRAINZ_PLAYLIST_ID: ${{ secrets.SPOTIFY_LISTENBRAINZ_PLAYLIST_ID }}
+      SPOTIFY_WEEKJAM_PLAYLIST_ID: ${{ secrets.SPOTIFY_WEEKJAM_PLAYLIST_ID }}
       LISTENBRAINZ_STATE_FILE: .listenbrainz_state
+      WEEKJAM_STATE_FILE: .weekjam_state
 
     steps:
       - name: Check out repository
@@ -36,7 +38,9 @@ jobs:
       - name: Restore sync state
         uses: actions/cache@v4
         with:
-          path: .listenbrainz_state
+          path: |
+            .listenbrainz_state
+            .weekjam_state
           key: listenbrainz-state-${{ github.run_id }}
           restore-keys: |
             listenbrainz-state-
