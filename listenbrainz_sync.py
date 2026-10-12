@@ -12,7 +12,7 @@ Behaviour (per feed):
 import os
 import re
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from common import (
     get_spotify_client,
@@ -297,12 +297,18 @@ def _cached_artists(entry: dict) -> list[str]:
     return [single] if single else []
 
 
-def sync_feed(sp, username: str, keyword: str, playlist_id: str, state_file: str, label: str) -> None:
+def sync_feed(sp, username: str, keyword: str, playlist_id: str, state_file: str, label: str,
+              scrobble_days: int | None = None) -> None:
     """Sync one ListenBrainz feed (exploration or jams) to its Spotify target.
 
     New MBID → resolve all tracks and full-sync. Same MBID → remove tracks
-    scrobbled on Last.fm since *playlist_start*, using the same
-    variant-tolerant matching as Weekly Exploration.
+    scrobbled on Last.fm, using the same variant-tolerant matching as
+    Weekly Exploration.
+
+    *scrobble_days*: when None (default, used by Weekly Exploration), only
+    scrobbles since *playlist_start* count. When set (used by Weekly Jams,
+    default 30), scrobbles from the last N days count instead — so a track
+    played any time in the last month is removed, not just plays this week.
     """
     # 1. Fetch latest playlist for this feed from ListenBrainz
     mbid, title, tracks = fetch_latest_playlist(username, keyword)
@@ -368,8 +374,13 @@ def sync_feed(sp, username: str, keyword: str, playlist_id: str, state_file: str
             print(f"[{label}] No playlist_start timestamp — skipping hourly check.")
             return
 
-        # Fetch scrobbles since the playlist was synced
-        scrobbled = fetch_scrobbles_since(playlist_start)
+        # Fetch scrobbles: since playlist start, or last N days when configured
+        if scrobble_days is not None:
+            since_iso = (datetime.now(timezone.utc) - timedelta(days=scrobble_days)).isoformat()
+            print(f"[{label}] Using {scrobble_days}-day scrobble window (since {since_iso}) …")
+        else:
+            since_iso = playlist_start
+        scrobbled = fetch_scrobbles_since(since_iso)
 
         # Find which current tracks have been scrobbled, in any spelling.
         to_remove: list[str] = []
@@ -412,20 +423,21 @@ def main() -> None:
     weekjam_state = os.environ.get("WEEKJAM_STATE_FILE") or os.environ.get(
         "LISTENBRAINZ_JAMS_STATE_FILE", ".weekjam_state"
     )
+    weekjam_days = int(os.environ.get("WEEKJAM_SCROBBLE_DAYS", "30"))
 
     sp = get_spotify_client()
 
-    feeds = [("exploration", WEEKLY_EXPLORATION_KEYWORD, exploration_id, exploration_state)]
+    feeds = [("exploration", WEEKLY_EXPLORATION_KEYWORD, exploration_id, exploration_state, None)]
     if weekjam_id:
-        feeds.append(("weekjam", WEEKLY_JAMS_KEYWORD, weekjam_id, weekjam_state))
+        feeds.append(("weekjam", WEEKLY_JAMS_KEYWORD, weekjam_id, weekjam_state, weekjam_days))
     else:
         print("[Sync] SPOTIFY_WEEKJAM_PLAYLIST_ID not set — skipping Weekly Jams feed.")
 
     failures = 0
-    for label, keyword, playlist_id, state_file in feeds:
+    for label, keyword, playlist_id, state_file, scrobble_days in feeds:
         try:
             print(f"[Sync] ── feed: {label} ('{keyword}') → playlist {playlist_id} ──")
-            sync_feed(sp, username, keyword, playlist_id, state_file, label)
+            sync_feed(sp, username, keyword, playlist_id, state_file, label, scrobble_days)
         except Exception as exc:
             failures += 1
             print(f"[{label}] FAILED: {exc.__class__.__name__}: {exc}")

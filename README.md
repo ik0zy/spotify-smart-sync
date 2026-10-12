@@ -20,7 +20,7 @@ Syncs your **ListenBrainz Weekly Exploration** and **Weekly Jams** playlists to 
 
 **How it works (same logic per feed):**
 - **New Week** (new MBID detected): Resolves all tracks on Spotify and populates the playlist
-- **Hourly** (rest of the week): Checks Last.fm scrobbles since the playlist was created and removes any tracks you've already played
+- **Hourly** (rest of the week): Checks Last.fm scrobbles and removes any tracks you've already played — Weekly Exploration uses plays since the playlist dropped, Weekly Jams uses the last `WEEKJAM_SCROBBLE_DAYS` days (default 30)
 - **Dynamic Description**: Shows remaining tracks and queue progress (e.g. `ListenBrainz: Weekly Exploration · 11/50 tracks remaining (39 played) · Last synced: 14 Aug 2026, 09:45 AM (UTC+6)`)
 - Next playlist drop: wipes and starts fresh with new recommendations
 - Each feed has its own Spotify target + state file (`.listenbrainz_state`, `.weekjam_state`); one feed failing never blocks the other

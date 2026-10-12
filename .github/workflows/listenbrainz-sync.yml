@@ -21,6 +21,7 @@ jobs:
       SPOTIFY_WEEKJAM_PLAYLIST_ID: ${{ secrets.SPOTIFY_WEEKJAM_PLAYLIST_ID }}
       LISTENBRAINZ_STATE_FILE: .listenbrainz_state
       WEEKJAM_STATE_FILE: .weekjam_state
+      WEEKJAM_SCROBBLE_DAYS: "30"
 
     steps:
       - name: Check out repository
