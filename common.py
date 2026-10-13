@@ -231,6 +231,17 @@ def requests_retry(
 
             return resp
         except (requests.exceptions.RequestException, json.JSONDecodeError, ValueError) as exc:
+            # Permanent client errors (404, 401, 403, …) will never succeed
+            # on retry — fail fast instead of burning backoff time. 408 and
+            # 429 are in RETRYABLE_STATUS_CODES and stay retryable.
+            status = getattr(getattr(exc, "response", None), "status_code", None)
+            if (
+                isinstance(exc, requests.exceptions.HTTPError)
+                and status is not None
+                and 400 <= status < 500
+                and status not in RETRYABLE_STATUS_CODES
+            ):
+                raise
             if attempt >= max_retries:
                 raise
             headers = getattr(getattr(exc, "response", None), "headers", None)

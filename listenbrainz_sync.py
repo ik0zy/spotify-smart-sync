@@ -14,6 +14,8 @@ import re
 import time
 from datetime import datetime, timedelta, timezone
 
+import requests
+
 from common import (
     get_spotify_client,
     load_state,
@@ -151,8 +153,16 @@ def fetch_latest_playlist(username: str, keyword: str) -> tuple[str, str, list[d
     Returns (playlist_mbid, playlist_title, track_list).
     """
     url = f"https://api.listenbrainz.org/1/user/{username}/playlists/createdfor"
-    resp = requests_retry(url, timeout=45, expect_json=True)
-    resp.raise_for_status()
+    try:
+        resp = requests_retry(url, timeout=45, expect_json=True)
+        resp.raise_for_status()
+    except requests.exceptions.HTTPError as exc:
+        if getattr(getattr(exc, "response", None), "status_code", None) == 404:
+            raise RuntimeError(
+                f"[ListenBrainz] User '{username}' was not found (404). "
+                "Check LISTENBRAINZ_USERNAME, including capitalization."
+            ) from exc
+        raise
     data = resp.json()
 
     playlists = data.get("playlists", [])
