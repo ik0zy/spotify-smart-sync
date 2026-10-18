@@ -1,28 +1,30 @@
 {
   "id": "4anNIM2czofpz40cy9UONI",
   "name": "Weekly Exploration",
-  "description": "ListenBrainz: Weekly Exploration for ikOzy, week of 2026-10-05 Mon · 25&#x2F;50 tracks remaining (25 played) · Last synced: 11 Oct 2026, 08:40 AM (UTC+6)",
+  "description": "ListenBrainz: Weekly Exploration for ikOzy, week of 2026-10-05 Mon · 48&#x2F;50 tracks remaining (2 played) · Last synced: 18 Oct 2026, 07:55 AM (UTC+6)",
   "owner": "kOzy",
   "public": true,
   "collaborative": false,
   "spotify_url": "https://open.spotify.com/playlist/4anNIM2czofpz40cy9UONI",
-  "track_count": 25,
+  "track_count": 48,
   "tracks": [
     {
-      "added_at": "2026-10-05T07:51:16Z",
-      "title": "Landslide",
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Crazy",
       "artists": [
-        "Fleetwood Mac"
+        "Gnarls Barkley",
+        "CeeLo Green",
+        "Danger Mouse"
       ],
-      "artist": "Fleetwood Mac",
-      "album": "Fleetwood Mac",
-      "duration_ms": 199493,
-      "isrc": "USWB19903197",
-      "uri": "spotify:track:5ihS6UUlyQAfmp48eSkxuQ",
-      "spotify_url": "https://open.spotify.com/track/5ihS6UUlyQAfmp48eSkxuQ"
+      "artist": "Gnarls Barkley, CeeLo Green, Danger Mouse",
+      "album": "St. Elsewhere",
+      "duration_ms": 177933,
+      "isrc": "GBAHT0600202",
+      "uri": "spotify:track:1vxw6aYJls2oq3gW0DujAo",
+      "spotify_url": "https://open.spotify.com/track/1vxw6aYJls2oq3gW0DujAo"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Guess featuring billie eilish",
       "artists": [
         "Charli xcx",
@@ -36,7 +38,59 @@
       "spotify_url": "https://open.spotify.com/track/0IsIY8pfu1yaGkPUD7pkDx"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "The World Is Yours",
+      "artists": [
+        "Nas"
+      ],
+      "artist": "Nas",
+      "album": "Illmatic",
+      "duration_ms": 290578,
+      "isrc": "USSM10022814",
+      "uri": "spotify:track:7G3lxTsMfSx4yarMkfgnTC",
+      "spotify_url": "https://open.spotify.com/track/7G3lxTsMfSx4yarMkfgnTC"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Yes I'm Changing",
+      "artists": [
+        "Tame Impala"
+      ],
+      "artist": "Tame Impala",
+      "album": "Currents",
+      "duration_ms": 270680,
+      "isrc": "AUUM71500295",
+      "uri": "spotify:track:0xtIp0lgccN85GfGOekS5L",
+      "spotify_url": "https://open.spotify.com/track/0xtIp0lgccN85GfGOekS5L"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Runaway (U & I)",
+      "artists": [
+        "Galantis"
+      ],
+      "artist": "Galantis",
+      "album": "Runaway (U & I)",
+      "duration_ms": 227073,
+      "isrc": "USAT21404265",
+      "uri": "spotify:track:4qABfS1RaGVXdBhj2BQyhO",
+      "spotify_url": "https://open.spotify.com/track/4qABfS1RaGVXdBhj2BQyhO"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Parachutes",
+      "artists": [
+        "Coldplay"
+      ],
+      "artist": "Coldplay",
+      "album": "Parachutes",
+      "duration_ms": 46200,
+      "isrc": "GBAYE0000529",
+      "uri": "spotify:track:4qzoHxgp42ylb18ga1SWTL",
+      "spotify_url": "https://open.spotify.com/track/4qzoHxgp42ylb18ga1SWTL"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Dancin - Krono Remix",
       "artists": [
         "Aaron Smith",
@@ -51,7 +105,20 @@
       "spotify_url": "https://open.spotify.com/track/5Cpo7btae5aI6QtOcVzWwB"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Immigrant Song - Remaster",
+      "artists": [
+        "Led Zeppelin"
+      ],
+      "artist": "Led Zeppelin",
+      "album": "Led Zeppelin III (Remaster)",
+      "duration_ms": 146250,
+      "isrc": "USAT21300934",
+      "uri": "spotify:track:78lgmZwycJ3nzsdgmPPGNx",
+      "spotify_url": "https://open.spotify.com/track/78lgmZwycJ3nzsdgmPPGNx"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Hide and Seek",
       "artists": [
         "Imogen Heap"
@@ -64,7 +131,7 @@
       "spotify_url": "https://open.spotify.com/track/2tej1KSqNuxwywIpY1rDRc"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "HUMBLE.",
       "artists": [
         "Kendrick Lamar"
@@ -77,7 +144,7 @@
       "spotify_url": "https://open.spotify.com/track/7KXjTSCq5nL1LoYtL7XAwS"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Locked out of Heaven",
       "artists": [
         "Bruno Mars"
@@ -90,7 +157,7 @@
       "spotify_url": "https://open.spotify.com/track/3w3y8KPTfNeOKPiqUTakBh"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Sign of the Times",
       "artists": [
         "Harry Styles"
@@ -103,7 +170,7 @@
       "spotify_url": "https://open.spotify.com/track/5Ohxk2dO5COHF1krpoPigN"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "tv off (feat. lefty gunplay)",
       "artists": [
         "Kendrick Lamar",
@@ -117,7 +184,7 @@
       "spotify_url": "https://open.spotify.com/track/0aB0v4027ukVziUGwVGYpG"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Cherry Blossom Girl",
       "artists": [
         "Air"
@@ -130,7 +197,59 @@
       "spotify_url": "https://open.spotify.com/track/4m8ttWM8IKXyhpv89E867J"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "With You",
+      "artists": [
+        "Linkin Park"
+      ],
+      "artist": "Linkin Park",
+      "album": "Hybrid Theory (Bonus Edition)",
+      "duration_ms": 203266,
+      "isrc": "USWB10002400",
+      "uri": "spotify:track:5uuXtfqM7Wp3idCxyHeOll",
+      "spotify_url": "https://open.spotify.com/track/5uuXtfqM7Wp3idCxyHeOll"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "The Rip",
+      "artists": [
+        "Portishead"
+      ],
+      "artist": "Portishead",
+      "album": "Third",
+      "duration_ms": 270946,
+      "isrc": "GBUM70801437",
+      "uri": "spotify:track:5KX2DSPC6aCA0pdDidTmBC",
+      "spotify_url": "https://open.spotify.com/track/5KX2DSPC6aCA0pdDidTmBC"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Lovely Day",
+      "artists": [
+        "Bill Withers"
+      ],
+      "artist": "Bill Withers",
+      "album": "Lean on Me: The Best of Bill Withers",
+      "duration_ms": 255066,
+      "isrc": "USSM17700024",
+      "uri": "spotify:track:0ACACkoHUwgfgY5CxVIL4N",
+      "spotify_url": "https://open.spotify.com/track/0ACACkoHUwgfgY5CxVIL4N"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Faded",
+      "artists": [
+        "Alan Walker"
+      ],
+      "artist": "Alan Walker",
+      "album": "Faded",
+      "duration_ms": 212626,
+      "isrc": "NOG841549010",
+      "uri": "spotify:track:7gHs73wELdeycvS48JfIos",
+      "spotify_url": "https://open.spotify.com/track/7gHs73wELdeycvS48JfIos"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Gimme More",
       "artists": [
         "Britney Spears"
@@ -143,7 +262,33 @@
       "spotify_url": "https://open.spotify.com/track/6H01lZiYF1zWlPqpJlu9as"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Dirty Diana",
+      "artists": [
+        "Michael Jackson"
+      ],
+      "artist": "Michael Jackson",
+      "album": "Number Ones",
+      "duration_ms": 282062,
+      "isrc": "USSM19909072",
+      "uri": "spotify:track:6JZYMxvcoeLD4IifJPvDux",
+      "spotify_url": "https://open.spotify.com/track/6JZYMxvcoeLD4IifJPvDux"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "You Wish",
+      "artists": [
+        "Nightmares On Wax"
+      ],
+      "artist": "Nightmares On Wax",
+      "album": "In A Space Outta Sound",
+      "duration_ms": 210466,
+      "isrc": "GBBPW0500164",
+      "uri": "spotify:track:6G6M4fl2I0eqEQnzyTwR8m",
+      "spotify_url": "https://open.spotify.com/track/6G6M4fl2I0eqEQnzyTwR8m"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Under Your Spell",
       "artists": [
         "Snow Strippers"
@@ -156,7 +301,21 @@
       "spotify_url": "https://open.spotify.com/track/5q0N5SaFhROG9UQiPukv9p"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Spitting Off the Edge of the World",
+      "artists": [
+        "Yeah Yeah Yeahs",
+        "Perfume Genius"
+      ],
+      "artist": "Yeah Yeah Yeahs, Perfume Genius",
+      "album": "Cool It Down",
+      "duration_ms": 257746,
+      "isrc": "US38W2247001",
+      "uri": "spotify:track:0JX23XA8E7aN1Chj32kgVn",
+      "spotify_url": "https://open.spotify.com/track/0JX23XA8E7aN1Chj32kgVn"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Take Me Out",
       "artists": [
         "Franz Ferdinand"
@@ -169,7 +328,7 @@
       "spotify_url": "https://open.spotify.com/track/20I8RduZC2PWMWTDCZuuAN"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Let's Dance - 2002 Remaster",
       "artists": [
         "David Bowie"
@@ -182,7 +341,34 @@
       "spotify_url": "https://open.spotify.com/track/4cVHMHgmWgudD399ZdhQ3L"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "The Way You Make Me Feel - 2012 Remaster",
+      "artists": [
+        "Michael Jackson"
+      ],
+      "artist": "Michael Jackson",
+      "album": "Bad 25th Anniversary",
+      "duration_ms": 298121,
+      "isrc": "USSM11204981",
+      "uri": "spotify:track:0sKlV58cODrjxGFOyf9IXY",
+      "spotify_url": "https://open.spotify.com/track/0sKlV58cODrjxGFOyf9IXY"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Dissolved Girl",
+      "artists": [
+        "Massive Attack",
+        "Sarah Jay Hawley"
+      ],
+      "artist": "Massive Attack, Sarah Jay Hawley",
+      "album": "Mezzanine",
+      "duration_ms": 366893,
+      "isrc": "GBAAA9800345",
+      "uri": "spotify:track:0oeEqyEAavgPfFxDYvjAP6",
+      "spotify_url": "https://open.spotify.com/track/0oeEqyEAavgPfFxDYvjAP6"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Kids with Guns",
       "artists": [
         "Gorillaz",
@@ -196,7 +382,20 @@
       "spotify_url": "https://open.spotify.com/track/0eEgMbSzOHmkOeVuNC3E0k"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Like a Tattoo",
+      "artists": [
+        "Sade"
+      ],
+      "artist": "Sade",
+      "album": "Love Deluxe",
+      "duration_ms": 218000,
+      "isrc": "GBBBM9202008",
+      "uri": "spotify:track:4PEGwWH4tL6H7dGl4uVSPg",
+      "spotify_url": "https://open.spotify.com/track/4PEGwWH4tL6H7dGl4uVSPg"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Die With A Smile",
       "artists": [
         "Lady Gaga",
@@ -210,7 +409,7 @@
       "spotify_url": "https://open.spotify.com/track/2plbrEY59IikOBgBGLjaoe"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "November Has Come",
       "artists": [
         "Gorillaz",
@@ -224,7 +423,20 @@
       "spotify_url": "https://open.spotify.com/track/6lrDckuosGpwEHtm1hHBcf"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "6 Underground",
+      "artists": [
+        "Sneaker Pimps"
+      ],
+      "artist": "Sneaker Pimps",
+      "album": "Becoming X",
+      "duration_ms": 228840,
+      "isrc": "GBBTF1200198",
+      "uri": "spotify:track:5SJ7mZ4HZWbhFcHpBvHU55",
+      "spotify_url": "https://open.spotify.com/track/5SJ7mZ4HZWbhFcHpBvHU55"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "SLOW DANCING IN THE DARK",
       "artists": [
         "Joji"
@@ -237,7 +449,7 @@
       "spotify_url": "https://open.spotify.com/track/6rY5FAWxCdAGllYEOZMbjW"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "GONE, GONE / THANK YOU",
       "artists": [
         "Tyler, The Creator"
@@ -250,34 +462,115 @@
       "spotify_url": "https://open.spotify.com/track/1hz7SRTGUNAtIQ46qiNv2p"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
-      "title": "I Really Want to Stay at Your House",
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Death",
       "artists": [
-        "Samuel Kim",
-        "Lorien"
+        "C418"
       ],
-      "artist": "Samuel Kim, Lorien",
-      "album": "I Really Want to Stay at Your House",
-      "duration_ms": 246711,
-      "isrc": "QZAKB2202887",
-      "uri": "spotify:track:5BgztqoQ6NHOhNg5yq8SUQ",
-      "spotify_url": "https://open.spotify.com/track/5BgztqoQ6NHOhNg5yq8SUQ"
+      "artist": "C418",
+      "album": "Minecraft - Volume Alpha",
+      "duration_ms": 41500,
+      "isrc": "TCAAW1157073",
+      "uri": "spotify:track:7Ix7VIImOwKbmP8nmTO0gV",
+      "spotify_url": "https://open.spotify.com/track/7Ix7VIImOwKbmP8nmTO0gV"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
-      "title": "It Ain't Over 'Til It's Over",
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Mad World",
       "artists": [
-        "Lenny Kravitz"
+        "Tears For Fears"
       ],
-      "artist": "Lenny Kravitz",
-      "album": "Mama Said",
-      "duration_ms": 242640,
-      "isrc": "USVI29100003",
-      "uri": "spotify:track:6VnpKLtfNH4Dk09YSGPSyR",
-      "spotify_url": "https://open.spotify.com/track/6VnpKLtfNH4Dk09YSGPSyR"
+      "artist": "Tears For Fears",
+      "album": "The Hurting",
+      "duration_ms": 215400,
+      "isrc": "GBF088200040",
+      "uri": "spotify:track:0Qv7xi6uPSqH2k82tOkGSt",
+      "spotify_url": "https://open.spotify.com/track/0Qv7xi6uPSqH2k82tOkGSt"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "ROSA - Slowed",
+      "artists": [
+        "Irokz",
+        "Zericxxn",
+        "DJ Zarek"
+      ],
+      "artist": "Irokz, Zericxxn, DJ Zarek",
+      "album": "ROSA",
+      "duration_ms": 184324,
+      "isrc": "QMDA72689388",
+      "uri": "spotify:track:4Q2zn28Bo1I4ZvidsM0y21",
+      "spotify_url": "https://open.spotify.com/track/4Q2zn28Bo1I4ZvidsM0y21"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "All I Am",
+      "artists": [
+        "Ninajirachi"
+      ],
+      "artist": "Ninajirachi",
+      "album": "I Love My Computer",
+      "duration_ms": 182690,
+      "isrc": "QM4TW2574080",
+      "uri": "spotify:track:3CbF4eluvVhJ9v0axMj2Rk",
+      "spotify_url": "https://open.spotify.com/track/3CbF4eluvVhJ9v0axMj2Rk"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "FE!N (feat. Playboi Carti)",
+      "artists": [
+        "Travis Scott",
+        "Playboi Carti"
+      ],
+      "artist": "Travis Scott, Playboi Carti",
+      "album": "UTOPIA",
+      "duration_ms": 191700,
+      "isrc": "USSM12305010",
+      "uri": "spotify:track:42VsgItocQwOQC3XWZ8JNA",
+      "spotify_url": "https://open.spotify.com/track/42VsgItocQwOQC3XWZ8JNA"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Time Moves Slow",
+      "artists": [
+        "BADBADNOTGOOD",
+        "Samuel T. Herring"
+      ],
+      "artist": "BADBADNOTGOOD, Samuel T. Herring",
+      "album": "IV",
+      "duration_ms": 273864,
+      "isrc": "USD8D1634003",
+      "uri": "spotify:track:1IqF5PUDUnaykHLs0RWbDO",
+      "spotify_url": "https://open.spotify.com/track/1IqF5PUDUnaykHLs0RWbDO"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Pyramids",
+      "artists": [
+        "Frank Ocean"
+      ],
+      "artist": "Frank Ocean",
+      "album": "channel ORANGE",
+      "duration_ms": 592920,
+      "isrc": "USUM71207185",
+      "uri": "spotify:track:4QhWbupniDd44EDtnh2bFJ",
+      "spotify_url": "https://open.spotify.com/track/4QhWbupniDd44EDtnh2bFJ"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Lying from You",
+      "artists": [
+        "Linkin Park"
+      ],
+      "artist": "Linkin Park",
+      "album": "Meteora (Bonus Edition)",
+      "duration_ms": 175053,
+      "isrc": "USWB10300465",
+      "uri": "spotify:track:4qVR3CF8FuFvHN4L6vXlB1",
+      "spotify_url": "https://open.spotify.com/track/4qVR3CF8FuFvHN4L6vXlB1"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Thrift Shop - Live From Spotify NYC feat. Wanz",
       "artists": [
         "Macklemore & Ryan Lewis",
@@ -291,7 +584,7 @@
       "spotify_url": "https://open.spotify.com/track/3wMtW7OyslemHe5Ft5sNyA"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Somebody That I Used To Know (feat. Kimbra) [Tiësto Remix]",
       "artists": [
         "Tiësto",
@@ -306,21 +599,21 @@
       "spotify_url": "https://open.spotify.com/track/4lvvwXG8GHhTPror8gUwIC"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "I Follow Rivers - The Magician Remix",
       "artists": [
         "Lykke Li",
         "The Magician"
       ],
       "artist": "Lykke Li, The Magician",
-      "album": "Ibiza Feelings",
+      "album": "Kopfhörer Party",
       "duration_ms": 279635,
       "isrc": "SEVUM1100103",
-      "uri": "spotify:track:0jExEFSd4zabXgMh7aE9iG",
-      "spotify_url": "https://open.spotify.com/track/0jExEFSd4zabXgMh7aE9iG"
+      "uri": "spotify:track:0ncrdenPJL5D6esYNN251K",
+      "spotify_url": "https://open.spotify.com/track/0ncrdenPJL5D6esYNN251K"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Ghost Town",
       "artists": [
         "Kanye West",
@@ -334,7 +627,7 @@
       "spotify_url": "https://open.spotify.com/track/7vgTNTaEz3CsBZ1N4YQalM"
     },
     {
-      "added_at": "2026-10-05T07:51:16Z",
+      "added_at": "2026-10-11T09:26:31Z",
       "title": "Cosmic Girl",
       "artists": [
         "Jamiroquai"
@@ -345,6 +638,21 @@
       "isrc": "GBBBL9600106",
       "uri": "spotify:track:2fiRJjWb9uk21Gva6oHpKs",
       "spotify_url": "https://open.spotify.com/track/2fiRJjWb9uk21Gva6oHpKs"
+    },
+    {
+      "added_at": "2026-10-11T09:26:31Z",
+      "title": "Get Lucky (feat. Pharrell Williams and Nile Rodgers)",
+      "artists": [
+        "Daft Punk",
+        "Pharrell Williams",
+        "Nile Rodgers"
+      ],
+      "artist": "Daft Punk, Pharrell Williams, Nile Rodgers",
+      "album": "Random Access Memories",
+      "duration_ms": 369626,
+      "isrc": "USQX91300108",
+      "uri": "spotify:track:69kOkLUCkxIZYexIgSG8rq",
+      "spotify_url": "https://open.spotify.com/track/69kOkLUCkxIZYexIgSG8rq"
     }
   ]
 }
